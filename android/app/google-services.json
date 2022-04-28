@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "894369792355",
+    "project_id": "inventory-keeper-a0fdc",
+    "storage_bucket": "inventory-keeper-a0fdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894369792355:android:d681ba2fe29e3705a71356",
+        "android_client_info": {
+          "package_name": "io.cmobile.inventory_keeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894369792355-cak18kvtssemvps887q98gh4mosg5erp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjTMmm4ySlU24f0G9v4HQG4Qj0XJOURgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894369792355-cak18kvtssemvps887q98gh4mosg5erp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
