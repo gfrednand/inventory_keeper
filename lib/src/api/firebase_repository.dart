@@ -1,11 +1,13 @@
 // ignore: type_annotate_public_apis
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventory_keeper/src/api/api.dart';
-import 'package:inventory_keeper/src/products/product.dart';
 
 ///
 class FireBaseRepository
-    implements Api<Future<bool>, Product, Future<List<Product>>> {
+    implements
+        Api<Future<bool>, Map<String, dynamic>,
+            Future<List<Map<String, dynamic>>>, Future<Map<String, dynamic>>> {
   ///
   FireBaseRepository(this.path) {
     ref = _db.collection(path);
@@ -19,72 +21,81 @@ class FireBaseRepository
   CollectionReference? ref;
 
   @override
-  Future<List<Product>> allItems() async {
+  Future<List<Map<String, dynamic>>> allItems() async {
     final snapshot = await ref!.get();
-    final products = <Product>[];
+    final objs = <Map<String, dynamic>>[];
     for (final doc in snapshot.docs) {
       if (doc.data() != null) {
         // ignore: cast_nullable_to_non_nullable
         final obj = doc.data() as Map<String, dynamic>;
-        products.add(Product.fromMap(obj));
+        obj['id'] = doc.id;
+        objs.add(obj);
       }
     }
-    return products;
+    return objs;
   }
 
   @override
-  Product oneItem(Product p) {
-    final obj = ref!.doc(p.id).get() as Map<String, dynamic>;
-    return Product.fromMap(obj);
+  Future<Map<String, dynamic>> oneItem(Map<String, dynamic> p) async {
+    var obj = <String, dynamic>{};
+    if (p['id'] != null) {
+      obj = await ref!.doc(p['id'] as String).get() as Map<String, dynamic>;
+    }
+    return obj;
   }
 
   @override
-  Future<bool> removeOne(Product p) {
-    return ref!
-        .doc(p.id)
-        .delete()
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print("Failed to delete user: $error");
+  Future<bool> removeOne(Map<String, dynamic> p) {
+    if (p['id'] != null) {
+      return ref!
+          .doc(p['id'] as String)
+          .delete()
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to delete user: $error');
+        return false;
+      });
+    } else {
+      return Future<bool>.value(false);
+    }
+  }
+
+  @override
+  Future<bool> addOne(Map<String, dynamic> p) async {
+    return ref!.add(p).then((value) => true).catchError((dynamic error) {
+      print('Failed to add user: $error');
       return false;
     });
   }
 
   @override
-  Future<bool> addOne(Product p) async {
-    return ref!
-        .add(p.toMap())
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print("Failed to add user: $error");
-      return false;
-    });
-  }
-
-  @override
-  Future<bool> updateOne(Product p) {
-    return ref!
-        .doc(p.id)
-        .update(p.toMap())
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print("Failed to update user: $error");
-      return false;
-    });
+  Future<bool> updateOne(Map<String, dynamic> p) {
+    if (p['id'] != null) {
+      return ref!
+          .doc(p['id'] as String)
+          .update(p)
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to update user: $error');
+        return false;
+      });
+    } else {
+      return Future<bool>.value(false);
+    }
   }
 
   /// Fetching stream of data
-  Stream<List<Product>> streamDataCollection() {
-    final products = <Product>[];
-    return ref!.snapshots().map((snapshot) {
+  Stream<List<Map<String, dynamic>>> streamDataCollection() {
+    final objs = <Map<String, dynamic>>[];
+    return ref!.snapshots(includeMetadataChanges: false).map((snapshot) {
       for (final doc in snapshot.docs) {
-        if (doc.data() != null) {
-          // ignore: cast_nullable_to_non_nullable
-          final obj = doc.data() as Map<String, dynamic>;
-          products.add(Product.fromMap(obj));
+        final obj = doc.data() as Map<String, dynamic>?;
+        if (obj != null) {
+          obj['id'] = doc.id;
+          objs.add(obj);
         }
       }
-      return products;
+      return objs;
     });
   }
 }

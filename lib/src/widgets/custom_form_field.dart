@@ -72,43 +72,44 @@ class _CustomFormFieldState extends State<CustomFormField> {
       textInputAction: widget._inputAction,
       validator: (String? value) => widget._validator!(value),
       decoration: InputDecoration(
-          filled: true,
-          labelText: widget.isLabelEnabled ? widget._label : null,
-          hintText: widget._hint,
-          errorStyle: const TextStyle(
+        filled: true,
+        labelText: widget.isLabelEnabled ? widget._label : null,
+        hintText: widget._hint,
+        errorStyle: const TextStyle(
+          color: Colors.redAccent,
+          fontWeight: FontWeight.bold,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(width: 2),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
             color: Colors.redAccent,
-            fontWeight: FontWeight.bold,
+            width: 2,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(width: 2),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: Colors.redAccent,
+            width: 2,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: Colors.redAccent,
-              width: 2,
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: Colors.redAccent,
-              width: 2,
-            ),
-          ),
-          suffixIcon: widget.isObscure
-              ? IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey,
-                  ),
-                  onPressed: _toggle,
-                )
-              : null),
+        ),
+        suffixIcon: widget.isObscure
+            ? IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: _toggle,
+              )
+            : null,
+      ),
     );
   }
 }

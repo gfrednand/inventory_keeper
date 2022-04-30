@@ -2,9 +2,9 @@
 /// Types A is Item type, Type B is for one item
 /// Type C is the output of get all
 /// Type D is the output of remove One
-abstract class Api<A, B, C> {
+abstract class Api<A, B, C, D> {
   /// Get Single Data
-  B oneItem(B one);
+  D oneItem(B one);
 
   /// Add Single Data
   A addOne(B one);

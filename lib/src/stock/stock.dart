@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:inventory_keeper/src/products/product.dart';
+import 'package:inventory_keeper/src/models/product.dart';
 
 /// Stock Model
 class Stock {

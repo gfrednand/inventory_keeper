@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/products/product.dart';
-import 'package:inventory_keeper/src/products/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/product_details_view.dart';
 import 'package:inventory_keeper/src/settings/settings_view.dart';
 import 'package:provider/provider.dart';
@@ -44,14 +45,17 @@ class ProductListView extends StatelessWidget {
       // In contrast to the default ListView constructor, which requires
       // building all Widgets up front, the ListView.builder constructor lazily
       // builds Widgets as they’re scrolled into view.
-      body: StreamBuilder(
+      body: StreamBuilder<List<Product>>(
         stream: controller.fetchProductsAsStream(),
-        builder: (context, AsyncSnapshot<List<Product>> snapshot) {
-          // if (snapshot.connectionState == ConnectionState.waiting) {
-          //   return const Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('Something went wrong'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (snapshot.hasData) {
             final data = snapshot.data;
             return ListView.builder(
@@ -63,7 +67,7 @@ class ProductListView extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 final item = data[index];
                 return ListTile(
-                  title: Text('Product ${item.id}'),
+                  title: Text(item.name),
                   leading: const CircleAvatar(
                       // Display the Flutter Logo image asset.
                       // foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -81,17 +85,24 @@ class ProductListView extends StatelessWidget {
               },
             );
           } else {
-            // return const Center(
-            //   child: Text(
-            //     'No Products',
-            //     style: TextStyle(fontSize: 32),
-            //   ),
-            // );
             return const Center(
-              child: CircularProgressIndicator(),
+              child: Text(
+                'No Data',
+                style: TextStyle(fontSize: 32),
+              ),
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.restorablePushNamed(
+            context,
+            AddProduct.routeName,
+          );
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Add'),
       ),
     );
   }

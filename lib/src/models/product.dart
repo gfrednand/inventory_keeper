@@ -3,6 +3,10 @@
 //     final product = productFromJson(jsonString);
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:inventory_keeper/src/models/product_type.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
+
 /// Product Model
 class Product {
   /// Product Constructor
@@ -15,6 +19,7 @@ class Product {
     this.type,
     this.createdAt,
     this.updatedAt,
+    this.expireDate,
   });
 
   /// Convert Json String to Product
@@ -22,19 +27,32 @@ class Product {
       Product.fromMap(json.decode(str) as Map<String, dynamic>);
 
   /// Convert Map<String, dynamic> to Product
-  factory Product.fromMap(Map<String, dynamic> json) => Product(
+  factory Product.fromMap(Map<String, dynamic> json) {
+    try {
+      final p = Product(
         id: json['id'] == null ? null : json['id'] as String,
         description:
             json['description'] == null ? null : json['description'] as String,
         createdAt:
-            json['createdAt'] == null ? null : json['createdAt'] as DateTime,
+            json['createdAt'] == null ? null : parseTime(json['createdAt']),
         updatedAt:
-            json['updatedAt'] == null ? null : json['updatedAt'] as DateTime,
+            json['updatedAt'] == null ? null : parseTime(json['updatedAt']),
+        expireDate:
+            json['expireDate'] == null ? null : parseTime(json['expireDate']),
         name: json['name'] as String,
         unit: json['unit'] as String,
         pricePerUnit: (json['pricePerUnit'] as num).toDouble(),
-        type: Type.fromMap(json['type'] as Map<String, dynamic>),
+        type: json['type'] == null
+            ? null
+            : ProductType.fromMap(json['type'] as Map<String, dynamic>),
       );
+
+      return p;
+    } catch (e) {
+      debugPrint('Errorrrr $e');
+    }
+    return Product(name: 'Err', unit: 'Err');
+  }
 
   /// Convert To Map
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -42,6 +60,7 @@ class Product {
         'description': description,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
+        'expireDate': expireDate,
         'name': name,
         'unit': unit,
         'pricePerUnit': pricePerUnit,
@@ -69,8 +88,11 @@ class Product {
   /// Date time product updated
   DateTime? updatedAt;
 
+  /// Date time product updated
+  DateTime? expireDate;
+
   /// Type or Category of a product
-  Type? type;
+  ProductType? type;
 
   /// returns new Product with your desired properties.
   Product copyWith({
@@ -81,13 +103,15 @@ class Product {
     required double pricePerUnit,
     DateTime? createdAt,
     DateTime? updatedAt,
-    Type? type,
+    DateTime? expireDate,
+    ProductType? type,
   }) =>
       Product(
         id: id ?? this.id,
         description: description ?? this.description,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        expireDate: expireDate ?? this.expireDate,
         name: name,
         unit: unit,
         pricePerUnit: pricePerUnit,
@@ -96,48 +120,4 @@ class Product {
 
   /// Convert to Json String
   String toJson() => json.encode(toMap());
-}
-
-///  store different products categories
-class Type {
-  /// Type Constructor
-  Type({
-    required this.id,
-    required this.name,
-  });
-
-  /// Convert String  to Map<String dynamic>
-  factory Type.fromJson(String str) =>
-      Type.fromMap(json.decode(str) as Map<String, dynamic>);
-
-  ///
-  factory Type.fromMap(Map<String, dynamic> json) => Type(
-        id: json['id'] as int,
-        name: json['name'] as String,
-      );
-
-  /// unique id for type
-  int id;
-
-  /// Type name for product
-  String name;
-
-  /// returns new Type with your desired properties.
-  Type copyWith({
-    required int id,
-    required String name,
-  }) =>
-      Type(
-        id: id,
-        name: name,
-      );
-
-  ///
-  String toJson() => json.encode(toMap());
-
-  ///  Convert to Map<String dynamic>
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'id': id,
-        'name': name,
-      };
 }
