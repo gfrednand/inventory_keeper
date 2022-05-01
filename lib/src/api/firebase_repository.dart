@@ -87,8 +87,15 @@ class FireBaseRepository
   /// Fetching stream of data
   Stream<List<Map<String, dynamic>>> streamDataCollection() {
     final objs = <Map<String, dynamic>>[];
-    return ref!.snapshots(includeMetadataChanges: false).map((snapshot) {
-      for (final doc in snapshot.docs) {
+    return ref!.snapshots(includeMetadataChanges: false).map((asyncSnapshot) {
+      // final docSnapshot = asyncSnapshot.docChanges;
+      //  for (final change in docSnapshot) {
+      //    change.
+      //  }
+      // if (asyncSnapshot.docChanges.isNotEmpty) {}
+
+      for (final doc in asyncSnapshot.docs) {
+        // print('JAMANI ${doc.}');
         final obj = doc.data() as Map<String, dynamic>?;
         if (obj != null) {
           obj['id'] = doc.id;
@@ -99,3 +106,29 @@ class FireBaseRepository
     });
   }
 }
+
+
+        // final docSnapshot = asyncSnapshot.docChanges;
+
+  
+        // for (final change in docSnapshot) {
+        //   final obj = change.doc.data() as Map<String, dynamic>?;
+        //   print('AAA ${change.doc.exists}');
+        //   if (obj != null) {
+        //     switch (change.type) {
+        //       case DocumentChangeType.added:
+        //         obj['id'] = change.doc.id;
+        //         obj['added'] = true;
+        //         objs.add(obj);
+        //         break;
+        //       case DocumentChangeType.modified:
+        //         obj['id'] = change.doc.id;
+        //         obj['modified'] = true;
+        //         objs.add(obj);
+        //         break;
+        //       case DocumentChangeType.removed:
+        //         break;
+        //     }
+        //   }
+        // }
+        

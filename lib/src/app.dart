@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/app_router.dart';
+import 'package:inventory_keeper/src/locator.dart';
+import 'package:inventory_keeper/src/services/navigation_service.dart';
 import 'package:inventory_keeper/src/settings/settings_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
       restorationScopeId: 'app',
       // Remove debug banner
       debugShowCheckedModeBanner: false,
+      navigatorKey: locator<NavigationService>().navigatorKey,
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

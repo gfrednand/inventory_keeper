@@ -13,17 +13,6 @@ class ProductTypeController extends BaseController {
   ///
   FocusNode nameFocusNode = FocusNode();
 
-  ProductType? _selectedType;
-
-  ///
-  ProductType? get selectedType => _selectedType;
-
-  ///
-  set selectedType(ProductType? type) {
-    _selectedType = type;
-    notifyListeners();
-  }
-
   List<ProductType> _productTypes = [];
 
   /// Get productTypes from current productTypes state
@@ -52,15 +41,12 @@ class ProductTypeController extends BaseController {
   /// Add a product to a current productTypes state
   Future<void> addProductType() async {
     final map = <String, dynamic>{'name': nameController.text};
-    busy = true;
     final success = await _api.addOne(map);
-    await fetchItems();
-    busy = false;
     if (success) {
       nameController.text = '';
     }
     // if (success) _productTypes.add(newProduct);
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// Update a product to a current productTypes state
@@ -78,8 +64,8 @@ class ProductTypeController extends BaseController {
     final success = await _api.removeOne(item.toMap());
     busy = false;
     if (success) {
-      final index = _productTypes.indexWhere((p) => p.id == item.id);
-      _productTypes.removeAt(index);
+      // final index = _productTypes.indexWhere((p) => p.id == item.id);
+      // _productTypes.removeAt(index);
     }
     notifyListeners();
   }

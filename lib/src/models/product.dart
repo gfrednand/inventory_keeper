@@ -98,9 +98,9 @@ class Product {
   Product copyWith({
     String? id,
     String? description,
-    required String name,
-    required String unit,
-    required double pricePerUnit,
+    String? name,
+    String? unit,
+    double? pricePerUnit,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? expireDate,
@@ -112,9 +112,9 @@ class Product {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         expireDate: expireDate ?? this.expireDate,
-        name: name,
-        unit: unit,
-        pricePerUnit: pricePerUnit,
+        name: name ?? this.name,
+        unit: unit ?? this.unit,
+        pricePerUnit: pricePerUnit ?? this.pricePerUnit,
         type: type ?? this.type,
       );
 

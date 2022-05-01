@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/models/product_type.dart';
+import 'package:inventory_keeper/src/services/navigation_service.dart';
 
 /// Product Controller
 class ProductController extends BaseController {
+  final NavigationService _navigationService = locator<NavigationService>();
   final FireBaseRepository _api = FireBaseRepository('products');
   List<Product> _productList = [];
-
-  ProductType _type = ProductType(id: 'as', name: 'Soft Drinks');
-  List<ProductType> _types = [];
 
   ///
   TextEditingController nameController = TextEditingController(),
@@ -22,20 +22,29 @@ class ProductController extends BaseController {
       priceFocusNode = FocusNode(),
       nameFocusNode = FocusNode();
 
-  /// Product categories
-  ProductType get type => _type;
-  set type(ProductType newType) {
-    _type = newType;
+  Product? _product;
+
+  /// Product
+  Product? get product => _product;
+  set product(Product? newproduct) {
+    _product = newproduct;
+    nameController.text = newproduct?.name ?? '';
+    priceController.text = (newproduct?.pricePerUnit ?? '').toString();
+    unitController.text = newproduct?.unit ?? '';
+    type = newproduct?.type;
     notifyListeners();
   }
 
-  /// Get products from current products state
-  List<ProductType> get types {
-    return [..._types];
-  }
+  ProductType? _type;
 
-  set types(List<ProductType> newTypes) {
-    _types = newTypes;
+  /// Product categories
+  ProductType? get type => _type;
+  set type(ProductType? newType) {
+    if (_type?.name == newType?.name) {
+      _type = null;
+    } else {
+      _type = newType;
+    }
     notifyListeners();
   }
 
@@ -62,39 +71,68 @@ class ProductController extends BaseController {
   }
 
   /// Add a product to a current products state
-  Future<void> addProduct(Product newProduct) async {
+  Future<void> addProduct() async {
     busy = true;
+    var newProduct = generateProduct();
+    busy = true;
+    newProduct = newProduct.copyWith(createdAt: DateTime.now());
     final success = await _api.addOne(newProduct.toMap());
     busy = false;
-    if (success) _productList.add(newProduct);
-    notifyListeners();
+    resetValues(success);
   }
 
   /// Update a product to a current products state
-  Future<void> updateProduct(Product updateProduct) async {
+  Future<void> updateProduct() async {
+    var updateProduct = generateProduct();
     busy = true;
+    updateProduct =
+        updateProduct.copyWith(id: product!.id, updatedAt: DateTime.now());
+    print(updateProduct.toMap());
     final success = await _api.updateOne(updateProduct.toMap());
     busy = false;
-    if (success) _productList.add(updateProduct);
-    notifyListeners();
+    resetValues(success);
   }
 
   /// Remove product from a current products state
-  Future<void> removeProduct(Product product) async {
+  Future<void> removeProduct() async {
     busy = true;
-    final success = await _api.removeOne(product.toMap());
+    final success = await _api.removeOne(product!.toMap());
     busy = false;
-    if (success) {
-      final index = _productList.indexWhere((p) => p.id == product.id);
-      _productList.removeAt(index);
-    }
-    notifyListeners();
+    resetValues(success);
   }
 
   /// Fetching stream of data
   Stream<List<Product>> fetchProductsAsStream() {
     return _api.streamDataCollection().map(
-          (maps) => maps.map(Product.fromMap).toList(),
+          (maps) => maps.map((item) {
+            return Product.fromMap(item);
+          }).toList(),
         );
+  }
+
+  ///
+  Product generateProduct() {
+    final newProduct = Product(
+      name: nameController.text,
+      unit: unitController.text,
+      type: type,
+      pricePerUnit: double.parse(priceController.text),
+    );
+    return newProduct;
+  }
+
+  ///
+  void resetValues(bool success) {
+    if (success) {
+      nameController.text = '';
+      unitController.text = '';
+      priceController.text = '';
+      type = null;
+      product = null;
+      _navigationService.goBack();
+      setErrorMessage(null);
+    } else {
+      setErrorMessage('Error has occured');
+    }
   }
 }

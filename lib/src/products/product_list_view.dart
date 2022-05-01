@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
-import 'package:inventory_keeper/src/products/product_details_view.dart';
 import 'package:inventory_keeper/src/settings/settings_view.dart';
 import 'package:provider/provider.dart';
 
@@ -45,54 +45,72 @@ class ProductListView extends StatelessWidget {
       // In contrast to the default ListView constructor, which requires
       // building all Widgets up front, the ListView.builder constructor lazily
       // builds Widgets as they’re scrolled into view.
-      body: StreamBuilder<List<Product>>(
-        stream: controller.fetchProductsAsStream(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasData) {
-            final data = snapshot.data;
-            return ListView.builder(
-              // Providing a restorationId allows the ListView to restore the
-              // scroll position when a user leaves and returns to the app after
-              // it has been killed while running in the background.
-              restorationId: 'productListView',
-              itemCount: data!.length,
-              itemBuilder: (BuildContext context, int index) {
-                final item = data[index];
-                return ListTile(
-                  title: Text(item.name),
-                  leading: const CircleAvatar(
-                      // Display the Flutter Logo image asset.
-                      // foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-                      ),
-                  onTap: () {
-                    // Navigate to the details page. If the user leaves and
-                    // returns to the app after it has been killed while running
-                    // in the background, the navigation stack is restored.
-                    Navigator.restorablePushNamed(
-                      context,
-                      ProductDetailsView.routeName,
-                    );
-                  },
-                );
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: ProductTypesSelector(),
+          ),
+          Expanded(
+            child: StreamBuilder<List<Product>>(
+              stream: controller.fetchProductsAsStream(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text('Something went wrong'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasData) {
+                  var data = snapshot.data;
+                  if (controller.type != null) {
+                    data = data!
+                        .where((p) => p.type?.name == controller.type?.name)
+                        .toList();
+                  }
+
+                  return ListView.builder(
+                    // Providing a restorationId allows the ListView to restore the
+                    // scroll position when a user leaves and returns to the app after
+                    // it has been killed while running in the background.
+                    restorationId: 'productListView',
+                    itemCount: data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final item = data![index];
+                      return ListTile(
+                        title: Text(item.name),
+                        leading: const CircleAvatar(
+                            // Display the Flutter Logo image asset.
+                            // foregroundImage: AssetImage('assets/images/flutter_logo.png'),
+                            ),
+                        onTap: () {
+                          // Navigate to the details page. If the user leaves and
+                          // returns to the app after it has been killed while running
+                          // in the background, the navigation stack is restored.
+
+                          controller.product = data![index];
+                          Navigator.restorablePushNamed(
+                            context,
+                            AddProduct.routeName,
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: Text(
+                      'No Data',
+                      style: TextStyle(fontSize: 32),
+                    ),
+                  );
+                }
               },
-            );
-          } else {
-            return const Center(
-              child: Text(
-                'No Data',
-                style: TextStyle(fontSize: 32),
-              ),
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

@@ -64,11 +64,9 @@ class ProductTypeListView extends StatelessWidget {
                 if (snapshot.hasData) {
                   final data = snapshot.data;
 
-                  controller.productTypes = data!;
-
                   return ListView.builder(
                     restorationId: 'productTypeListView',
-                    itemCount: data.length,
+                    itemCount: data!.length,
                     itemBuilder: (BuildContext context, int index) {
                       final item = data[index];
                       return ListTile(
