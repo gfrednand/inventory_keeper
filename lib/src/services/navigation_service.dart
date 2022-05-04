@@ -15,4 +15,9 @@ class NavigationService {
   void goBack() {
     return navigatorKey.currentState?.pop();
   }
+
+  ///
+  void goBackUntil(String name) {
+    return navigatorKey.currentState?.popUntil(ModalRoute.withName(name));
+  }
 }

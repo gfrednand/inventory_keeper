@@ -85,25 +85,31 @@ class FireBaseRepository
   }
 
   /// Fetching stream of data
-  Stream<List<Map<String, dynamic>>> streamDataCollection() {
-    final objs = <Map<String, dynamic>>[];
-    return ref!.snapshots(includeMetadataChanges: false).map((asyncSnapshot) {
-      // final docSnapshot = asyncSnapshot.docChanges;
-      //  for (final change in docSnapshot) {
-      //    change.
-      //  }
-      // if (asyncSnapshot.docChanges.isNotEmpty) {}
+  Stream<List<Map<String, dynamic>>> streamDataCollection({String? query}) {
+    if (query != null) {
+      return ref!.where('name', isEqualTo: query).snapshots().map(mapFunction);
+    }
+    return ref!.snapshots(includeMetadataChanges: false).map(mapFunction);
+  }
 
-      for (final doc in asyncSnapshot.docs) {
-        // print('JAMANI ${doc.}');
-        final obj = doc.data() as Map<String, dynamic>?;
-        if (obj != null) {
-          obj['id'] = doc.id;
-          objs.add(obj);
-        }
+  ///
+  List<Map<String, dynamic>> mapFunction(QuerySnapshot<Object?> asyncSnapshot) {
+    // final docSnapshot = asyncSnapshot.docChanges;
+    //  for (final change in docSnapshot) {
+    //    change.
+    //  }
+    // if (asyncSnapshot.docChanges.isNotEmpty) {}
+    final objs = <Map<String, dynamic>>[];
+
+    for (final doc in asyncSnapshot.docs) {
+      // print('JAMANI ${doc.}');
+      final obj = doc.data() as Map<String, dynamic>?;
+      if (obj != null) {
+        obj['id'] = doc.id;
+        objs.add(obj);
       }
-      return objs;
-    });
+    }
+    return objs;
   }
 }
 

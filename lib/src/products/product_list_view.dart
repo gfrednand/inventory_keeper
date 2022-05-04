@@ -3,7 +3,8 @@ import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
-import 'package:inventory_keeper/src/settings/settings_view.dart';
+import 'package:inventory_keeper/src/products/product_item.dart';
+import 'package:inventory_keeper/src/products/product_search_delegate.dart';
 import 'package:provider/provider.dart';
 
 /// Displays a list of Products.
@@ -23,17 +24,19 @@ class ProductListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<ProductController>();
+    final products = context.watch<List<Product>?>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Products'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.search),
             onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
+              showSearch<Product?>(
+                context: context,
+                delegate: ProductSearchDelegate(),
+              );
             },
           ),
         ],
@@ -52,51 +55,40 @@ class ProductListView extends StatelessWidget {
             child: ProductTypesSelector(),
           ),
           Expanded(
-            child: StreamBuilder<List<Product>>(
-              stream: controller.fetchProductsAsStream(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('Something went wrong'));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
+            child: Builder(
+              builder: (_) {
+                var data = products;
+                if (data == null) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                if (snapshot.hasData) {
-                  var data = snapshot.data;
-                  if (controller.type != null) {
-                    data = data!
-                        .where((p) => p.type?.name == controller.type?.name)
-                        .toList();
+                if (controller.type != null) {
+                  data = data
+                      .where((p) => p.type?.name == controller.type?.name)
+                      .toList();
+                  if (data.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'Category *${controller.type!.name}*\n Has No Products',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    );
                   }
+                }
 
-                  return ListView.builder(
+                if (data.isNotEmpty) {
+                  return ListView.separated(
                     // Providing a restorationId allows the ListView to restore the
                     // scroll position when a user leaves and returns to the app after
                     // it has been killed while running in the background.
                     restorationId: 'productListView',
-                    itemCount: data!.length,
+                    itemCount: data.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                     itemBuilder: (BuildContext context, int index) {
                       final item = data![index];
-                      return ListTile(
-                        title: Text(item.name),
-                        leading: const CircleAvatar(
-                            // Display the Flutter Logo image asset.
-                            // foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-                            ),
-                        onTap: () {
-                          // Navigate to the details page. If the user leaves and
-                          // returns to the app after it has been killed while running
-                          // in the background, the navigation stack is restored.
-
-                          controller.product = data![index];
-                          Navigator.restorablePushNamed(
-                            context,
-                            AddProduct.routeName,
-                          );
-                        },
-                      );
+                      return ProductItem(item: item);
                     },
                   );
                 } else {
@@ -109,11 +101,12 @@ class ProductListView extends StatelessWidget {
                 }
               },
             ),
-          ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          controller.product = null;
           Navigator.restorablePushNamed(
             context,
             AddProduct.routeName,

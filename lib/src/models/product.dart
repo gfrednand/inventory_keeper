@@ -15,7 +15,8 @@ class Product {
     this.description,
     required this.name,
     required this.unit,
-    this.pricePerUnit = 0.0,
+    this.salePrice = 0.0,
+    this.buyPrice = 0.0,
     this.type,
     this.createdAt,
     this.updatedAt,
@@ -41,7 +42,8 @@ class Product {
             json['expireDate'] == null ? null : parseTime(json['expireDate']),
         name: json['name'] as String,
         unit: json['unit'] as String,
-        pricePerUnit: (json['pricePerUnit'] as num).toDouble(),
+        salePrice: (json['salePrice'] as num).toDouble(),
+        buyPrice: (json['buyPrice'] as num).toDouble(),
         type: json['type'] == null
             ? null
             : ProductType.fromMap(json['type'] as Map<String, dynamic>),
@@ -63,7 +65,8 @@ class Product {
         'expireDate': expireDate,
         'name': name,
         'unit': unit,
-        'pricePerUnit': pricePerUnit,
+        'salePrice': salePrice,
+        'buyPrice': buyPrice,
         'type': type?.toMap(),
       };
 
@@ -79,8 +82,11 @@ class Product {
   /// The basic unit used to measure a product, e.g. pieces, kilograms, pounds
   String unit;
 
-  /// The price per basic unit
-  double pricePerUnit;
+  /// The  Selling price per basic unit
+  double salePrice;
+
+  /// Buying Price per basic unit
+  double buyPrice;
 
   /// Date time product created
   DateTime? createdAt;
@@ -100,7 +106,8 @@ class Product {
     String? description,
     String? name,
     String? unit,
-    double? pricePerUnit,
+    double? salePrice,
+    double? buyPrice,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? expireDate,
@@ -114,7 +121,8 @@ class Product {
         expireDate: expireDate ?? this.expireDate,
         name: name ?? this.name,
         unit: unit ?? this.unit,
-        pricePerUnit: pricePerUnit ?? this.pricePerUnit,
+        salePrice: salePrice ?? this.salePrice,
+        buyPrice: buyPrice ?? this.buyPrice,
         type: type ?? this.type,
       );
 

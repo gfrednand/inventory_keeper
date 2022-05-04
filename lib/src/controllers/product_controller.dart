@@ -4,6 +4,7 @@ import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/models/product_type.dart';
+import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 
 /// Product Controller
@@ -14,12 +15,14 @@ class ProductController extends BaseController {
 
   ///
   TextEditingController nameController = TextEditingController(),
-      priceController = TextEditingController(),
+      salePriceController = TextEditingController(),
+      buyPriceController = TextEditingController(),
       unitController = TextEditingController();
 
   ///
   FocusNode unitFocusNode = FocusNode(),
-      priceFocusNode = FocusNode(),
+      salePriceFocusNode = FocusNode(),
+      buyPriceFocusNode = FocusNode(),
       nameFocusNode = FocusNode();
 
   Product? _product;
@@ -29,7 +32,8 @@ class ProductController extends BaseController {
   set product(Product? newproduct) {
     _product = newproduct;
     nameController.text = newproduct?.name ?? '';
-    priceController.text = (newproduct?.pricePerUnit ?? '').toString();
+    salePriceController.text = (newproduct?.salePrice ?? '').toString();
+    buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
     unitController.text = newproduct?.unit ?? '';
     type = newproduct?.type;
     notifyListeners();
@@ -78,7 +82,8 @@ class ProductController extends BaseController {
     newProduct = newProduct.copyWith(createdAt: DateTime.now());
     final success = await _api.addOne(newProduct.toMap());
     busy = false;
-    resetValues(success);
+    _navigationService.goBack();
+    resetValues(success, newProduct);
   }
 
   /// Update a product to a current products state
@@ -90,7 +95,8 @@ class ProductController extends BaseController {
     print(updateProduct.toMap());
     final success = await _api.updateOne(updateProduct.toMap());
     busy = false;
-    resetValues(success);
+    _navigationService.goBack();
+    resetValues(success, updateProduct);
   }
 
   /// Remove product from a current products state
@@ -98,12 +104,12 @@ class ProductController extends BaseController {
     busy = true;
     final success = await _api.removeOne(product!.toMap());
     busy = false;
-    resetValues(success);
+    if (success) _navigationService.goBackUntil(ProductListView.routeName);
   }
 
   /// Fetching stream of data
-  Stream<List<Product>> fetchProductsAsStream() {
-    return _api.streamDataCollection().map(
+  Stream<List<Product>> fetchProductsAsStream({String? query}) {
+    return _api.streamDataCollection(query: query).map(
           (maps) => maps.map((item) {
             return Product.fromMap(item);
           }).toList(),
@@ -116,19 +122,20 @@ class ProductController extends BaseController {
       name: nameController.text,
       unit: unitController.text,
       type: type,
-      pricePerUnit: double.parse(priceController.text),
+      salePrice: double.tryParse(salePriceController.text) ?? 0,
+      buyPrice: double.tryParse(buyPriceController.text) ?? 0,
     );
     return newProduct;
   }
 
   ///
-  void resetValues(bool success) {
+  void resetValues(bool success, Product? p) {
     if (success) {
       nameController.text = '';
       unitController.text = '';
-      priceController.text = '';
+      salePriceController.text = '';
       type = null;
-      product = null;
+      product = p;
       _navigationService.goBack();
       setErrorMessage(null);
     } else {

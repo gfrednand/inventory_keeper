@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomFormField extends StatefulWidget {
   const CustomFormField({
@@ -12,13 +13,15 @@ class CustomFormField extends StatefulWidget {
     required TextInputAction inputAction,
     required String label,
     required String hint,
-    String? Function(String? value)? validator,
+    String? Function(String?)? validator,
     this.isObscure = false,
+    this.enabled = true,
     // this.initialValue,
     this.isCapitalized = false,
     this.maxLines = 1,
     this.minLines = 1,
     this.isLabelEnabled = true,
+    this.inputFormatters,
   })  : _emailController = controller,
         _emailFocusNode = focusNode,
         _keyboardtype = keyboardType,
@@ -36,6 +39,8 @@ class CustomFormField extends StatefulWidget {
   final String _hint;
   final bool isObscure;
   // final String? initialValue;
+  final bool enabled;
+  final List<TextInputFormatter>? inputFormatters;
   final bool isCapitalized;
   final int maxLines;
   final int minLines;
@@ -60,6 +65,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       // initialValue: widget.initialValue,
+      inputFormatters: widget.inputFormatters,
+      enabled: widget.enabled,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
       controller: widget._emailController,
@@ -70,7 +77,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
           ? TextCapitalization.words
           : TextCapitalization.none,
       textInputAction: widget._inputAction,
-      validator: (String? value) => widget._validator!(value),
+      validator: (String? value) =>
+          widget._validator != null ? widget._validator!(value) : null,
       decoration: InputDecoration(
         filled: true,
         labelText: widget.isLabelEnabled ? widget._label : null,

@@ -15,7 +15,17 @@ class ProductTypeListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<ProductTypeController>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Product Types')),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text('Categories'),
+      ),
       body: Column(
         children: [
           Padding(
@@ -23,19 +33,24 @@ class ProductTypeListView extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: CustomFormField(
-                    keyboardType: TextInputType.text,
-                    controller: controller.nameController,
-                    label: 'Product Type',
-                    hint: '',
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please provide product type';
-                      }
-                      return null;
-                    },
-                    inputAction: TextInputAction.done,
-                    focusNode: controller.nameFocusNode,
+                  child: Hero(
+                    tag: 'hero-category-title',
+                    child: Material(
+                      child: CustomFormField(
+                        keyboardType: TextInputType.text,
+                        controller: controller.nameController,
+                        label: 'Product Type',
+                        hint: '',
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please provide product type';
+                          }
+                          return null;
+                        },
+                        inputAction: TextInputAction.done,
+                        focusNode: controller.nameFocusNode,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(

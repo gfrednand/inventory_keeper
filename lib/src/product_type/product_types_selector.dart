@@ -17,6 +17,7 @@ class ProductTypesSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productTypeController = context.watch<ProductTypeController>();
+    final productTypes = context.watch<List<ProductType>?>();
     final controller = context.watch<ProductController>();
 
     return Column(
@@ -36,60 +37,63 @@ class ProductTypesSelector extends StatelessWidget {
                   ProductTypeListView.routeName,
                 );
               },
-              child: const Text(
-                'Category',
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 20,
+              child: const Hero(
+                tag: 'hero-category-title',
+                child: Card(
+                  elevation: 0.3,
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      'Categories',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        SizedBox(
-          height: 30,
-          child: StreamBuilder(
-            stream: productTypeController.fetchProductTypesAsStream(),
-            builder: (context, AsyncSnapshot<List<ProductType>> snapshot) {
-              List<ProductType>? data = [];
-              if (snapshot.hasData) {
-                data = snapshot.data;
-                return ListView.separated(
-                  itemCount: data!.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, index) {
-                    final type = data![index];
-                    return GestureDetector(
-                      onTap: () {
-                        controller.type = type;
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: controller.type?.id == type.id
-                              ? const Color.fromARGB(170, 144, 202, 249)
-                              : const Color.fromARGB(84, 158, 158, 158),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            data[index].name,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: SizedBox(
+              height: 30,
+              child: productTypes != null
+                  ? ListView.separated(
+                      itemCount: productTypes.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (ctx, index) {
+                        final type = productTypes[index];
+                        return GestureDetector(
+                          onTap: () {
+                            controller.type = type;
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: controller.type?.id == type.id
+                                  ? const Color.fromARGB(170, 144, 202, 249)
+                                  : const Color.fromARGB(84, 158, 158, 158),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                productTypes[index].name,
+                              ),
+                            ),
                           ),
-                        ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(
+                        width: 8,
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                    width: 8,
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
+                    )
+                  : Container()),
         ),
       ],
     );

@@ -50,7 +50,7 @@ class ProductTypeController extends BaseController {
   }
 
   /// Update a product to a current productTypes state
-  Future<void> updateProduct(ProductType item) async {
+  Future<void> updateProductType(ProductType item) async {
     busy = true;
     final success = await _api.updateOne(item.toMap());
     busy = false;

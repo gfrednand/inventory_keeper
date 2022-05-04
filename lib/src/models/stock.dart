@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Stock Model
 class Stock {
@@ -11,19 +12,23 @@ class Stock {
     required this.currentStock,
     this.incomingStock,
     this.outgoingStock,
-    required this.lastUpdatedAt,
+    this.updatedAt,
+    this.createdAt,
   });
 
   /// Convert Map<String, dynamic> to Stock
   factory Stock.fromMap(Map<String, dynamic> map) => Stock(
-        id: map['id'] as int,
+        id: map['id'] as String,
         product: Product.fromMap(map['product'] as Map<String, dynamic>),
         currentStock: map['currentStock'] as int,
         incomingStock:
             map['incomingStock'] == null ? null : map['incomingStock'] as int,
         outgoingStock:
             map['outgoingStock'] == null ? null : map['outgoingStock'] as int,
-        lastUpdatedAt: map['lastUpdatedAt'] as DateTime,
+        createdAt:
+            map['createdAt'] == null ? null : parseTime(map['createdAt']),
+        updatedAt:
+            map['updatedAt'] == null ? null : parseTime(map['updatedAt']),
       );
 
   /// Convert Json String To Stock
@@ -33,7 +38,8 @@ class Stock {
   /// Convert To Map
   Map<String, dynamic> toMap() => <String, dynamic>{
         'id': id,
-        'lastUpdatedAt': lastUpdatedAt,
+        'updatedAt': updatedAt,
+        'createdAt': createdAt,
         'currentStock': currentStock,
         'incomingStock': incomingStock,
         'outgoingStock': outgoingStock,
@@ -44,7 +50,7 @@ class Stock {
   String toJson() => json.encode(toMap());
 
   /// unique id of product stock
-  int id;
+  String id;
 
   /// Product in a stock
   Product product;
@@ -59,23 +65,28 @@ class Stock {
   int? outgoingStock;
 
   /// Last time stock is updated
-  DateTime lastUpdatedAt;
+  DateTime? updatedAt;
+
+  ///  time stock is created
+  DateTime? createdAt;
 
   /// returns new Product with your desired properties.
   Stock copyWith({
-    required int id,
-    required DateTime lastUpdatedAt,
-    required int currentStock,
-    required Product product,
+    String? id,
+    DateTime? updatedAt,
+    DateTime? createdAt,
+    int? currentStock,
+    Product? product,
     int? incomingStock,
     int? outgoingStock,
   }) =>
       Stock(
-        id: id,
-        lastUpdatedAt: lastUpdatedAt,
-        currentStock: currentStock,
+        id: id ?? this.id,
+        updatedAt: updatedAt,
+        createdAt: createdAt,
+        currentStock: currentStock ?? this.currentStock,
         incomingStock: incomingStock,
         outgoingStock: outgoingStock,
-        product: product,
+        product: product ?? this.product,
       );
 }

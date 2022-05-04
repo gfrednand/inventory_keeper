@@ -4,6 +4,8 @@ import 'package:inventory_keeper/src/app.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/locator.dart';
+import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product_type.dart';
 import 'package:inventory_keeper/src/settings/settings_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,14 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider.value(value: ProductController()),
         ChangeNotifierProvider.value(value: ProductTypeController()),
+        StreamProvider.value(
+          initialData: const <Product>[],
+          value: ProductController().fetchProductsAsStream(),
+        ),
+        StreamProvider.value(
+          initialData: const <ProductType>[],
+          value: ProductTypeController().fetchProductTypesAsStream(),
+        ),
         ChangeNotifierProvider(
           create: (_) => SettingsController(),
         ),

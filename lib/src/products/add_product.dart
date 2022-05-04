@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
-import 'package:inventory_keeper/src/models/product_type.dart';
-import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 import 'package:provider/provider.dart';
 
@@ -14,58 +13,29 @@ class AddProduct extends StatelessWidget {
 
   /// Add Product route name
   static const routeName = '/addProduct';
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     final controller = context.watch<ProductController>();
+    var titleText = '';
+    if (controller.product == null) {
+      titleText = 'Add Product';
+    } else {
+      titleText = 'Edit Product';
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Product'),
-        actions: [
-          if (controller.busy)
-            const Center(child: CircularProgressIndicator())
-          else
-            Container(),
-          if (controller.product == null)
-            Container()
-          else
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: controller.busy
-                  ? Container()
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        textStyle: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: controller.removeProduct,
-                      child: const Text('Delete'),
-                    ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: controller.busy
-                ? Container()
-                : ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      // primary: Colors.red,
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
-                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (controller.product!.id != null) {
-                          controller.updateProduct();
-                        } else {
-                          controller.addProduct();
-                        }
-                      }
-                    },
-                    child: const Text('Save'),
-                  ),
-          )
-        ],
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: Text(titleText),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 24, left: 12, right: 12),
@@ -80,11 +50,11 @@ class AddProduct extends StatelessWidget {
                 CustomFormField(
                   keyboardType: TextInputType.text,
                   controller: controller.nameController,
-                  label: 'Product Name *',
+                  label: 'Item Name *',
                   hint: '',
                   validator: (value) {
                     if (value == null || value == '') {
-                      return 'Please provide product name';
+                      return 'Please provide item name';
                     }
                     return null;
                   },
@@ -95,33 +65,46 @@ class AddProduct extends StatelessWidget {
                   height: 16,
                 ),
                 CustomFormField(
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(9),
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d+\.?\d{0,2}'),
+                    )
+                  ],
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  controller: controller.priceController,
-                  label: 'Price *',
+                  controller: controller.buyPriceController,
+                  label: 'Cost',
                   hint: '',
-                  validator: (value) {
-                    if (value == null || value == '') {
-                      return 'Please provide product price';
-                    }
-                    return null;
-                  },
                   inputAction: TextInputAction.next,
-                  focusNode: controller.priceFocusNode,
+                  focusNode: controller.buyPriceFocusNode,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                CustomFormField(
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(9),
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d+\.?\d{0,2}'),
+                    )
+                  ],
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  controller: controller.salePriceController,
+                  label: 'Price',
+                  hint: '',
+                  inputAction: TextInputAction.next,
+                  focusNode: controller.salePriceFocusNode,
                 ),
                 const SizedBox(height: 16),
                 CustomFormField(
                   keyboardType: TextInputType.text,
                   controller: controller.unitController,
-                  label: 'Unit *',
-                  hint: 'Crate/ Kg/ ...',
-                  validator: (value) {
-                    if (value == null || value == '') {
-                      return 'Please provide product unit';
-                    }
-                    return null;
-                  },
+                  label: 'Unit Of Measure',
+                  hint: '',
                   inputAction: TextInputAction.next,
                   focusNode: controller.unitFocusNode,
                 ),
@@ -139,9 +122,38 @@ class AddProduct extends StatelessWidget {
                   )
                 else
                   Container(),
+                // Expanded(child: Container()),
+                const SizedBox(
+                  height: 24,
+                ),
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.only(
+              top: 16,
+              bottom: 16,
+              left: 14,
+              right: 24,
+            ),
+          ),
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (controller.product?.id != null) {
+                loadDialog<dynamic>(context, loadingText: 'Updating item');
+                controller.updateProduct();
+              } else {
+                controller.addProduct();
+                loadDialog<dynamic>(context, loadingText: 'Saving item');
+              }
+            }
+          },
+          child: const Text('Save'),
         ),
       ),
     );
