@@ -16,10 +16,15 @@ class ProductTypesSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productTypeController = context.watch<ProductTypeController>();
     final productTypes = context.watch<List<ProductType>?>();
     final controller = context.watch<ProductController>();
-
+    // final allType = ProductType(id: 'all', name: 'All');
+    // final index =
+    //     productTypes?.indexWhere((element) => element.name == allType.name);
+    // print('INDEX $index');
+    // if (index != null && index == -1) {
+    //   productTypes?.insert(0, allType);
+    // }
     return Column(
       children: [
         SizedBox(

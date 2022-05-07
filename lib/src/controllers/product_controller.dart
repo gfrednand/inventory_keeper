@@ -7,6 +7,15 @@ import 'package:inventory_keeper/src/models/product_type.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 
+///
+enum SelectedQuantityEnum {
+  ///
+  updateStock,
+
+  ///
+  updateSafetyStock
+}
+
 /// Product Controller
 class ProductController extends BaseController {
   final NavigationService _navigationService = locator<NavigationService>();
@@ -14,7 +23,7 @@ class ProductController extends BaseController {
   List<Product> _productList = [];
 
   ///
-  TextEditingController nameController = TextEditingController(),
+  TextEditingController nameController = TextEditingController(text: ''),
       salePriceController = TextEditingController(),
       buyPriceController = TextEditingController(),
       unitController = TextEditingController();
@@ -26,6 +35,7 @@ class ProductController extends BaseController {
       nameFocusNode = FocusNode();
 
   Product? _product;
+  int? _selectedQuantity;
 
   /// Product
   Product? get product => _product;
@@ -36,6 +46,17 @@ class ProductController extends BaseController {
     buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
     unitController.text = newproduct?.unit ?? '';
     type = newproduct?.type;
+    notifyListeners();
+  }
+
+  ///
+
+  ///
+  void setSelectedQuantity(int q, SelectedQuantityEnum enums) {
+    _selectedQuantity = q;
+    _product = SelectedQuantityEnum.updateSafetyStock == enums
+        ? _product?.copyWith(safetyStock: q)
+        : _product?.copyWith(currentStock: q);
     notifyListeners();
   }
 
@@ -79,24 +100,30 @@ class ProductController extends BaseController {
     busy = true;
     var newProduct = generateProduct();
     busy = true;
-    newProduct = newProduct.copyWith(createdAt: DateTime.now());
+    newProduct = newProduct.copyWith(
+        createdAt: DateTime.now(), currentStock: _selectedQuantity);
     final success = await _api.addOne(newProduct.toMap());
     busy = false;
-    _navigationService.goBack();
+    if (success) {
+      _navigationService.goBack();
+    }
     resetValues(success, newProduct);
   }
 
   /// Update a product to a current products state
-  Future<void> updateProduct() async {
+  Future<void> updateProduct({bool andGoBack = false}) async {
     var updateProduct = generateProduct();
-    busy = true;
-    updateProduct =
-        updateProduct.copyWith(id: product!.id, updatedAt: DateTime.now());
-    print(updateProduct.toMap());
-    final success = await _api.updateOne(updateProduct.toMap());
-    busy = false;
-    _navigationService.goBack();
-    resetValues(success, updateProduct);
+    if (updateProduct != _product) {
+      busy = true;
+      updateProduct =
+          updateProduct.copyWith(id: product!.id, updatedAt: DateTime.now());
+      final success = await _api.updateOne(updateProduct.toMap());
+      busy = false;
+      if (success) {
+        _navigationService.goBack();
+      }
+      if (andGoBack) resetValues(success, updateProduct);
+    }
   }
 
   /// Remove product from a current products state
@@ -118,13 +145,21 @@ class ProductController extends BaseController {
 
   ///
   Product generateProduct() {
-    final newProduct = Product(
+    var newProduct = Product(
       name: nameController.text,
       unit: unitController.text,
       type: type,
       salePrice: double.tryParse(salePriceController.text) ?? 0,
       buyPrice: double.tryParse(buyPriceController.text) ?? 0,
     );
+
+    if (_product?.safetyStock != null) {
+      newProduct = newProduct.copyWith(safetyStock: _product?.safetyStock);
+    }
+    if (_product?.currentStock != null) {
+      newProduct = newProduct.copyWith(currentStock: _product?.currentStock);
+    }
+
     return newProduct;
   }
 

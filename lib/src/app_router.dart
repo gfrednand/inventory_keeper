@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
@@ -24,9 +25,16 @@ class AppRouter {
             return const AddProduct();
           case ProductDetails.routeName:
             return const ProductDetails();
+          case LayoutPage.routeName:
+            return const LayoutPage();
           case ProductListView.routeName:
-          default:
             return const ProductListView();
+          default:
+            return const Scaffold(
+              body: Center(
+                child: Text('Nothing here'),
+              ),
+            );
         }
       },
     );

@@ -16,7 +16,7 @@ class ProductListView extends StatelessWidget {
   }) : super(key: key);
 
   /// Product list route
-  static const routeName = '/';
+  static const routeName = '/productListView';
 
   /// Products to be displayed
   final List<Product> products;
@@ -28,7 +28,7 @@ class ProductListView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Products'),
+        title: const Text('Items'),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),

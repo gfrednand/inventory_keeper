@@ -16,6 +16,7 @@ class CustomModalSheet {
       BuildContext context, Widget child, bool isExpanded) async {
     await showModalBottomSheet<T>(
       context: context,
+      backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
         return Container(

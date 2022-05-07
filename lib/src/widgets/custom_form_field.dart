@@ -22,6 +22,7 @@ class CustomFormField extends StatefulWidget {
     this.minLines = 1,
     this.isLabelEnabled = true,
     this.inputFormatters,
+    this.onChanged,
   })  : _emailController = controller,
         _emailFocusNode = focusNode,
         _keyboardtype = keyboardType,
@@ -41,6 +42,7 @@ class CustomFormField extends StatefulWidget {
   // final String? initialValue;
   final bool enabled;
   final List<TextInputFormatter>? inputFormatters;
+  final void Function(String)? onChanged;
   final bool isCapitalized;
   final int maxLines;
   final int minLines;
@@ -64,7 +66,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // initialValue: widget.initialValue,
+      // initialValue: widget.initialValue,L:
+      onChanged: widget.onChanged,
       inputFormatters: widget.inputFormatters,
       enabled: widget.enabled,
       maxLines: widget.maxLines,

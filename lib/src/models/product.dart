@@ -17,6 +17,8 @@ class Product {
     required this.unit,
     this.salePrice = 0.0,
     this.buyPrice = 0.0,
+    this.safetyStock = 0,
+    this.currentStock = 0,
     this.type,
     this.createdAt,
     this.updatedAt,
@@ -44,6 +46,8 @@ class Product {
         unit: json['unit'] as String,
         salePrice: (json['salePrice'] as num).toDouble(),
         buyPrice: (json['buyPrice'] as num).toDouble(),
+        safetyStock: (json['safetyStock'] as num).toInt(),
+        currentStock: (json['currentStock'] as num).toInt(),
         type: json['type'] == null
             ? null
             : ProductType.fromMap(json['type'] as Map<String, dynamic>),
@@ -67,6 +71,8 @@ class Product {
         'unit': unit,
         'salePrice': salePrice,
         'buyPrice': buyPrice,
+        'currentStock': currentStock,
+        'safetyStock': safetyStock,
         'type': type?.toMap(),
       };
 
@@ -100,6 +106,12 @@ class Product {
   /// Type or Category of a product
   ProductType? type;
 
+  ///A current stock qunatity
+  int currentStock;
+
+  ///A safety stock qunatity(For notifications)
+  int safetyStock;
+
   /// returns new Product with your desired properties.
   Product copyWith({
     String? id,
@@ -108,6 +120,8 @@ class Product {
     String? unit,
     double? salePrice,
     double? buyPrice,
+    int? currentStock,
+    int? safetyStock,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? expireDate,
@@ -122,6 +136,8 @@ class Product {
         name: name ?? this.name,
         unit: unit ?? this.unit,
         salePrice: salePrice ?? this.salePrice,
+        currentStock: currentStock ?? this.currentStock,
+        safetyStock: safetyStock ?? this.safetyStock,
         buyPrice: buyPrice ?? this.buyPrice,
         type: type ?? this.type,
       );

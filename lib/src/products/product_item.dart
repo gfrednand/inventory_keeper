@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:provider/provider.dart';
@@ -67,16 +68,22 @@ class ProductItem extends StatelessWidget {
             ),
           ),
         ),
+        trailing: Hero(
+          tag: 'currentstock-${item.id}',
+          child: CurrentStockQuantity(
+            currentStock: item.currentStock,
+          ),
+        ),
         onTap: () {
           // Navigate to the details page. If the user leaves and
           // returns to the app after it has been killed while running
           // in the background, the navigation stack is restored.
 
           controller.product = item;
-          Navigator.restorablePushNamed(
+          Navigator.pushNamed(
             context,
             ProductDetails.routeName,
-          );
+          ).then((value) => controller.product = null);
         },
       ),
     );

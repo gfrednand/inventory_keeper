@@ -5,7 +5,9 @@ import 'package:inventory_keeper/src/models/product_type.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
+import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/custom_detail_item_tile.dart';
+import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
@@ -88,36 +90,25 @@ class ProductDetails extends StatelessWidget {
                           Text(
                             controller.product?.name ?? '-',
                             style: const TextStyle(
-                                fontSize: 18,
-                                color: Color.fromARGB(255, 94, 94, 94),
-                                fontWeight: FontWeight.w600),
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 94, 94, 94),
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           const SizedBox(
                             height: 24,
                           ),
                           Row(
-                            children: const [
-                              DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.teal,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8),
-                                  child: Text(
-                                    '0',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
+                            children: [
+                              CurrentStockQuantity(
+                                currentStock:
+                                    controller.product?.currentStock ?? 0,
+                                withBackground: true,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 16,
                               ),
-                              Text(
+                              const Text(
                                 'Total Quantity',
                                 style:
                                     TextStyle(fontSize: 13, color: Colors.grey),
@@ -145,16 +136,21 @@ class ProductDetails extends StatelessWidget {
                     ),
                     CustomDetailItemTile(
                       label: 'Cost',
-                      value: oCcy.format(controller.product?.buyPrice),
+                      value: oCcy.format(controller.product?.buyPrice ?? 0),
                     ),
                     CustomDetailItemTile(
                       label: 'Price',
-                      value: oCcy.format(controller.product?.salePrice),
+                      value: oCcy.format(controller.product?.salePrice ?? 0),
                     ),
                     const Divider(),
                     CustomDetailItemTile(
                       label: 'Category',
                       value: controller.product?.type?.name ?? '-',
+                    ),
+                    const Divider(),
+                    CustomDetailItemTile(
+                      label: 'Safety Stock',
+                      value: '${controller.product?.safetyStock ?? '-'}',
                     ),
                     const Divider(),
                     CustomDetailItemTile(
@@ -175,18 +171,17 @@ class ProductDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
-                children: const [
-                  Text(
-                    '0',
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.teal),
+                children: [
+                  Hero(
+                    tag: 'currentstock-${controller.product?.id}',
+                    child: CurrentStockQuantity(
+                      currentStock: controller.product?.currentStock ?? 0,
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
-                  Text(
+                  const Text(
                     'Quantity',
                     style: TextStyle(fontSize: 13, color: Colors.grey),
                   ),
@@ -201,7 +196,9 @@ class ProductDetails extends StatelessWidget {
                     right: 24,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  _showStockInOutMenu(context, controller);
+                },
                 child: const Text('Stock In/Out'),
               ),
             ],
@@ -225,8 +222,85 @@ class ProductDetails extends StatelessWidget {
           shrinkWrap: true,
           children: <Widget>[
             TextButton(
-                onPressed: controller.removeProduct,
-                child: const Text('Delete'))
+              onPressed: controller.removeProduct,
+              child: const Text('Delete'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showStockInOutMenu(BuildContext context, ProductController controller) {
+    CustomModalSheet.show(
+      isExpanded: false,
+      context: context,
+      child: Container(
+        padding: const EdgeInsets.only(left: 10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(
+                Icons.inbox_outlined,
+                color: Colors.green,
+              ),
+              title: const Text('Stock In'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_outlined,
+                size: 16,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                displayDialog(
+                  context,
+                  StockQuantityField(
+                    controller: controller,
+                    title: 'Stock in quantity',
+                    initialValue: controller.product?.currentStock ?? 0,
+                  ),
+                ).then((value) {
+                  loadDialog<dynamic>(
+                    context,
+                    loadingText: 'Updating stock...',
+                  );
+                  controller.updateProduct();
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.outbox_outlined,
+                color: Colors.red,
+              ),
+              title: const Text('Stock Out'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_outlined,
+                size: 16,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                displayDialog(
+                  context,
+                  StockQuantityField(
+                    controller: controller,
+                    title: 'Stock out quantity',
+                    initialValue: controller.product?.currentStock ?? 0,
+                    isIncrement: false,
+                  ),
+                ).then((value) {
+                  loadDialog<dynamic>(
+                    context,
+                    loadingText: 'Updating stock...',
+                  );
+                  controller.updateProduct();
+                });
+              },
+            ),
           ],
         ),
       ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
+import 'package:inventory_keeper/src/products/product_form.dart';
+import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 import 'package:provider/provider.dart';
 
 /// Add Product Page
@@ -20,9 +19,9 @@ class AddProduct extends StatelessWidget {
     final controller = context.watch<ProductController>();
     var titleText = '';
     if (controller.product == null) {
-      titleText = 'Add Product';
+      titleText = 'Add Item';
     } else {
-      titleText = 'Edit Product';
+      titleText = 'Edit Item';
     }
 
     return Scaffold(
@@ -39,97 +38,7 @@ class AddProduct extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 24, left: 12, right: 12),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 16,
-                ),
-                CustomFormField(
-                  keyboardType: TextInputType.text,
-                  controller: controller.nameController,
-                  label: 'Item Name *',
-                  hint: '',
-                  validator: (value) {
-                    if (value == null || value == '') {
-                      return 'Please provide item name';
-                    }
-                    return null;
-                  },
-                  inputAction: TextInputAction.next,
-                  focusNode: controller.nameFocusNode,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                CustomFormField(
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(9),
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'^\d+\.?\d{0,2}'),
-                    )
-                  ],
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  controller: controller.buyPriceController,
-                  label: 'Cost',
-                  hint: '',
-                  inputAction: TextInputAction.next,
-                  focusNode: controller.buyPriceFocusNode,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                CustomFormField(
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(9),
-                    FilteringTextInputFormatter.allow(
-                      RegExp(r'^\d+\.?\d{0,2}'),
-                    )
-                  ],
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  controller: controller.salePriceController,
-                  label: 'Price',
-                  hint: '',
-                  inputAction: TextInputAction.next,
-                  focusNode: controller.salePriceFocusNode,
-                ),
-                const SizedBox(height: 16),
-                CustomFormField(
-                  keyboardType: TextInputType.text,
-                  controller: controller.unitController,
-                  label: 'Unit Of Measure',
-                  hint: '',
-                  inputAction: TextInputAction.next,
-                  focusNode: controller.unitFocusNode,
-                ),
-                const SizedBox(height: 16),
-                const ProductTypesSelector(),
-                const SizedBox(height: 16),
-                if (controller.hasErrorMessage)
-                  Text(
-                    controller.errorMessage!,
-                    style: TextStyle(
-                      color: Colors.red[800],
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  )
-                else
-                  Container(),
-                // Expanded(child: Container()),
-                const SizedBox(
-                  height: 24,
-                ),
-              ],
-            ),
-          ),
-        ),
+        child: ProductForm(formKey: _formKey),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -146,10 +55,19 @@ class AddProduct extends StatelessWidget {
             if (_formKey.currentState!.validate()) {
               if (controller.product?.id != null) {
                 loadDialog<dynamic>(context, loadingText: 'Updating item');
-                controller.updateProduct();
+                controller.updateProduct(andGoBack: true);
               } else {
-                controller.addProduct();
-                loadDialog<dynamic>(context, loadingText: 'Saving item');
+                displayDialog(
+                  context,
+                  StockQuantityField(
+                    controller: controller,
+                    title: 'Input stock quantity',
+                    initialValue: 0,
+                  ),
+                ).then((value) {
+                  controller.addProduct();
+                  loadDialog<dynamic>(context, loadingText: 'Saving item');
+                });
               }
             }
           },
