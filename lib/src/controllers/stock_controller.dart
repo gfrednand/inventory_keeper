@@ -101,14 +101,23 @@ class StockController extends BaseController {
   }
 
   /// Add a product to a current Stocks state
-  Future<void> addStock() async {
-    final map = <String, dynamic>{'name': nameController.text};
-    final success = await _api.addOne(map);
+  Future<bool> addStock() async {
+    final stocks = products.where((p) => p.isIncomingStock != null).map((p) {
+      final stock = Stock(
+        createdAt: DateTime.now(),
+        productId: p.id!,
+        currentStock: p.currentStock,
+        incomingStock: p.isIncomingStock! ? p.selectedQuantity ?? 0 : 0,
+        outgoingStock: p.isIncomingStock! ? 0 : p.selectedQuantity ?? 0,
+      );
+      return stock.toMap();
+    }).toList();
+    final success = await _api.addMany(stocks);
     if (success) {
-      nameController.text = '';
+      // _navigationService.goBackUntil(ProductListView.routeName);
+      removeAllFromCart();
     }
-    // if (success) _stocks.add(newProduct);
-    // notifyListeners();
+    return success;
   }
 
   /// Update a product to a current Stocks state
@@ -137,5 +146,53 @@ class StockController extends BaseController {
     return _api.streamDataCollection().map(
           (maps) => maps.map(Stock.fromMap).toList(),
         );
+  }
+
+  ///
+  List<Product> products = [];
+
+  ///
+  double get totalPrice {
+    return products.fold(0, (double currentTotal, Product nextProduct) {
+      var price = 0.0;
+      if (nextProduct.isIncomingStock != null && nextProduct.isIncomingStock!) {
+        price = nextProduct.buyPrice;
+      } else {
+        price = nextProduct.salePrice;
+      }
+      return currentTotal + price * (nextProduct.selectedQuantity ?? 0);
+    });
+  }
+
+  ///
+  int get totalQuantity {
+    return products.fold(0, (int currentQuantity, Product nextProduct) {
+      return currentQuantity + nextProduct.selectedQuantity!;
+    });
+  }
+
+  ///
+  void addToCart(Product product) {
+    final index = products.indexWhere((p) => p.id == product.id);
+    if (index == -1) {
+      products.add(product);
+    } else {
+      products[index].selectedQuantity = product.selectedQuantity;
+    }
+  }
+
+  ///
+  // void addManyToCart(List<Product> ps) => products = ps;
+
+  ///
+  void removeFromCart(Product product) {
+    products.remove(product);
+    notifyListeners();
+  }
+
+  ///
+  void removeAllFromCart() {
+    products = [];
+    notifyListeners();
   }
 }

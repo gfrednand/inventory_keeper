@@ -9,6 +9,9 @@ abstract class Api<A, B, C, D> {
   /// Add Single Data
   A addOne(B one);
 
+  /// Add Single Data
+  A addMany(List<B> many);
+
   /// Update Single Data
   A updateOne(B one);
 

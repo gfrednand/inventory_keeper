@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/models/product_type.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:provider/provider.dart';
@@ -64,41 +63,41 @@ class ProductTypesSelector extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: SizedBox(
-              height: 30,
-              child: productTypes != null
-                  ? ListView.separated(
-                      itemCount: productTypes.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (ctx, index) {
-                        final type = productTypes[index];
-                        return GestureDetector(
-                          onTap: () {
-                            controller.type = type;
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: controller.type?.id == type.id
-                                  ? const Color.fromARGB(170, 144, 202, 249)
-                                  : const Color.fromARGB(84, 158, 158, 158),
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(
-                                productTypes[index].name,
-                              ),
+            height: 30,
+            child: productTypes != null
+                ? ListView.separated(
+                    itemCount: productTypes.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (ctx, index) {
+                      final type = productTypes[index];
+                      return GestureDetector(
+                        onTap: () {
+                          controller.type = type;
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: controller.type?.id == type.id
+                                ? const Color.fromARGB(170, 144, 202, 249)
+                                : const Color.fromARGB(84, 158, 158, 158),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              productTypes[index].name,
                             ),
                           ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const SizedBox(
-                        width: 8,
-                      ),
-                    )
-                  : Container()),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      width: 8,
+                    ),
+                  )
+                : Container(),
+          ),
         ),
       ],
     );

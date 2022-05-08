@@ -13,7 +13,10 @@ class CustomModalSheet {
 
   ///
   static void _show<T>(
-      BuildContext context, Widget child, bool isExpanded) async {
+    BuildContext context,
+    Widget child,
+    bool isExpanded,
+  ) async {
     await showModalBottomSheet<T>(
       context: context,
       backgroundColor: Colors.transparent,
@@ -28,7 +31,6 @@ class CustomModalSheet {
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: 0,
               maxHeight: MediaQuery.of(context).size.width * 1.3,
             ),
             child: Column(

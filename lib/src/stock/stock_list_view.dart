@@ -11,11 +11,10 @@ class StockListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Stock'),
-        ),
-        body: Column(
-          children: [],
-        ));
+      appBar: AppBar(
+        title: const Text('Stock'),
+      ),
+      body: Column(),
+    );
   }
 }

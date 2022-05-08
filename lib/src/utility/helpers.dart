@@ -2,13 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
-import 'package:provider/provider.dart';
 
 /// Check if number is integer
 
-bool isInteger(num value) => value is int || value == value.roundToDouble();
+bool isInteger(int value) => value is int || value == value.roundToDouble();
 
 /// Convert timestamp to datetime
 DateTime? parseTime(dynamic date) {
@@ -217,11 +214,11 @@ Future<void> rersfsdf(
 }
 
 ///
-Future<void> displayDialog(
+Future<T?> displayDialog<T>(
   BuildContext context,
   Widget? child,
 ) async =>
-    showDialog(
+    showDialog<T>(
       context: context,
       builder: (context) {
         return Dialog(

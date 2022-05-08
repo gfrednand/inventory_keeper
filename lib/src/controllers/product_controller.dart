@@ -4,6 +4,7 @@ import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/models/product_type.dart';
+import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 
@@ -35,7 +36,6 @@ class ProductController extends BaseController {
       nameFocusNode = FocusNode();
 
   Product? _product;
-  int? _selectedQuantity;
 
   /// Product
   Product? get product => _product;
@@ -52,11 +52,13 @@ class ProductController extends BaseController {
   ///
 
   ///
-  void setSelectedQuantity(int q, SelectedQuantityEnum enums) {
-    _selectedQuantity = q;
-    _product = SelectedQuantityEnum.updateSafetyStock == enums
-        ? _product?.copyWith(safetyStock: q)
-        : _product?.copyWith(currentStock: q);
+  void setSelectedSafetyQuantity(
+    int counter,
+    int safetyStock,
+  ) {
+    _product =
+        _product?.copyWith(selectedQuantity: counter, safetyStock: safetyStock);
+
     notifyListeners();
   }
 
@@ -97,32 +99,29 @@ class ProductController extends BaseController {
 
   /// Add a product to a current products state
   Future<void> addProduct() async {
-    busy = true;
     var newProduct = generateProduct();
     busy = true;
     newProduct = newProduct.copyWith(
-        createdAt: DateTime.now(), currentStock: _selectedQuantity);
+      createdAt: DateTime.now(),
+    );
     final success = await _api.addOne(newProduct.toMap());
-    busy = false;
     if (success) {
-      _navigationService.goBack();
+      _navigationService.goBackUntil(ProductListView.routeName);
+      resetValues(success, null);
     }
-    resetValues(success, newProduct);
   }
 
   /// Update a product to a current products state
-  Future<void> updateProduct({bool andGoBack = false}) async {
+  Future<void> updateProduct() async {
     var updateProduct = generateProduct();
     if (updateProduct != _product) {
-      busy = true;
       updateProduct =
           updateProduct.copyWith(id: product!.id, updatedAt: DateTime.now());
       final success = await _api.updateOne(updateProduct.toMap());
-      busy = false;
       if (success) {
-        _navigationService.goBack();
+        _navigationService.goBackUntil(ProductDetails.routeName);
+        resetValues(success, updateProduct);
       }
-      if (andGoBack) resetValues(success, updateProduct);
     }
   }
 
@@ -171,10 +170,10 @@ class ProductController extends BaseController {
       salePriceController.text = '';
       type = null;
       product = p;
-      _navigationService.goBack();
       setErrorMessage(null);
     } else {
       setErrorMessage('Error has occured');
     }
+    notifyListeners();
   }
 }

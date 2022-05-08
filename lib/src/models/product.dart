@@ -19,6 +19,8 @@ class Product {
     this.buyPrice = 0.0,
     this.safetyStock = 0,
     this.currentStock = 0,
+    this.isIncomingStock,
+    this.selectedQuantity,
     this.type,
     this.createdAt,
     this.updatedAt,
@@ -76,6 +78,10 @@ class Product {
         'type': type?.toMap(),
       };
 
+  /// Convert To Map
+  Map<String, dynamic> toStockMap() =>
+      <String, dynamic>{'id': id, 'name': name};
+
   /// Unique id of the product
   String? id;
 
@@ -109,6 +115,12 @@ class Product {
   ///A current stock qunatity
   int currentStock;
 
+  ///A current selected stock qunatity
+  int? selectedQuantity;
+
+  /// Is the selected quantity incoming
+  bool? isIncomingStock;
+
   ///A safety stock qunatity(For notifications)
   int safetyStock;
 
@@ -121,6 +133,8 @@ class Product {
     double? salePrice,
     double? buyPrice,
     int? currentStock,
+    int? selectedQuantity,
+    bool? isIncomingStock,
     int? safetyStock,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -137,6 +151,8 @@ class Product {
         unit: unit ?? this.unit,
         salePrice: salePrice ?? this.salePrice,
         currentStock: currentStock ?? this.currentStock,
+        selectedQuantity: selectedQuantity ?? this.selectedQuantity,
+        isIncomingStock: isIncomingStock ?? this.isIncomingStock,
         safetyStock: safetyStock ?? this.safetyStock,
         buyPrice: buyPrice ?? this.buyPrice,
         type: type ?? this.type,

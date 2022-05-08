@@ -21,6 +21,20 @@ class FireBaseRepository
   CollectionReference? ref;
 
   @override
+  Future<bool> addMany(List<Map<String, dynamic>> many) async {
+    final batch = _db.batch();
+
+    for (final map in many) {
+      final docRef = ref!.doc(); //automatically generate unique id
+      batch.set(docRef, map);
+    }
+    return batch.commit().then((value) => true).catchError((dynamic error) {
+      print('Failed to add: $error');
+      return false;
+    });
+  }
+
+  @override
   Future<List<Map<String, dynamic>>> allItems() async {
     final snapshot = await ref!.get();
     final objs = <Map<String, dynamic>>[];

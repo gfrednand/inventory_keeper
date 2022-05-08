@@ -4,9 +4,11 @@ import 'package:inventory_keeper/src/utility/helpers.dart';
 ///
 class CustomDetailItemTile extends StatelessWidget {
   ///
-  const CustomDetailItemTile(
-      {Key? key, required this.label, required this.value})
-      : super(key: key);
+  const CustomDetailItemTile({
+    Key? key,
+    required this.label,
+    required this.value,
+  }) : super(key: key);
 
   ///
   final String label;
@@ -38,7 +40,7 @@ class CustomDetailItemTile extends StatelessWidget {
     ];
     return InkWell(
       onTap: () {
-        displayDialog(
+        displayDialog<void>(
           context,
           Column(
             mainAxisSize: MainAxisSize.min,

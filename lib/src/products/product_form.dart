@@ -92,13 +92,15 @@ class ProductForm extends StatelessWidget {
             const Divider(),
             ListTile(
               onTap: () {
-                displayDialog(
+                displayDialog<void>(
                   context,
                   StockQuantityField(
+                    product: controller.product!,
                     isSafetyQuantity: true,
                     controller: controller,
                     title: 'Safety Stock',
-                    initialValue: controller.product?.safetyStock ?? 0,
+                    currentStock: controller.product?.currentStock ?? 0,
+                    counter: controller.product?.safetyStock ?? 0,
                   ),
                 );
               },

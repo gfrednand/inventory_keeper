@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Stock Model
 class Stock {
   /// Stock Constructor
   Stock({
-    required this.id,
-    required this.product,
+    this.id,
+    required this.productId,
     required this.currentStock,
     this.incomingStock,
     this.outgoingStock,
@@ -19,7 +18,7 @@ class Stock {
   /// Convert Map<String, dynamic> to Stock
   factory Stock.fromMap(Map<String, dynamic> map) => Stock(
         id: map['id'] as String,
-        product: Product.fromMap(map['product'] as Map<String, dynamic>),
+        productId: map['productId'] as String,
         currentStock: map['currentStock'] as int,
         incomingStock:
             map['incomingStock'] == null ? null : map['incomingStock'] as int,
@@ -43,17 +42,17 @@ class Stock {
         'currentStock': currentStock,
         'incomingStock': incomingStock,
         'outgoingStock': outgoingStock,
-        'product': product.toMap(),
+        'productId': productId,
       };
 
   /// Convert to Json String
   String toJson() => json.encode(toMap());
 
   /// unique id of product stock
-  String id;
+  String? id;
 
   /// Product in a stock
-  Product product;
+  String productId;
 
   /// Current Stock of Product in a stock
   int currentStock;
@@ -76,17 +75,17 @@ class Stock {
     DateTime? updatedAt,
     DateTime? createdAt,
     int? currentStock,
-    Product? product,
+    String? productId,
     int? incomingStock,
     int? outgoingStock,
   }) =>
       Stock(
         id: id ?? this.id,
-        updatedAt: updatedAt,
-        createdAt: createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        createdAt: createdAt ?? this.createdAt,
         currentStock: currentStock ?? this.currentStock,
-        incomingStock: incomingStock,
-        outgoingStock: outgoingStock,
-        product: product ?? this.product,
+        incomingStock: incomingStock ?? this.incomingStock,
+        outgoingStock: outgoingStock ?? this.outgoingStock,
+        productId: productId ?? this.productId,
       );
 }

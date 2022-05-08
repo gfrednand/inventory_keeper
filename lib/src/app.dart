@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/app_router.dart';
-import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';

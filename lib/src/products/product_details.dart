@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
-import 'package:inventory_keeper/src/models/product_type.dart';
-import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
-import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/custom_detail_item_tile.dart';
+import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
+import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -164,44 +161,15 @@ class ProductDetails extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Hero(
-                    tag: 'currentstock-${controller.product?.id}',
-                    child: CurrentStockQuantity(
-                      currentStock: controller.product?.currentStock ?? 0,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  const Text(
-                    'Quantity',
-                    style: TextStyle(fontSize: 13, color: Colors.grey),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.only(
-                    top: 16,
-                    bottom: 16,
-                    left: 14,
-                    right: 24,
-                  ),
-                ),
-                onPressed: () {
-                  _showStockInOutMenu(context, controller);
-                },
-                child: const Text('Stock In/Out'),
-              ),
-            ],
+      bottomNavigationBar: ProductDetailBottomBar(
+        onPressed: () {
+          _showStockInOutMenu(context, controller);
+        },
+        buttonLabel: 'Stock In/Out',
+        quantityWidget: Hero(
+          tag: 'currentstock-${controller.product?.id}',
+          child: CurrentStockQuantity(
+            currentStock: controller.product?.currentStock ?? 0,
           ),
         ),
       ),
@@ -256,19 +224,24 @@ class ProductDetails extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                displayDialog(
+                displayDialog<bool>(
                   context,
                   StockQuantityField(
+                    product: controller.product!,
                     controller: controller,
                     title: 'Stock in quantity',
-                    initialValue: controller.product?.currentStock ?? 0,
+                    currentStock: controller.product?.currentStock ?? 0,
+                    counter: 0,
+                    defaultValue: controller.product?.currentStock ?? 0,
                   ),
                 ).then((value) {
-                  loadDialog<dynamic>(
-                    context,
-                    loadingText: 'Updating stock...',
-                  );
-                  controller.updateProduct();
+                  if (value != null && value) {
+                    Navigator.pushNamed(
+                      context,
+                      StockInOutForm.routeName,
+                      arguments: {'isStockIn': true},
+                    );
+                  }
                 });
               },
             ),
@@ -284,20 +257,24 @@ class ProductDetails extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                displayDialog(
+                displayDialog<bool>(
                   context,
                   StockQuantityField(
+                    product: controller.product!,
                     controller: controller,
                     title: 'Stock out quantity',
-                    initialValue: controller.product?.currentStock ?? 0,
+                    counter: 0,
+                    currentStock: controller.product?.currentStock ?? 0,
                     isIncrement: false,
                   ),
                 ).then((value) {
-                  loadDialog<dynamic>(
-                    context,
-                    loadingText: 'Updating stock...',
-                  );
-                  controller.updateProduct();
+                  if (value != null && value) {
+                    Navigator.pushNamed(
+                      context,
+                      StockInOutForm.routeName,
+                      arguments: {'isStockIn': false},
+                    );
+                  }
                 });
               },
             ),

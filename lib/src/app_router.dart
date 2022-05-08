@@ -5,6 +5,8 @@ import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/settings/settings_view.dart';
+import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
+import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
 import 'package:inventory_keeper/src/stock/stock_list_view.dart';
 
 ///
@@ -29,14 +31,43 @@ class AppRouter {
             return const LayoutPage();
           case ProductListView.routeName:
             return const ProductListView();
+          case StockInOutForm.routeName:
+            if (routeSettings.arguments != null) {
+              final data = routeSettings.arguments! as Map<String, bool>;
+              return StockInOutForm(
+                isStockIn: data['isStockIn']!,
+              );
+            }
+            return const NothingFoundPage();
+          case StockInOutItems.routeName:
+            if (routeSettings.arguments != null) {
+              final data = routeSettings.arguments! as Map<String, bool>;
+              return StockInOutItems(
+                isStockIn: data['isStockIn']!,
+              );
+            }
+            return const NothingFoundPage();
           default:
-            return const Scaffold(
-              body: Center(
-                child: Text('Nothing here'),
-              ),
-            );
+            return const NothingFoundPage();
         }
       },
+    );
+  }
+}
+
+///
+class NothingFoundPage extends StatelessWidget {
+  ///
+  const NothingFoundPage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Nothing here'),
+      ),
     );
   }
 }

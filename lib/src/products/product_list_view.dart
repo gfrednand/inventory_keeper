@@ -3,6 +3,8 @@ import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
+import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
+import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/products/product_search_delegate.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +31,7 @@ class ProductListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Items'),
+        // leading: Container(),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -88,7 +91,26 @@ class ProductListView extends StatelessWidget {
                         const Divider(),
                     itemBuilder: (BuildContext context, int index) {
                       final item = data![index];
-                      return ProductItem(item: item);
+                      return ProductItem(
+                        item: item,
+                        trailing: Hero(
+                          tag: 'currentstock-${item.id}',
+                          child: CurrentStockQuantity(
+                            currentStock: item.currentStock,
+                          ),
+                        ),
+                        onTap: () {
+                          // Navigate to the details page. If the user leaves and
+                          // returns to the app after it has been killed while running
+                          // in the background, the navigation stack is restored.
+
+                          controller.product = item;
+                          Navigator.pushNamed(
+                            context,
+                            ProductDetails.routeName,
+                          ).then((value) => controller.product = null);
+                        },
+                      );
                     },
                   );
                 } else {

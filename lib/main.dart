@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/app.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/models/product_type.dart';
@@ -20,6 +21,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider.value(value: ProductController()),
         ChangeNotifierProvider.value(value: ProductTypeController()),
+        ChangeNotifierProvider.value(value: StockController()),
         StreamProvider.value(
           initialData: const <Product>[],
           value: ProductController().fetchProductsAsStream(),

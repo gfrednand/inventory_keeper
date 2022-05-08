@@ -55,18 +55,21 @@ class AddProduct extends StatelessWidget {
             if (_formKey.currentState!.validate()) {
               if (controller.product?.id != null) {
                 loadDialog<dynamic>(context, loadingText: 'Updating item');
-                controller.updateProduct(andGoBack: true);
+                controller.updateProduct();
               } else {
-                displayDialog(
+                displayDialog<bool>(
                   context,
                   StockQuantityField(
+                    product: controller.product!,
+                    currentStock: controller.product?.currentStock ?? 0,
                     controller: controller,
                     title: 'Input stock quantity',
-                    initialValue: 0,
                   ),
                 ).then((value) {
-                  controller.addProduct();
-                  loadDialog<dynamic>(context, loadingText: 'Saving item');
+                  if (value != null && value) {
+                    controller.addProduct();
+                    loadDialog<dynamic>(context, loadingText: 'Saving item');
+                  }
                 });
               }
             }
