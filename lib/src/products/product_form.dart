@@ -101,7 +101,7 @@ class ProductForm extends StatelessWidget {
                     counter: controller.product?.safetyStock ?? 0,
                   ),
                 ).then((value) {
-                  if (value != null) {
+                  if (value != null && value > 0) {
                     controller.safetyQuantity = value;
                   }
                 });

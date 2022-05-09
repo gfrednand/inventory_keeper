@@ -124,7 +124,7 @@ void onTap(BuildContext context, Product? product, bool isStockIn) {
         initialCounter: product.currentStock,
       ),
     ).then((value) {
-      if (value != null) {
+      if (value != null && value > 0) {
         context.read<StockController>().addToCart(product.copyWith(
               selectedQuantity: value,
               isIncomingStock: true,

@@ -70,7 +70,7 @@ class AddProduct extends StatelessWidget {
                     title: 'Input stock quantity',
                   ),
                 ).then((value) {
-                  if (value != null) {
+                  if (value != null && value > 0) {
                     controller.currentStockQuantity = value;
                   }
                   loadDialog<dynamic>(context, loadingText: 'Saving item');

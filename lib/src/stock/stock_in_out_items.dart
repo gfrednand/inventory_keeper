@@ -146,7 +146,7 @@ class StockInOutItems extends StatelessWidget {
                                   (item.selectedQuantity ?? 0),
                             ),
                           ).then((value) {
-                            if (value != null) {
+                            if (value != null && value > 0) {
                               item.selectedQuantity = value;
                               context.read<StockController>().addToCart(item);
                             }
