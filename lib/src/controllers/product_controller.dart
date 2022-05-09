@@ -112,17 +112,19 @@ class ProductController extends BaseController {
   }
 
   /// Update a product to a current products state
-  Future<void> updateProduct() async {
+  Future<Product?> updateProduct() async {
     var updateProduct = generateProduct();
     if (updateProduct != _product) {
       updateProduct =
-          updateProduct.copyWith(id: product!.id, updatedAt: DateTime.now());
+          updateProduct.copyWith(id: product?.id, updatedAt: DateTime.now());
       final success = await _api.updateOne(updateProduct.toMap());
       if (success) {
         _navigationService.goBackUntil(ProductDetails.routeName);
         resetValues(success, updateProduct);
       }
+      return updateProduct;
     }
+    return null;
   }
 
   /// Remove product from a current products state

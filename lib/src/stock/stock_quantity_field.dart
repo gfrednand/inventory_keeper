@@ -181,8 +181,9 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                         );
                       } else {
                         widget.product = widget.product.copyWith(
-                            selectedQuantity: _counter,
-                            isIncomingStock: widget.isIncrement);
+                          selectedQuantity: _counter,
+                          isIncomingStock: widget.isIncrement,
+                        );
                         context
                             .read<StockController>()
                             .addToCart(widget.product);

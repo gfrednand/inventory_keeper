@@ -172,6 +172,13 @@ class StockController extends BaseController {
   }
 
   ///
+  void updateCart(Product product) {
+    products = products.map((p) {
+      return product.copyWith(selectedQuantity: p.selectedQuantity);
+    }).toList();
+  }
+
+  ///
   void addToCart(Product product) {
     final index = products.indexWhere((p) => p.id == product.id);
     if (index == -1) {
@@ -179,6 +186,7 @@ class StockController extends BaseController {
     } else {
       products[index].selectedQuantity = product.selectedQuantity;
     }
+    notifyListeners();
   }
 
   ///

@@ -10,7 +10,7 @@ class LayoutPage extends StatefulWidget {
   const LayoutPage({Key? key}) : super(key: key);
 
   /// Layout route name
-  static const routeName = '/layoutpage';
+  static const routeName = '/';
 
   @override
   State<LayoutPage> createState() => _LayoutPageState();

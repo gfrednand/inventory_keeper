@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -55,7 +56,11 @@ class AddProduct extends StatelessWidget {
             if (_formKey.currentState!.validate()) {
               if (controller.product?.id != null) {
                 loadDialog<dynamic>(context, loadingText: 'Updating item');
-                controller.updateProduct();
+                controller.updateProduct().then((product) {
+                  if (product != null) {
+                    context.read<StockController>().updateCart(product);
+                  }
+                });
               } else {
                 displayDialog<bool>(
                   context,

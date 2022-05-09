@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/app_router.dart';
+import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/locator.dart';
-import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 import 'package:inventory_keeper/src/settings/settings_controller.dart';
 import 'package:provider/provider.dart';
@@ -29,14 +29,13 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigationService>().navigatorKey,
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        primaryColor: const Color(0xff2F8D46),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
       // darkTheme: ThemeData.dark(),
       themeMode: settingsController.themeMode,
-      initialRoute: ProductListView.routeName,
+      initialRoute: LayoutPage.routeName,
       onGenerateRoute: AppRouter.generateRoute,
     );
   }

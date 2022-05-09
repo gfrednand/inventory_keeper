@@ -18,7 +18,18 @@ class SettingsView extends StatelessWidget {
     final settingsController = context.watch<SettingsController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        elevation: 1,
+        backgroundColor: Theme.of(context).canvasColor,
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
+          'Settings',
+          style: TextStyle(fontSize: 28),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
