@@ -50,12 +50,11 @@ class ProductListView extends StatelessWidget {
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 25,
           ),
           iconTheme: const IconThemeData(color: Colors.black),
           title: const Text(
             'Items',
-            style: TextStyle(fontSize: 28),
           ),
           // leading: Container(),
           actions: [

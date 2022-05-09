@@ -23,12 +23,11 @@ class SettingsView extends StatelessWidget {
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 20,
+          fontSize: 25,
         ),
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Settings',
-          style: TextStyle(fontSize: 28),
         ),
       ),
       body: Padding(

@@ -133,20 +133,24 @@ class StockInOutItems extends StatelessWidget {
                           ],
                         ),
                         onTap: () {
-                          displayDialog<bool>(
+                          displayDialog<int>(
                             context,
                             StockQuantityField(
-                              product: item,
-                              currentStock: item.currentStock,
-                              controller: productController,
+                              currentQuantity: item.currentStock,
+                              productName: item.name,
                               isIncrement: isStockIn,
                               title:
                                   '${isStockIn ? 'Stock In' : 'Stock Out'} quantity',
                               counter: item.selectedQuantity ?? 0,
-                              defaultValue: item.currentStock +
+                              initialCounter: item.currentStock +
                                   (item.selectedQuantity ?? 0),
                             ),
-                          );
+                          ).then((value) {
+                            if (value != null) {
+                              item.selectedQuantity = value;
+                              context.read<StockController>().addToCart(item);
+                            }
+                          });
                         },
                       );
                     },

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:provider/provider.dart';
 
 ///
 class ProductDetailBottomBar extends StatelessWidget {

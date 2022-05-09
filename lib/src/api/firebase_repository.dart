@@ -21,12 +21,29 @@ class FireBaseRepository
   CollectionReference? ref;
 
   @override
-  Future<bool> addMany(List<Map<String, dynamic>> many) async {
+  Future<bool> addMany(List<Map<String, dynamic>> maps) async {
     final batch = _db.batch();
 
-    for (final map in many) {
+    for (final map in maps) {
       final docRef = ref!.doc(); //automatically generate unique id
       batch.set(docRef, map);
+    }
+    return batch.commit().then((value) => true).catchError((dynamic error) {
+      print('Failed to add: $error');
+      return false;
+    });
+  }
+
+  ///
+  Future<bool> updateMany(List<Map<String, dynamic>> maps) async {
+    final batch = _db.batch();
+
+    for (final map in maps) {
+      final docRef =
+          ref!.doc(map['id'] as String); //automatically generate unique id
+      batch.update(docRef, map);
+
+      print(map);
     }
     return batch.commit().then((value) => true).catchError((dynamic error) {
       print('Failed to add: $error');
@@ -103,11 +120,13 @@ class FireBaseRepository
     if (query != null) {
       return ref!.where('name', isEqualTo: query).snapshots().map(mapFunction);
     }
-    return ref!.snapshots(includeMetadataChanges: false).map(mapFunction);
+    final snapshots = ref!.snapshots();
+    return snapshots.map(mapFunction);
   }
 
   ///
   List<Map<String, dynamic>> mapFunction(QuerySnapshot<Object?> asyncSnapshot) {
+    // print('JAMANI ${asyncSnapshot}');
     // final docSnapshot = asyncSnapshot.docChanges;
     //  for (final change in docSnapshot) {
     //    change.
@@ -116,7 +135,7 @@ class FireBaseRepository
     final objs = <Map<String, dynamic>>[];
 
     for (final doc in asyncSnapshot.docs) {
-      // print('JAMANI ${doc.}');
+      // print('JAMANI ${doc.data()}');
       final obj = doc.data() as Map<String, dynamic>?;
       if (obj != null) {
         obj['id'] = doc.id;

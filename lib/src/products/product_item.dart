@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:provider/provider.dart';
 
 ///
 class ProductItem extends StatelessWidget {
@@ -25,8 +23,6 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ProductController>();
-
     return Material(
       type: MaterialType.transparency,
       child: ListTile(

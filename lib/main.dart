@@ -26,17 +26,17 @@ Future<void> main() async {
         StreamProvider.value(
           initialData: const <Product>[],
           value: ProductController().fetchProductsAsStream(),
-          catchError: (_, err) => Error(),
+          // catchError: (_, err) => Error(),
         ),
         StreamProvider.value(
           initialData: const <ProductType>[],
           value: ProductTypeController().fetchProductTypesAsStream(),
-          catchError: (_, err) => Error(),
+          // catchError: (_, err) => Error(),
         ),
         StreamProvider.value(
           initialData: const <Stock>[],
           value: StockController().fetchStocksAsStream(),
-          catchError: (_, err) => Error(),
+          // catchError: (_, err) => Error(),
         ),
         ChangeNotifierProvider(
           create: (_) => SettingsController(),

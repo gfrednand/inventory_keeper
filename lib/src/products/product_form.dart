@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -92,24 +93,25 @@ class ProductForm extends StatelessWidget {
             const Divider(),
             ListTile(
               onTap: () {
-                displayDialog<void>(
+                displayDialog<int>(
                   context,
                   StockQuantityField(
-                    product: controller.product!,
-                    isSafetyQuantity: true,
-                    controller: controller,
+                    productName: controller.product?.name,
                     title: 'Safety Stock',
-                    currentStock: controller.product?.currentStock ?? 0,
                     counter: controller.product?.safetyStock ?? 0,
                   ),
-                );
+                ).then((value) {
+                  if (value != null) {
+                    controller.safetyQuantity = value;
+                  }
+                });
               },
               dense: true,
               title: const Text(
                 'Safety Stock',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
-              trailing: Text('${controller.product?.safetyStock ?? '-'}'),
+              trailing: Text('${controller.safetyQuantity ?? 0}'),
             ),
             const SizedBox(height: 16),
             const ProductTypesSelector(),

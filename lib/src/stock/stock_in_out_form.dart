@@ -143,10 +143,12 @@ class StockInOutForm extends StatelessWidget {
                       context,
                       loadingText: 'Updating stock...',
                     );
-                    stockController.addStock().then(
-                      (value) {
-                        if (value) {
-                          context.read<ProductController>().updateProduct();
+                    stockController.addStock(isStockIn).then(
+                      (products) {
+                        if (products.isNotEmpty) {
+                          context
+                              .read<ProductController>()
+                              .updateProducts(products);
                         } else {
                           Navigator.pop(context);
                         }
@@ -185,10 +187,10 @@ class StockInOutForm extends StatelessWidget {
       child: const Text('Delete'),
       onPressed: () {
         context.read<StockController>().removeAllFromCart();
-        Navigator.popUntil(
-          context,
-          ModalRoute.withName(ProductDetails.routeName),
-        );
+        var count = 0;
+        Navigator.popUntil(context, (route) {
+          return count++ == 2;
+        });
       },
     );
     // set up the AlertDialog

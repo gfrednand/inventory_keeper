@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/models/product_type.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
-import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 
 ///
@@ -41,24 +41,12 @@ class ProductController extends BaseController {
   Product? get product => _product;
   set product(Product? newproduct) {
     _product = newproduct;
+    safetyQuantity = newproduct?.safetyStock;
     nameController.text = newproduct?.name ?? '';
     salePriceController.text = (newproduct?.salePrice ?? '').toString();
     buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
     unitController.text = newproduct?.unit ?? '';
     type = newproduct?.type;
-    notifyListeners();
-  }
-
-  ///
-
-  ///
-  void setSelectedSafetyQuantity(
-    int counter,
-    int safetyStock,
-  ) {
-    _product =
-        _product?.copyWith(selectedQuantity: counter, safetyStock: safetyStock);
-
     notifyListeners();
   }
 
@@ -72,6 +60,30 @@ class ProductController extends BaseController {
     } else {
       _type = newType;
     }
+    notifyListeners();
+  }
+
+  ///
+  int? _safetyQuantity;
+
+  ///
+  int? get safetyQuantity => _safetyQuantity;
+
+  ///
+  set safetyQuantity(int? q) {
+    _safetyQuantity = q;
+    notifyListeners();
+  }
+
+  ///
+  int? _currentStockQuantity;
+
+  ///
+  int? get currentStockQuantity => _currentStockQuantity;
+
+  ///
+  set currentStockQuantity(int? q) {
+    _currentStockQuantity = q;
     notifyListeners();
   }
 
@@ -101,13 +113,26 @@ class ProductController extends BaseController {
   Future<void> addProduct() async {
     var newProduct = generateProduct();
     busy = true;
-    newProduct = newProduct.copyWith(
-      createdAt: DateTime.now(),
-    );
+    newProduct = newProduct.copyWith(createdAt: DateTime.now());
+
     final success = await _api.addOne(newProduct.toMap());
     if (success) {
-      _navigationService.goBackUntil(ProductListView.routeName);
+      _navigationService.goBackUntil(LayoutPage.routeName);
       resetValues(success, null);
+    }
+  }
+
+  ///
+  Future<void> updateProducts(List<Product> prods) async {
+    final prodMap = prods.where((p) => p.isIncomingStock != null).map((p) {
+      p = p.copyWith(
+        updatedAt: DateTime.now(),
+      );
+      return p.toMap();
+    }).toList();
+    final success = await _api.updateMany(prodMap);
+    if (success) {
+      _navigationService.goBackUntil(ProductDetails.routeName);
     }
   }
 
@@ -115,8 +140,11 @@ class ProductController extends BaseController {
   Future<Product?> updateProduct() async {
     var updateProduct = generateProduct();
     if (updateProduct != _product) {
-      updateProduct =
-          updateProduct.copyWith(id: product?.id, updatedAt: DateTime.now());
+      updateProduct = updateProduct.copyWith(
+        id: product?.id,
+        updatedAt: DateTime.now(),
+      );
+
       final success = await _api.updateOne(updateProduct.toMap());
       if (success) {
         _navigationService.goBackUntil(ProductDetails.routeName);
@@ -132,7 +160,7 @@ class ProductController extends BaseController {
     busy = true;
     final success = await _api.removeOne(product!.toMap());
     busy = false;
-    if (success) _navigationService.goBackUntil(ProductListView.routeName);
+    if (success) _navigationService.goBackUntil(LayoutPage.routeName);
   }
 
   /// Fetching stream of data
@@ -154,11 +182,14 @@ class ProductController extends BaseController {
       buyPrice: double.tryParse(buyPriceController.text) ?? 0,
     );
 
-    if (_product?.safetyStock != null) {
-      newProduct = newProduct.copyWith(safetyStock: _product?.safetyStock);
+    if (currentStockQuantity != null) {
+      newProduct = newProduct.copyWith(
+        currentStock: currentStockQuantity,
+      );
     }
-    if (_product?.currentStock != null) {
-      newProduct = newProduct.copyWith(currentStock: _product?.currentStock);
+
+    if (safetyQuantity != null) {
+      newProduct = newProduct.copyWith(safetyStock: safetyQuantity);
     }
 
     return newProduct;
@@ -171,6 +202,8 @@ class ProductController extends BaseController {
       unitController.text = '';
       salePriceController.text = '';
       type = null;
+      safetyQuantity = null;
+      currentStockQuantity = null;
       product = p;
       setErrorMessage(null);
     } else {

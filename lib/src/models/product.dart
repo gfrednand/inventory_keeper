@@ -14,25 +14,42 @@ class Product {
     this.id,
     this.description,
     required this.name,
-    required this.unit,
+    this.unit,
     this.salePrice = 0.0,
     this.buyPrice = 0.0,
     this.safetyStock = 0,
     this.currentStock = 0,
     this.isIncomingStock,
-    this.selectedQuantity,
+    this.selectedQuantity = 0,
     this.type,
     this.createdAt,
     this.updatedAt,
     this.expireDate,
   });
 
+  // /// Convert Map<String, dynamic> to Product
+  // factory Product.fromStockMap(dynamic json) {
+  //   try {
+  //     final p = Product(
+  //       id: json['id'] == null ? null : json['id'] as String,
+  //       name: json['name'] as String,
+  //       currentStock: (json['currentStock'] as num).toInt(),
+  //       selectedQuantity: (json['selectedQuantity'] as num).toInt(),
+  //     );
+
+  //     return p;
+  //   } catch (e) {
+  //     debugPrint('Errorrrr $e');
+  //   }
+  //   return Product(name: 'Err', unit: 'Err');
+  // }
+
   /// Convert Json String to Product
   factory Product.fromJson(String str) =>
       Product.fromMap(json.decode(str) as Map<String, dynamic>);
 
   /// Convert Map<String, dynamic> to Product
-  factory Product.fromMap(Map<String, dynamic> json) {
+  factory Product.fromMap(dynamic json) {
     try {
       final p = Product(
         id: json['id'] == null ? null : json['id'] as String,
@@ -45,11 +62,22 @@ class Product {
         expireDate:
             json['expireDate'] == null ? null : parseTime(json['expireDate']),
         name: json['name'] as String,
-        unit: json['unit'] as String,
-        salePrice: (json['salePrice'] as num).toDouble(),
-        buyPrice: (json['buyPrice'] as num).toDouble(),
-        safetyStock: (json['safetyStock'] as num).toInt(),
-        currentStock: (json['currentStock'] as num).toInt(),
+        unit: json['unit'] == null ? null : json['unit'] as String,
+        salePrice: json['salePrice'] == null
+            ? 0.0
+            : (json['salePrice'] as num).toDouble(),
+        buyPrice: json['buyPrice'] == null
+            ? 0.0
+            : (json['buyPrice'] as num).toDouble(),
+        safetyStock: json['safetyStock'] == null
+            ? 0
+            : (json['safetyStock'] as num).toInt(),
+        currentStock: json['currentStock'] == null
+            ? 0
+            : (json['currentStock'] as num).toInt(),
+        selectedQuantity: json['selectedQuantity'] == null
+            ? 0
+            : (json['selectedQuantity'] as num).toInt(),
         type: json['type'] == null
             ? null
             : ProductType.fromMap(json['type'] as Map<String, dynamic>),
@@ -57,9 +85,9 @@ class Product {
 
       return p;
     } catch (e) {
-      debugPrint('Errorrrr $e');
+      debugPrint('Product Error $e');
     }
-    return Product(name: 'Err', unit: 'Err');
+    return Product(name: 'Name Error');
   }
 
   /// Convert To Map
@@ -74,13 +102,18 @@ class Product {
         'salePrice': salePrice,
         'buyPrice': buyPrice,
         'currentStock': currentStock,
+        'selectedQuantity': selectedQuantity,
         'safetyStock': safetyStock,
         'type': type?.toMap(),
       };
 
-  /// Convert To Map
-  Map<String, dynamic> toStockMap() =>
-      <String, dynamic>{'id': id, 'name': name};
+  // ///
+  // Map<String, dynamic> toStockMap() => <String, dynamic>{
+  //       'id': id,
+  //       '': selectedQuantity,
+  //       'name': name,
+  //       'currentStock': currentStock,
+  //     };
 
   /// Unique id of the product
   String? id;
@@ -92,7 +125,7 @@ class Product {
   String name;
 
   /// The basic unit used to measure a product, e.g. pieces, kilograms, pounds
-  String unit;
+  String? unit;
 
   /// The  Selling price per basic unit
   double salePrice;

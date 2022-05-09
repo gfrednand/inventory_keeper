@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
-import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/widgets/custom_stepper.dart';
-import 'package:provider/provider.dart';
 
 ///
+// ignore: must_be_immutable
 class StockQuantityField extends StatefulWidget {
   ///
-  StockQuantityField({
+  const StockQuantityField({
     Key? key,
-    required this.controller,
-    required this.currentStock,
-    required this.product,
+    this.productName,
+    this.currentQuantity,
     required this.title,
     this.counter = 0,
-    this.defaultValue = 0,
+    this.initialCounter = 0,
     this.isIncrement = true,
-    this.isSafetyQuantity = false,
     this.minValue = 0,
     this.maxValue = 999999999,
   }) : super(key: key);
 
   ///
-  final ProductController controller;
+  final String? productName;
 
   ///
   final String title;
 
   ///
-  final bool isSafetyQuantity, isIncrement;
+  final bool isIncrement;
 
   ///
   final int? counter;
@@ -38,13 +33,12 @@ class StockQuantityField extends StatefulWidget {
   final double minValue, maxValue;
 
   ///
-  final int currentStock;
+  final int? currentQuantity;
 
   ///
-  final int? defaultValue;
+  final int? initialCounter;
 
   ///
-  Product product;
 
   @override
   State<StockQuantityField> createState() => _StockQuantityFieldState();
@@ -52,12 +46,12 @@ class StockQuantityField extends StatefulWidget {
 
 class _StockQuantityFieldState extends State<StockQuantityField> {
   int _counter = 0;
-  int _defaultValue = 0;
+  int _initialCounter = 0;
 
   @override
   void initState() {
-    _counter = widget.counter!;
-    _defaultValue = widget.defaultValue!;
+    _counter = widget.counter ?? 0;
+    _initialCounter = widget.initialCounter ?? 0;
     super.initState();
   }
 
@@ -76,7 +70,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
             height: 16,
           ),
           Text(
-            widget.controller.nameController.text,
+            widget.productName ?? '',
           ),
           const SizedBox(
             height: 16,
@@ -91,10 +85,10 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                 _counter = val;
 
                 if (widget.isIncrement) {
-                  _defaultValue = widget.currentStock + _counter;
+                  _initialCounter = (widget.currentQuantity ?? 0) + val;
                 } else {
-                  // _defaultValue = _defaultValue - val;
-                  _defaultValue = widget.currentStock - _counter;
+                  // _initialCounter = _initialCounter - val;
+                  _initialCounter = (widget.currentQuantity ?? 0) - val;
                 }
               });
             },
@@ -102,7 +96,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
           const SizedBox(
             height: 16,
           ),
-          if (widget.isSafetyQuantity)
+          if (widget.currentQuantity == null)
             Container()
           else
             Center(
@@ -110,7 +104,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '${widget.currentStock}',
+                    '${widget.currentQuantity}',
                     style: const TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
@@ -129,7 +123,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                     width: 16,
                   ),
                   Text(
-                    '$_defaultValue',
+                    '$_initialCounter',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -155,7 +149,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pop(context, false);
+                      Navigator.pop(context, null);
                     },
                     child: const Text(
                       'Cancel',
@@ -174,21 +168,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                       ),
                     ),
                     onPressed: () {
-                      if (widget.isSafetyQuantity) {
-                        widget.controller.setSelectedSafetyQuantity(
-                          _counter,
-                          _defaultValue,
-                        );
-                      } else {
-                        widget.product = widget.product.copyWith(
-                          selectedQuantity: _counter,
-                          isIncomingStock: widget.isIncrement,
-                        );
-                        context
-                            .read<StockController>()
-                            .addToCart(widget.product);
-                      }
-                      Navigator.pop(context, true);
+                      Navigator.pop(context, _counter);
                     },
                     child: const Text(
                       'Apply',

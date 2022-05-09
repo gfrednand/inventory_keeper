@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
+import 'package:inventory_keeper/src/models/stock.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
@@ -8,6 +9,7 @@ import 'package:inventory_keeper/src/settings/settings_view.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
 import 'package:inventory_keeper/src/stock/stock_list_view.dart';
+import 'package:inventory_keeper/src/transaction/transaction_details_page.dart';
 
 ///
 class AppRouter {
@@ -29,6 +31,15 @@ class AppRouter {
             return const ProductDetails();
           case LayoutPage.routeName:
             return const LayoutPage();
+          case TransactionDetailsPage.routeName:
+            if (routeSettings.arguments != null) {
+              final data = routeSettings.arguments! as Map<String, Stock>;
+              final stock = data['stock'];
+              return TransactionDetailsPage(
+                stock: stock!,
+              );
+            }
+            return const NothingFoundPage();
           case ProductListView.routeName:
             return const ProductListView();
           case StockInOutForm.routeName:
@@ -64,9 +75,12 @@ class NothingFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Nothing here'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Ooops'),
+      ),
+      body: const Center(
+        child: Text('Nothing here, GO BACK'),
       ),
     );
   }

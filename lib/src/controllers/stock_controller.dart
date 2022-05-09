@@ -101,23 +101,22 @@ class StockController extends BaseController {
   }
 
   /// Add a product to a current Stocks state
-  Future<bool> addStock() async {
-    final stocks = products.where((p) => p.isIncomingStock != null).map((p) {
-      final stock = Stock(
-        createdAt: DateTime.now(),
-        productId: p.id!,
-        currentStock: p.currentStock,
-        incomingStock: p.isIncomingStock! ? p.selectedQuantity ?? 0 : 0,
-        outgoingStock: p.isIncomingStock! ? 0 : p.selectedQuantity ?? 0,
-      );
-      return stock.toMap();
-    }).toList();
-    final success = await _api.addMany(stocks);
+  Future<List<Product>> addStock(bool isIncoming) async {
+    final tempProds = products.where((p) => p.isIncomingStock != null).toList();
+    final stock = Stock(
+      createdAt: DateTime.now(),
+      totalSelectedQuantity: totalQuantity,
+      isIncoming: isIncoming,
+      products: products,
+    );
+
+    final success = await _api.addOne(stock.toMap());
     if (success) {
       // _navigationService.goBackUntil(ProductListView.routeName);
       removeAllFromCart();
+      return tempProds;
     }
-    return success;
+    return [];
   }
 
   /// Update a product to a current Stocks state
@@ -179,14 +178,16 @@ class StockController extends BaseController {
   }
 
   ///
-  void addToCart(Product product) {
-    final index = products.indexWhere((p) => p.id == product.id);
-    if (index == -1) {
-      products.add(product);
-    } else {
-      products[index].selectedQuantity = product.selectedQuantity;
+  void addToCart(Product? product) {
+    if (product != null) {
+      final index = products.indexWhere((p) => p.id == product.id);
+      if (index == -1) {
+        products.add(product);
+      } else {
+        products[index].selectedQuantity = product.selectedQuantity;
+      }
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   ///

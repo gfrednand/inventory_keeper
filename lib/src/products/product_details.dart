@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/custom_detail_item_tile.dart';
@@ -163,7 +164,7 @@ class ProductDetails extends StatelessWidget {
       ),
       bottomNavigationBar: ProductDetailBottomBar(
         onPressed: () {
-          _showStockInOutMenu(context, controller);
+          showStockInOutMenu(context);
         },
         buttonLabel: 'Stock In/Out',
         quantityWidget: Hero(
@@ -193,91 +194,6 @@ class ProductDetails extends StatelessWidget {
               onPressed: controller.removeProduct,
               child: const Text('Delete'),
             )
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showStockInOutMenu(BuildContext context, ProductController controller) {
-    CustomModalSheet.show(
-      isExpanded: false,
-      context: context,
-      child: Container(
-        padding: const EdgeInsets.only(left: 10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(
-                Icons.inbox_outlined,
-                color: Colors.green,
-              ),
-              title: const Text('Stock In'),
-              trailing: const Icon(
-                Icons.arrow_forward_ios_outlined,
-                size: 16,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                displayDialog<bool>(
-                  context,
-                  StockQuantityField(
-                    product: controller.product!,
-                    controller: controller,
-                    title: 'Stock in quantity',
-                    currentStock: controller.product?.currentStock ?? 0,
-                    counter: 0,
-                    defaultValue: controller.product?.currentStock ?? 0,
-                  ),
-                ).then((value) {
-                  if (value != null && value) {
-                    Navigator.pushNamed(
-                      context,
-                      StockInOutForm.routeName,
-                      arguments: {'isStockIn': true},
-                    );
-                  }
-                });
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.outbox_outlined,
-                color: Colors.red,
-              ),
-              title: const Text('Stock Out'),
-              trailing: const Icon(
-                Icons.arrow_forward_ios_outlined,
-                size: 16,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                displayDialog<bool>(
-                  context,
-                  StockQuantityField(
-                    product: controller.product!,
-                    controller: controller,
-                    title: 'Stock out quantity',
-                    counter: 0,
-                    currentStock: controller.product?.currentStock ?? 0,
-                    isIncrement: false,
-                  ),
-                ).then((value) {
-                  if (value != null && value) {
-                    Navigator.pushNamed(
-                      context,
-                      StockInOutForm.routeName,
-                      arguments: {'isStockIn': false},
-                    );
-                  }
-                });
-              },
-            ),
           ],
         ),
       ),
