@@ -5,6 +5,7 @@ import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
+import 'package:inventory_keeper/src/products/low_stock_reminder_view.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
@@ -106,14 +107,18 @@ class HomePage extends StatelessWidget {
                   const SizedBox(
                     height: 24,
                   ),
-                  const HomeItemContainer(
+                  HomeItemContainer(
                     label: 'Low Stock Reminder',
                     child: ListTile(
-                      leading: Icon(Icons.speed_outlined),
-                      title: Text('Check stock shortage'),
-                      trailing: Icon(
+                      leading: const Icon(Icons.speed_outlined),
+                      title: const Text('Check stock shortage'),
+                      trailing: const Icon(
                         Icons.arrow_forward_ios,
                         size: 16,
+                      ),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        LowStockReminderView.routeName,
                       ),
                     ),
                   ),

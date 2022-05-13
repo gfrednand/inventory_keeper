@@ -44,6 +44,7 @@ class _LayoutPageState extends State<LayoutPage> {
         }
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).canvasColor,
         body: pages[pageIndex],
         bottomNavigationBar: buildNavBar(context),
       ),
