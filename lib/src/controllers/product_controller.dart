@@ -47,6 +47,7 @@ class ProductController extends BaseController {
     buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
     unitController.text = newproduct?.unit ?? '';
     type = newproduct?.type;
+    currentStockQuantity = newproduct?.currentStock;
     notifyListeners();
   }
 
@@ -117,7 +118,7 @@ class ProductController extends BaseController {
 
     final success = await _api.addOne(newProduct.toMap());
     if (success) {
-      _navigationService.goBackUntil(LayoutPage.routeName);
+      _navigationService.goBackUntil(ModalRoute.withName(LayoutPage.routeName));
       resetValues(success, null);
     }
   }
@@ -125,6 +126,9 @@ class ProductController extends BaseController {
   ///
   Future<void> updateProducts(List<Product> prods) async {
     final prodMap = prods.where((p) => p.isIncomingStock != null).map((p) {
+      if (p.id == product!.id) {
+        currentStockQuantity = p.currentStock;
+      }
       p = p.copyWith(
         updatedAt: DateTime.now(),
       );
@@ -132,7 +136,8 @@ class ProductController extends BaseController {
     }).toList();
     final success = await _api.updateMany(prodMap);
     if (success) {
-      _navigationService.goBackUntil(ProductDetails.routeName);
+      _navigationService
+          .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
     }
   }
 
@@ -147,7 +152,8 @@ class ProductController extends BaseController {
 
       final success = await _api.updateOne(updateProduct.toMap());
       if (success) {
-        _navigationService.goBackUntil(ProductDetails.routeName);
+        _navigationService
+            .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
         resetValues(success, updateProduct);
       }
       return updateProduct;
@@ -160,7 +166,9 @@ class ProductController extends BaseController {
     busy = true;
     final success = await _api.removeOne(product!.toMap());
     busy = false;
-    if (success) _navigationService.goBackUntil(LayoutPage.routeName);
+    if (success) {
+      _navigationService.goBackUntil(ModalRoute.withName(LayoutPage.routeName));
+    }
   }
 
   /// Fetching stream of data

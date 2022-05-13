@@ -31,3 +31,19 @@ const kPrimaryLightGrey = Color(0XFFE7E7E7);
 const kPrimaryRed = Color(0xFFB00020);
 
 // enum ViewState { initial, busy, error, data }
+
+///
+BoxDecoration containerBoxDecoration() {
+  return BoxDecoration(
+    color: Colors.white,
+    borderRadius: const BorderRadius.all(Radius.circular(10)),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 5,
+        blurRadius: 7,
+        offset: const Offset(0, 3),
+      )
+    ],
+  );
+}

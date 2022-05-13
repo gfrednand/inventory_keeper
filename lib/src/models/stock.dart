@@ -8,6 +8,7 @@ class Stock {
   Stock({
     required this.createdAt,
     required this.totalSelectedQuantity,
+    required this.totalAmount,
     this.id,
     required this.isIncoming,
     this.updatedAt,
@@ -17,6 +18,7 @@ class Stock {
   /// Convert Map<String, dynamic> to Stock
   factory Stock.fromMap(Map<String, dynamic> map) => Stock(
         totalSelectedQuantity: map['totalSelectedQuantity'] as int,
+        totalAmount: map['totalAmount'] as double,
         id: map['id'] as String,
         isIncoming: map['isIncoming'] as bool,
         createdAt: parseTime(map['createdAt'])!,
@@ -35,8 +37,10 @@ class Stock {
   String toJson() => json.encode(toMap());
 
   ///
-  ///
   int totalSelectedQuantity;
+
+  ///
+  double totalAmount;
 
   ///
   String? id;
@@ -58,6 +62,7 @@ class Stock {
   Stock copyWith({
     DateTime? createdAt,
     int? totalSelectedQuantity,
+    double? totalAmount,
     String? id,
     bool? isIncoming,
     DateTime? updatedAt,
@@ -67,6 +72,7 @@ class Stock {
         createdAt: createdAt ?? this.createdAt,
         totalSelectedQuantity:
             totalSelectedQuantity ?? this.totalSelectedQuantity,
+        totalAmount: totalAmount ?? this.totalAmount,
         id: id ?? this.id,
         isIncoming: isIncoming ?? this.isIncoming,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -77,6 +83,7 @@ class Stock {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'createdAt': createdAt,
         'totalSelectedQuantity': totalSelectedQuantity,
+        'totalAmount': totalAmount,
         'id': id,
         'isIncoming': isIncoming,
         'updatedAt': updatedAt,

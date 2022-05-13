@@ -117,9 +117,11 @@ class FireBaseRepository
 
   /// Fetching stream of data
   Stream<List<Map<String, dynamic>>> streamDataCollection({String? query}) {
+    print('YEAH');
     if (query != null) {
       return ref!.where('name', isEqualTo: query).snapshots().map(mapFunction);
     }
+
     final snapshots = ref!.snapshots();
     return snapshots.map(mapFunction);
   }

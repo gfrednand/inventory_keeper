@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product.dart';
 import 'package:inventory_keeper/src/models/stock.dart';
+import 'package:inventory_keeper/src/services/navigation_service.dart';
 
 /// Stock Controller
 class StockController extends BaseController {
+  final NavigationService _navigationService = locator<NavigationService>();
   final FireBaseRepository _api = FireBaseRepository('stocks');
 
-  Product? _product;
+  Stock? _stock;
   int? _currentStock;
   int? _incomingStock;
   int? _outgoingStock;
@@ -16,8 +19,8 @@ class StockController extends BaseController {
   DateTime? _createdAt;
 
   ///
-  set product(Product? i) {
-    _product = i;
+  set stock(Stock? i) {
+    _stock = i;
     notifyListeners();
   }
 
@@ -52,7 +55,7 @@ class StockController extends BaseController {
   }
 
   ///
-  Product? get product => _product;
+  Stock? get stock => _stock;
 
   ///
   int? get currentStock => _currentStock;
@@ -106,6 +109,7 @@ class StockController extends BaseController {
     final stock = Stock(
       createdAt: DateTime.now(),
       totalSelectedQuantity: totalQuantity,
+      totalAmount: totalAmount,
       isIncoming: isIncoming,
       products: products,
     );
@@ -129,13 +133,16 @@ class StockController extends BaseController {
   }
 
   /// Remove product from a current Stocks state
-  Future<void> removeStock(Stock item) async {
+  Future<void> removeStock() async {
     busy = true;
-    final success = await _api.removeOne(item.toMap());
+    final success = await _api.removeOne(stock!.toMap());
     busy = false;
     if (success) {
-      // final index = _stocks.indexWhere((p) => p.id == item.id);
-      // _stocks.removeAt(index);
+      stock = null;
+      var count = 0;
+      _navigationService.goBackUntil((route) {
+        return count++ == 2;
+      });
     }
     notifyListeners();
   }
@@ -151,7 +158,7 @@ class StockController extends BaseController {
   List<Product> products = [];
 
   ///
-  double get totalPrice {
+  double get totalAmount {
     return products.fold(0, (double currentTotal, Product nextProduct) {
       var price = 0.0;
       if (nextProduct.isIncomingStock != null && nextProduct.isIncomingStock!) {

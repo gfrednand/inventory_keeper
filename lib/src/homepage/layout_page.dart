@@ -27,9 +27,26 @@ class _LayoutPageState extends State<LayoutPage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: pages[pageIndex],
-      bottomNavigationBar: buildNavBar(context),
+    var _lastExitTime = DateTime.now();
+    return WillPopScope(
+      onWillPop: () async {
+        if (DateTime.now().difference(_lastExitTime) >=
+            const Duration(seconds: 2)) {
+          const snack = SnackBar(
+            content: Text('Press the back button again to exist the app'),
+            duration: Duration(seconds: 2),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snack);
+          _lastExitTime = DateTime.now();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        body: pages[pageIndex],
+        bottomNavigationBar: buildNavBar(context),
+      ),
     );
   }
 
@@ -55,7 +72,7 @@ class _LayoutPageState extends State<LayoutPage> {
             },
             icon: pageIndex == 0
                 ? const Icon(
-                    Icons.home_filled,
+                    Icons.home,
                     color: Colors.white,
                     size: 35,
                   )
@@ -74,12 +91,12 @@ class _LayoutPageState extends State<LayoutPage> {
             },
             icon: pageIndex == 1
                 ? const Icon(
-                    Icons.work_rounded,
+                    Icons.view_cozy,
                     color: Colors.white,
                     size: 35,
                   )
                 : const Icon(
-                    Icons.work_outline_outlined,
+                    Icons.view_cozy_outlined,
                     color: Colors.white,
                     size: 35,
                   ),
@@ -93,12 +110,12 @@ class _LayoutPageState extends State<LayoutPage> {
             },
             icon: pageIndex == 2
                 ? const Icon(
-                    Icons.import_export,
+                    Icons.swap_horizontal_circle,
                     color: Colors.white,
                     size: 35,
                   )
                 : const Icon(
-                    Icons.import_export_outlined,
+                    Icons.swap_horizontal_circle_outlined,
                     color: Colors.white,
                     size: 35,
                   ),

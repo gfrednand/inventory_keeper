@@ -50,37 +50,37 @@ class Product {
 
   /// Convert Map<String, dynamic> to Product
   factory Product.fromMap(dynamic json) {
+    final map = json as Map<String, dynamic>;
     try {
       final p = Product(
-        id: json['id'] == null ? null : json['id'] as String,
+        id: map['id'] == null ? null : map['id'] as String,
         description:
-            json['description'] == null ? null : json['description'] as String,
+            map['description'] == null ? null : map['description'] as String,
         createdAt:
-            json['createdAt'] == null ? null : parseTime(json['createdAt']),
+            map['createdAt'] == null ? null : parseTime(map['createdAt']),
         updatedAt:
-            json['updatedAt'] == null ? null : parseTime(json['updatedAt']),
+            map['updatedAt'] == null ? null : parseTime(map['updatedAt']),
         expireDate:
-            json['expireDate'] == null ? null : parseTime(json['expireDate']),
-        name: json['name'] as String,
-        unit: json['unit'] == null ? null : json['unit'] as String,
-        salePrice: json['salePrice'] == null
+            map['expireDate'] == null ? null : parseTime(map['expireDate']),
+        name: map['name'] as String,
+        unit: map['unit'] == null ? null : map['unit'] as String,
+        salePrice: map['salePrice'] == null
             ? 0.0
-            : (json['salePrice'] as num).toDouble(),
-        buyPrice: json['buyPrice'] == null
-            ? 0.0
-            : (json['buyPrice'] as num).toDouble(),
-        safetyStock: json['safetyStock'] == null
+            : (map['salePrice'] as num).toDouble(),
+        buyPrice:
+            map['buyPrice'] == null ? 0.0 : (map['buyPrice'] as num).toDouble(),
+        safetyStock: map['safetyStock'] == null
             ? 0
-            : (json['safetyStock'] as num).toInt(),
-        currentStock: json['currentStock'] == null
+            : (map['safetyStock'] as num).toInt(),
+        currentStock: map['currentStock'] == null
             ? 0
-            : (json['currentStock'] as num).toInt(),
-        selectedQuantity: json['selectedQuantity'] == null
+            : (map['currentStock'] as num).toInt(),
+        selectedQuantity: map['selectedQuantity'] == null
             ? 0
-            : (json['selectedQuantity'] as num).toInt(),
-        type: json['type'] == null
+            : (map['selectedQuantity'] as num).toInt(),
+        type: map['type'] == null
             ? null
-            : ProductType.fromMap(json['type'] as Map<String, dynamic>),
+            : ProductType.fromMap(map['type'] as Map<String, dynamic>),
       );
 
       return p;

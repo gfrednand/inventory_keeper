@@ -17,7 +17,7 @@ class NavigationService {
   }
 
   ///
-  void goBackUntil(String name) {
-    return navigatorKey.currentState?.popUntil(ModalRoute.withName(name));
+  void goBackUntil(bool Function(Route<dynamic>) predicate) {
+    return navigatorKey.currentState?.popUntil(predicate);
   }
 }

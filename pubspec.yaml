@@ -23,6 +23,8 @@ dependencies:
   get_it: ^7.2.0
   uuid: ^3.0.6
   intl: ^0.17.0
+  fake_cloud_firestore: ^1.2.2
+  grouped_list: ^4.2.0
 
 dev_dependencies:
   flutter_test:

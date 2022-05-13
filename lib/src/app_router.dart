@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
-import 'package:inventory_keeper/src/models/stock.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
@@ -32,14 +31,7 @@ class AppRouter {
           case LayoutPage.routeName:
             return const LayoutPage();
           case TransactionDetailsPage.routeName:
-            if (routeSettings.arguments != null) {
-              final data = routeSettings.arguments! as Map<String, Stock>;
-              final stock = data['stock'];
-              return TransactionDetailsPage(
-                stock: stock!,
-              );
-            }
-            return const NothingFoundPage();
+            return const TransactionDetailsPage();
           case ProductListView.routeName:
             return const ProductListView();
           case StockInOutForm.routeName:
