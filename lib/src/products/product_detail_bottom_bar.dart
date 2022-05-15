@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
 
 ///
 class ProductDetailBottomBar extends StatelessWidget {
@@ -41,6 +42,7 @@ class ProductDetailBottomBar extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                primary: kPrimaryColor,
                 padding: const EdgeInsets.only(
                   top: 16,
                   bottom: 16,

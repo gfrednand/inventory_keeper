@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -7,6 +8,7 @@ import 'package:inventory_keeper/src/products/custom_detail_item_tile.dart';
 import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
+import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +47,19 @@ class ProductDetails extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              AppDeleteMenu().show(context, controller.removeProduct);
+              AppDeleteMenu().show(context, () {
+                loadDialog<void>(context, loadingText: 'Deleting ....');
+                controller.removeProduct().then((success) {
+                  if (success) {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    AppSnackbar().show(context, 'Deleted Successful');
+                  } else {
+                    Navigator.pop(context);
+                    AppSnackbar().show(context, 'Not Deleted');
+                  }
+                });
+              });
             },
             icon: const Icon(Icons.more_horiz_rounded),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// #493491 blueish
-const Color kPrimaryColor = Color.fromRGBO(0, 64, 93, 1);
+const Color kPrimaryColor = Colors.blueGrey;
 
 /// #f37a21 orange
 const Color kActiveColor = Color(0xFFF37A21);

@@ -9,6 +9,7 @@ class CurrentStockQuantity extends StatelessWidget {
     this.currentStock = 0,
     this.fontSize,
     this.backGroundColor = Colors.teal,
+    this.checkCurrentStock = true,
   }) : super(key: key);
 
   ///
@@ -22,6 +23,9 @@ class CurrentStockQuantity extends StatelessWidget {
 
   ///
   final double? fontSize;
+
+  ///
+  final bool checkCurrentStock;
   @override
   Widget build(BuildContext context) {
     final color = currentStock > -1 ? backGroundColor : Colors.red;
@@ -38,10 +42,10 @@ class CurrentStockQuantity extends StatelessWidget {
           style: TextStyle(
             color: withBackground
                 ? Colors.white
-                : currentStock == 0
+                : checkCurrentStock && currentStock == 0
                     ? const Color.fromARGB(176, 158, 158, 158)
                     : color,
-            fontSize: fontSize ?? 20,
+            fontSize: fontSize,
             fontWeight: FontWeight.w500,
           ),
         ),

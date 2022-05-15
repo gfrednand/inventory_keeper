@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
+        primaryColor: Colors.blueGrey,
       ),
       // darkTheme: ThemeData.dark(),
       themeMode: settingsController.themeMode,

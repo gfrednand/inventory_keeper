@@ -175,13 +175,8 @@ class ProductController extends BaseController {
   }
 
   /// Remove product from a current products state
-  Future<void> removeProduct() async {
-    busy = true;
-    final success = await _api.removeOne(product!.toMap());
-    busy = false;
-    if (success) {
-      _navigationService.goBackUntil(ModalRoute.withName(LayoutPage.routeName));
-    }
+  Future<bool> removeProduct() async {
+    return _api.removeOne(product!.toMap());
   }
 
   /// Fetching stream of data

@@ -7,6 +7,7 @@ import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/products/product_search_delegate.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
 
@@ -201,6 +202,8 @@ class ProductListView extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         mini: true,
+        backgroundColor: kPrimaryColor,
+        elevation: 16,
         onPressed: () {
           controller.product = null;
           Navigator.restorablePushNamed(

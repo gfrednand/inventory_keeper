@@ -3,7 +3,9 @@ import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
+import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:provider/provider.dart';
 
 /// Add Product Page
@@ -50,6 +52,7 @@ class AddProduct extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
+                primary: kPrimaryColor,
                 padding: const EdgeInsets.only(
                   top: 16,
                   bottom: 16,
@@ -82,6 +85,7 @@ class AddProduct extends StatelessWidget {
                       controller.addProduct().then((value) {
                         Navigator.pop(context);
                         Navigator.pop(context);
+                        AppSnackbar().show(context, 'Item Added');
                       });
                     });
                   }

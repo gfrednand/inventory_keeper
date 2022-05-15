@@ -12,7 +12,9 @@ class CustomFormField extends StatefulWidget {
     required TextInputType keyboardType,
     required TextInputAction inputAction,
     required String label,
-    required String hint,
+    this.hint,
+    this.helperText,
+    this.suffixText,
     String? Function(String?)? validator,
     this.isObscure = false,
     this.enabled = true,
@@ -28,7 +30,6 @@ class CustomFormField extends StatefulWidget {
         _keyboardtype = keyboardType,
         _inputAction = inputAction,
         _label = label,
-        _hint = hint,
         _validator = validator,
         super(key: key);
 
@@ -37,7 +38,7 @@ class CustomFormField extends StatefulWidget {
   final TextInputType _keyboardtype;
   final TextInputAction _inputAction;
   final String _label;
-  final String _hint;
+  final String? hint;
   final bool isObscure;
   // final String? initialValue;
   final bool enabled;
@@ -47,6 +48,8 @@ class CustomFormField extends StatefulWidget {
   final int maxLines;
   final int minLines;
   final bool isLabelEnabled;
+  final String? helperText;
+  final String? suffixText;
   final String? Function(String?)? _validator;
   final Icon? icon;
 
@@ -83,9 +86,11 @@ class _CustomFormFieldState extends State<CustomFormField> {
       validator: (String? value) =>
           widget._validator != null ? widget._validator!(value) : null,
       decoration: InputDecoration(
+        helperText: widget.helperText,
+        suffixText: widget.suffixText,
         filled: true,
         labelText: widget.isLabelEnabled ? widget._label : null,
-        hintText: widget._hint,
+        hintText: widget.hint,
         errorStyle: const TextStyle(
           color: Colors.redAccent,
           fontWeight: FontWeight.bold,

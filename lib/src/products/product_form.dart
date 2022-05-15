@@ -33,7 +33,6 @@ class ProductForm extends StatelessWidget {
               keyboardType: TextInputType.text,
               controller: controller.nameController,
               label: 'Item Name *',
-              hint: '',
               validator: (value) {
                 if (value == null || value == '') {
                   return 'Please provide item name';
@@ -58,7 +57,8 @@ class ProductForm extends StatelessWidget {
               ),
               controller: controller.buyPriceController,
               label: 'Cost',
-              hint: '',
+              suffixText: 'TSh',
+              helperText: 'Buying price',
               inputAction: TextInputAction.next,
               focusNode: controller.buyPriceFocusNode,
             ),
@@ -77,7 +77,8 @@ class ProductForm extends StatelessWidget {
               ),
               controller: controller.salePriceController,
               label: 'Price',
-              hint: '',
+              helperText: 'Selling price',
+              suffixText: 'TSh',
               inputAction: TextInputAction.next,
               focusNode: controller.salePriceFocusNode,
             ),
@@ -86,7 +87,6 @@ class ProductForm extends StatelessWidget {
               keyboardType: TextInputType.text,
               controller: controller.unitController,
               label: 'Unit Of Measure',
-              hint: '',
               inputAction: TextInputAction.next,
               focusNode: controller.unitFocusNode,
             ),

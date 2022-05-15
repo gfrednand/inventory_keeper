@@ -40,7 +40,6 @@ class ProductTypeListView extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         controller: controller.nameController,
                         label: 'Product Type',
-                        hint: '',
                         validator: (value) {
                           if (value == null) {
                             return 'Please provide product type';

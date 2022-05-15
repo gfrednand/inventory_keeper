@@ -74,7 +74,7 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 0
                 ? const Icon(
                     Icons.home,
-                    color: Colors.blue,
+                    color: Colors.blueGrey,
                     size: 25,
                   )
                 : Icon(
@@ -93,7 +93,7 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 1
                 ? const Icon(
                     Icons.view_cozy,
-                    color: Colors.blue,
+                    color: Colors.blueGrey,
                     size: 25,
                   )
                 : Icon(
@@ -112,7 +112,7 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 2
                 ? const Icon(
                     Icons.swap_horizontal_circle,
-                    color: Colors.blue,
+                    color: Colors.blueGrey,
                     size: 25,
                   )
                 : Icon(

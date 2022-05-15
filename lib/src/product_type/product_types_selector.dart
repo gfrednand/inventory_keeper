@@ -70,26 +70,38 @@ class ProductTypesSelector extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (ctx, index) {
                       final type = productTypes[index];
-                      return GestureDetector(
-                        onTap: () {
+                      return FilterChip(
+                        label: Text(
+                          productTypes[index].name,
+                        ),
+                        onSelected: (value) {
                           controller.type = type;
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: controller.type?.id == type.id
-                                ? const Color.fromARGB(170, 144, 202, 249)
-                                : const Color.fromARGB(84, 158, 158, 158),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Text(
-                              productTypes[index].name,
-                            ),
-                          ),
-                        ),
+                        // backgroundColor: Color.fromARGB(84, 158, 158, 158),
+                        selectedColor: const Color.fromARGB(170, 144, 202, 249),
+                        selected: controller.type?.id == type.id,
                       );
+
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     controller.type = type;
+                      //   },
+                      //   child: Container(
+                      //     alignment: Alignment.center,
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(20),
+                      //       color: controller.type?.id == type.id
+                      //           ? const Color.fromARGB(170, 144, 202, 249)
+                      //           : const Color.fromARGB(84, 158, 158, 158),
+                      //     ),
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.symmetric(horizontal: 8),
+                      //       child: Text(
+                      //         productTypes[index].name,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // );
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(

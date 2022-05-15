@@ -19,9 +19,12 @@ class AppSnackbar {
       action: SnackBarAction(
         textColor: const Color(0xFFFAF2FB),
         label: 'OK',
-        onPressed: () {},
+        onPressed: () {
+          // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
       ),
     );
+    // ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(snack);
   }
 }

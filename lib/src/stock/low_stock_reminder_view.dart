@@ -103,6 +103,7 @@ class LowStockReminderView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CurrentStockQuantity(
+                        backGroundColor: Colors.green,
                         currentStock: data[index].safetyStock,
                         withBackground: true,
                         fontSize: 16,
@@ -111,6 +112,8 @@ class LowStockReminderView extends StatelessWidget {
                         height: 4,
                       ),
                       CurrentStockQuantity(
+                        checkCurrentStock: false,
+                        backGroundColor: const Color(0xFFBDBDBD),
                         currentStock: data[index].currentStock,
                         fontSize: 16,
                       ),

@@ -48,7 +48,29 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
                 children: [
                   Expanded(
                     child: TextField(
-                      onChanged: (text) => _searchItem(text, products),
+                      onChanged: (searchQuery) {
+                        final searchResult = <Product>[];
+                        if (searchQuery.isEmpty) {
+                          setState(() {
+                            filteredProducts = products;
+                          });
+                        } else {
+                          for (final product in products) {
+                            if ((product.type != null &&
+                                    product.type!.name
+                                        .toLowerCase()
+                                        .contains(searchQuery.toLowerCase())) ||
+                                product.name
+                                    .toLowerCase()
+                                    .contains(searchQuery.toLowerCase())) {
+                              searchResult.add(product);
+                            }
+                          }
+                          setState(() {
+                            filteredProducts = searchResult;
+                          });
+                        }
+                      },
                       decoration: const InputDecoration(
                         fillColor: Colors.grey,
                         prefixIcon: Icon(Icons.search, color: Colors.grey),
