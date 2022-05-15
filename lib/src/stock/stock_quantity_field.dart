@@ -105,8 +105,8 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                 children: [
                   Text(
                     '${widget.currentQuantity}',
-                    style: const TextStyle(
-                      color: Colors.grey,
+                    style: TextStyle(
+                      color: Colors.grey[400],
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -114,9 +114,9 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                   const SizedBox(
                     width: 16,
                   ),
-                  const Icon(
+                  Icon(
                     Icons.arrow_forward,
-                    color: Colors.grey,
+                    color: Colors.grey[400],
                     size: 20,
                   ),
                   const SizedBox(
@@ -168,7 +168,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pop(context, _counter);
+                      Navigator.pop(context, _counter == 0 ? null : _counter);
                     },
                     child: const Text(
                       'Apply',

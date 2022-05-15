@@ -23,7 +23,7 @@ class _LayoutPageState extends State<LayoutPage> {
     const HomePage(),
     const ProductListView(),
     const TransactionPage(),
-    const SettingsView(),
+    // const SettingsView(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -54,12 +54,12 @@ class _LayoutPageState extends State<LayoutPage> {
   Container buildNavBar(BuildContext context) {
     return Container(
       height: 60,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: const BorderRadius.only(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
+        color: Colors.white,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -74,13 +74,13 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 0
                 ? const Icon(
                     Icons.home,
-                    color: Colors.white,
-                    size: 35,
+                    color: Colors.blue,
+                    size: 25,
                   )
-                : const Icon(
+                : Icon(
                     Icons.home_outlined,
-                    color: Colors.white,
-                    size: 35,
+                    color: Colors.grey[400],
+                    size: 25,
                   ),
           ),
           IconButton(
@@ -93,13 +93,13 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 1
                 ? const Icon(
                     Icons.view_cozy,
-                    color: Colors.white,
-                    size: 35,
+                    color: Colors.blue,
+                    size: 25,
                   )
-                : const Icon(
+                : Icon(
                     Icons.view_cozy_outlined,
-                    color: Colors.white,
-                    size: 35,
+                    color: Colors.grey[400],
+                    size: 25,
                   ),
           ),
           IconButton(
@@ -112,34 +112,34 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 2
                 ? const Icon(
                     Icons.swap_horizontal_circle,
-                    color: Colors.white,
-                    size: 35,
+                    color: Colors.blue,
+                    size: 25,
                   )
-                : const Icon(
+                : Icon(
                     Icons.swap_horizontal_circle_outlined,
-                    color: Colors.white,
-                    size: 35,
+                    color: Colors.grey[400],
+                    size: 25,
                   ),
           ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 3;
-              });
-            },
-            icon: pageIndex == 3
-                ? const Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.settings_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
+          // IconButton(
+          //   enableFeedback: false,
+          //   onPressed: () {
+          //     setState(() {
+          //       pageIndex = 3;
+          //     });
+          //   },
+          //   icon: pageIndex == 3
+          //       ? const Icon(
+          //           Icons.settings,
+          //           color: Colors.white,
+          //           size: 25,
+          //         )
+          //       : const Icon(
+          //           Icons.settings_outlined,
+          //           color: Colors.white,
+          //           size: 25,
+          //         ),
+          // ),
         ],
       ),
     );

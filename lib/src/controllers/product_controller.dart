@@ -111,16 +111,17 @@ class ProductController extends BaseController {
   }
 
   /// Add a product to a current products state
-  Future<void> addProduct() async {
+  Future<bool> addProduct() async {
     var newProduct = generateProduct();
     busy = true;
     newProduct = newProduct.copyWith(createdAt: DateTime.now());
 
     final success = await _api.addOne(newProduct.toMap());
     if (success) {
-      _navigationService.goBackUntil(ModalRoute.withName(LayoutPage.routeName));
       resetValues(success, null);
     }
+
+    return success;
   }
 
   ///
@@ -139,6 +140,18 @@ class ProductController extends BaseController {
       _navigationService
           .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
     }
+  }
+
+  /// Update a product to a current products state
+  Future<bool> updateProductSafetyStock(Product prod, int safetStock) async {
+    final productToUpdate = Product(
+      id: prod.id,
+      name: prod.name,
+      safetyStock: safetStock,
+      updatedAt: DateTime.now(),
+    );
+
+    return _api.updateOne(productToUpdate.toMap());
   }
 
   /// Update a product to a current products state

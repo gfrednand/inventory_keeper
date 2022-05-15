@@ -30,43 +30,16 @@ class ProductItem extends StatelessWidget {
           item.name,
           style: const TextStyle(fontSize: 15),
         ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.type?.name ?? '',
-                  style: const TextStyle(fontSize: 12),
-                ),
-                Text(
-                  'Cost ${oCcy.format(item.buyPrice)}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Price ${oCcy.format(item.salePrice)}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        subtitle: Text(
+            '${item.type?.name ?? ''}${item.type == null ? '' : ' | '}${oCcy.format(item.buyPrice)}${item.buyPrice == null ? '' : ' | '}${oCcy.format(item.salePrice)}'),
         leading: Hero(
           tag: 'avatar-${item.id}',
           child: Container(
             height: 50,
             width: 50,
-            decoration: const BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+            decoration: BoxDecoration(
+              color: Colors.grey[400],
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
             ),
           ),
         ),

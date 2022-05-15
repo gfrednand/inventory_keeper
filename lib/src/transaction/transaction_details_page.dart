@@ -56,7 +56,7 @@ class TransactionDetailsPage extends StatelessWidget {
             children: [
               Text(
                 formatter.format(stock.createdAt),
-                style: const TextStyle(color: Colors.grey),
+                style: TextStyle(color: Colors.grey[400]),
               ),
               Padding(
                 padding: const EdgeInsets.all(8),

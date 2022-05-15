@@ -6,6 +6,7 @@ import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
+import 'package:inventory_keeper/src/stock/add_item_safety_quntity.dart';
 
 import 'package:provider/provider.dart';
 
@@ -55,10 +56,12 @@ class LowStockReminderView extends StatelessWidget {
           Container(
             color: const Color.fromARGB(255, 236, 232, 232),
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: const ListTile(
-              leading: Icon(Icons.speed_outlined),
-              title: Text("Add item's safety stock quantity"),
-              trailing: Icon(
+            child: ListTile(
+              onTap: () =>
+                  Navigator.pushNamed(context, AddItemSafetyQuantity.routeName),
+              leading: const Icon(Icons.speed_outlined),
+              title: const Text("Add item's safety stock quantity"),
+              trailing: const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
               ),

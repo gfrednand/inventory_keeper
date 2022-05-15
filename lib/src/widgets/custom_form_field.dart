@@ -115,7 +115,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             ? IconButton(
                 icon: Icon(
                   _obscureText ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.grey,
+                  color: Colors.grey[400],
                 ),
                 onPressed: _toggle,
               )

@@ -8,6 +8,7 @@ class CurrentStockQuantity extends StatelessWidget {
     this.withBackground = false,
     this.currentStock = 0,
     this.fontSize,
+    this.backGroundColor = Colors.teal,
   }) : super(key: key);
 
   ///
@@ -17,10 +18,13 @@ class CurrentStockQuantity extends StatelessWidget {
   final int currentStock;
 
   ///
+  final Color backGroundColor;
+
+  ///
   final double? fontSize;
   @override
   Widget build(BuildContext context) {
-    final color = currentStock > -1 ? Colors.teal : Colors.red;
+    final color = currentStock > -1 ? backGroundColor : Colors.red;
 
     return DecoratedBox(
       decoration: BoxDecoration(

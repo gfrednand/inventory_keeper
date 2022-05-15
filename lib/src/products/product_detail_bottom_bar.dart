@@ -33,9 +33,9 @@ class ProductDetailBottomBar extends StatelessWidget {
                 const SizedBox(
                   width: 16,
                 ),
-                const Text(
+                Text(
                   'Quantity',
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
+                  style: TextStyle(fontSize: 13, color: Colors.grey[400]),
                 ),
               ],
             ),

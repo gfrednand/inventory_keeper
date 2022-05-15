@@ -8,10 +8,14 @@ class CustomDetailItemTile extends StatelessWidget {
     Key? key,
     required this.label,
     required this.value,
+    this.hintText,
   }) : super(key: key);
 
   ///
   final String label;
+
+  ///
+  final String? hintText;
 
   ///
   final String value;
@@ -38,8 +42,22 @@ class CustomDetailItemTile extends StatelessWidget {
         ),
       )
     ];
+
     return InkWell(
       onTap: () {
+        if (hintText != null) {
+          children.insert(
+            1,
+            Text(
+              hintText!,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[400],
+                // fontWeight: FontWeight.w500,
+              ),
+            ),
+          );
+        }
         displayDialog<void>(
           context,
           Column(
@@ -52,6 +70,7 @@ class CustomDetailItemTile extends StatelessWidget {
               const Divider(),
               ElevatedButton(
                 onPressed: () {
+                  if (hintText != null) children.removeAt(1);
                   Navigator.pop(context);
                 },
                 child: const Text('Cancel'),

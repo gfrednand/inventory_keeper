@@ -70,10 +70,10 @@ class ProductDetails extends StatelessWidget {
                               child: Container(
                                 height: 100,
                                 width: 100,
-                                decoration: const BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
                                 ),
                               ),
                             ),
@@ -109,10 +109,11 @@ class ProductDetails extends StatelessWidget {
                                     const SizedBox(
                                       width: 16,
                                     ),
-                                    const Text(
+                                    Text(
                                       'Total Quantity',
                                       style: TextStyle(
-                                          fontSize: 13, color: Colors.grey),
+                                          fontSize: 13,
+                                          color: Colors.grey[400]),
                                     ),
                                   ],
                                 ),
@@ -137,11 +138,13 @@ class ProductDetails extends StatelessWidget {
                             height: 16,
                           ),
                           CustomDetailItemTile(
+                            hintText: 'Buying Cost of Item',
                             label: 'Cost',
                             value:
                                 oCcy.format(controller.product?.buyPrice ?? 0),
                           ),
                           CustomDetailItemTile(
+                            hintText: 'Selling Price of Item',
                             label: 'Price',
                             value:
                                 oCcy.format(controller.product?.salePrice ?? 0),
@@ -153,6 +156,7 @@ class ProductDetails extends StatelessWidget {
                           ),
                           const Divider(),
                           CustomDetailItemTile(
+                            hintText: 'Used for notification',
                             label: 'Safety Stock',
                             value: '${controller.product?.safetyStock ?? '-'}',
                           ),

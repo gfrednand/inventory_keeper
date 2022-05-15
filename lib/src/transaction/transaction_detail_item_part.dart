@@ -29,8 +29,8 @@ class TransactionDetailItemPart extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.grey,
+          style: TextStyle(
+            color: Colors.grey[400],
           ),
         )
       ],

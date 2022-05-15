@@ -79,7 +79,10 @@ class AddProduct extends StatelessWidget {
                         controller.currentStockQuantity = value;
                       }
                       loadDialog<dynamic>(context, loadingText: 'Saving item');
-                      controller.addProduct();
+                      controller.addProduct().then((value) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      });
                     });
                   }
                 }

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
-import 'package:inventory_keeper/src/products/low_stock_reminder_view.dart';
+import 'package:inventory_keeper/src/stock/add_item_safety_quntity.dart';
+import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/routes/fade_route.dart';
@@ -49,6 +50,8 @@ class AppRouter {
         return FadeRoute(page: const LowStockReminderView());
       case ProductListView.routeName:
         return FadeRoute(page: const ProductListView());
+      case AddItemSafetyQuantity.routeName:
+        return FadeRoute(page: const AddItemSafetyQuantity());
       case StockInOutForm.routeName:
         if (routeSettings.arguments != null) {
           final data = routeSettings.arguments! as Map<String, bool>;
