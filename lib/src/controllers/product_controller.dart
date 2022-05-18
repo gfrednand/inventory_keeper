@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
-import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/locator.dart';
-import 'package:inventory_keeper/src/models/product.dart';
-import 'package:inventory_keeper/src/models/product_type.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 
@@ -100,7 +99,7 @@ class ProductController extends BaseController {
     busy = false;
     final ps = <Product>[];
     for (final item in objs) {
-      ps.add(Product.fromMap(item));
+      ps.add(Product.fromJson(item));
     }
     products = ps;
   }
@@ -114,9 +113,9 @@ class ProductController extends BaseController {
   Future<bool> addProduct() async {
     var newProduct = generateProduct();
     busy = true;
-    newProduct = newProduct.copyWith(createdAt: DateTime.now());
+    newProduct = newProduct.copyWith(createdAt: DateTime.now().toString());
 
-    final success = await _api.addOne(newProduct.toMap());
+    final success = await _api.addOne(newProduct.toJson());
     if (success) {
       resetValues(success, null);
     }
@@ -125,21 +124,22 @@ class ProductController extends BaseController {
   }
 
   ///
-  Future<void> updateProducts(List<Product> prods) async {
+  Future<bool> updateProducts(List<Product> prods) async {
     final prodMap = prods.where((p) => p.isIncomingStock != null).map((p) {
-      if (p.id == product!.id) {
+      if (p.id == product?.id) {
         currentStockQuantity = p.currentStock;
       }
       p = p.copyWith(
-        updatedAt: DateTime.now(),
+        updatedAt: DateTime.now().toString(),
       );
-      return p.toMap();
+      return p.toJson();
     }).toList();
     final success = await _api.updateMany(prodMap);
-    if (success) {
-      _navigationService
-          .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
-    }
+    // if (success) {
+    //   _navigationService
+    //       .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
+    // }
+    return success;
   }
 
   /// Update a product to a current products state
@@ -148,10 +148,10 @@ class ProductController extends BaseController {
       id: prod.id,
       name: prod.name,
       safetyStock: safetStock,
-      updatedAt: DateTime.now(),
+      updatedAt: DateTime.now().toString(),
     );
 
-    return _api.updateOne(productToUpdate.toMap());
+    return _api.updateOne(productToUpdate.toJson());
   }
 
   /// Update a product to a current products state
@@ -160,10 +160,10 @@ class ProductController extends BaseController {
     if (updateProduct != _product) {
       updateProduct = updateProduct.copyWith(
         id: product?.id,
-        updatedAt: DateTime.now(),
+        updatedAt: DateTime.now().toString(),
       );
 
-      final success = await _api.updateOne(updateProduct.toMap());
+      final success = await _api.updateOne(updateProduct.toJson());
       if (success) {
         _navigationService
             .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
@@ -176,14 +176,14 @@ class ProductController extends BaseController {
 
   /// Remove product from a current products state
   Future<bool> removeProduct() async {
-    return _api.removeOne(product!.toMap());
+    return _api.removeOne(product!.toJson());
   }
 
   /// Fetching stream of data
   Stream<List<Product>> fetchProductsAsStream({String? query}) {
     return _api.streamDataCollection(query: query).map(
           (maps) => maps.map((item) {
-            return Product.fromMap(item);
+            return Product.fromJson(item);
           }).toList(),
         );
   }
@@ -200,12 +200,12 @@ class ProductController extends BaseController {
 
     if (currentStockQuantity != null) {
       newProduct = newProduct.copyWith(
-        currentStock: currentStockQuantity,
+        currentStock: currentStockQuantity ?? 0,
       );
     }
 
     if (safetyQuantity != null) {
-      newProduct = newProduct.copyWith(safetyStock: safetyQuantity);
+      newProduct = newProduct.copyWith(safetyStock: safetyQuantity ?? 0);
     }
 
     return newProduct;

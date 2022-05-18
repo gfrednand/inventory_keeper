@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
 class CustomModalSheet {
@@ -42,7 +43,7 @@ class CustomModalSheet {
                   )
                 else
                   child,
-                const Divider(),
+                const SectionDivider(),
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,

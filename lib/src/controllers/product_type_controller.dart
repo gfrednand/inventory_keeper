@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
-import 'package:inventory_keeper/src/models/product_type.dart';
+import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 
 /// ProductType Controller
 class ProductTypeController extends BaseController {
@@ -32,7 +32,7 @@ class ProductTypeController extends BaseController {
     busy = false;
     final ps = <ProductType>[];
     for (final item in objs) {
-      ps.add(ProductType.fromMap(item));
+      ps.add(ProductType.fromJson(item));
     }
     _productTypes = ps;
     return ps;
@@ -52,7 +52,7 @@ class ProductTypeController extends BaseController {
   /// Update a product to a current productTypes state
   Future<void> updateProductType(ProductType item) async {
     busy = true;
-    final success = await _api.updateOne(item.toMap());
+    final success = await _api.updateOne(item.toJson());
     busy = false;
     if (success) _productTypes.add(item);
     notifyListeners();
@@ -61,7 +61,7 @@ class ProductTypeController extends BaseController {
   /// Remove product from a current productTypes state
   Future<void> removeProductType(ProductType item) async {
     busy = true;
-    final success = await _api.removeOne(item.toMap());
+    final success = await _api.removeOne(item.toJson());
     busy = false;
     if (success) {
       // final index = _productTypes.indexWhere((p) => p.id == item.id);
@@ -73,7 +73,7 @@ class ProductTypeController extends BaseController {
   /// Fetching stream of data
   Stream<List<ProductType>> fetchProductTypesAsStream() {
     return _api.streamDataCollection().map(
-          (maps) => maps.map(ProductType.fromMap).toList(),
+          (maps) => maps.map(ProductType.fromJson).toList(),
         );
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/locator.dart';
-import 'package:inventory_keeper/src/models/product.dart';
-import 'package:inventory_keeper/src/models/stock.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 
 /// Stock Controller
@@ -97,7 +97,7 @@ class StockController extends BaseController {
     busy = false;
     final ps = <Stock>[];
     for (final item in objs) {
-      ps.add(Stock.fromMap(item));
+      ps.add(Stock.fromJson(item));
     }
     _stocks = ps;
     return ps;
@@ -106,15 +106,20 @@ class StockController extends BaseController {
   /// Add a product to a current Stocks state
   Future<List<Product>> addStock(bool isIncoming) async {
     final tempProds = products.where((p) => p.isIncomingStock != null).toList();
+    final productsMap = tempProds.map((p) => p.toJson()).toList();
     final stock = Stock(
-      createdAt: DateTime.now(),
+      createdAt: DateTime.now().toString(),
       totalSelectedQuantity: totalQuantity,
       totalAmount: totalAmount,
       isIncoming: isIncoming,
       products: products,
     );
 
-    final success = await _api.addOne(stock.toMap());
+    final map = stock.toJson();
+
+    map['products'] = productsMap;
+
+    final success = await _api.addOne(map);
     if (success) {
       // _navigationService.goBackUntil(ProductListView.routeName);
       removeAllFromCart();
@@ -126,31 +131,30 @@ class StockController extends BaseController {
   /// Update a product to a current Stocks state
   Future<void> updateStock(Stock item) async {
     busy = true;
-    final success = await _api.updateOne(item.toMap());
+    final success = await _api.updateOne(item.toJson());
     busy = false;
     if (success) _stocks.add(item);
     notifyListeners();
   }
 
   /// Remove product from a current Stocks state
-  Future<void> removeStock() async {
-    busy = true;
-    final success = await _api.removeOne(stock!.toMap());
-    busy = false;
+  Future<bool> removeStock() async {
+    final success = await _api.removeOne(stock!.toJson());
     if (success) {
       stock = null;
-      var count = 0;
-      _navigationService.goBackUntil((route) {
-        return count++ == 2;
-      });
+      // var count = 0;
+      // _navigationService.goBackUntil((route) {
+      //   return count++ == 2;
+      // });
     }
     notifyListeners();
+    return success;
   }
 
   /// Fetching stream of data
   Stream<List<Stock>> fetchStocksAsStream() {
     return _api.streamDataCollection().map(
-          (maps) => maps.map(Stock.fromMap).toList(),
+          (maps) => maps.map(Stock.fromJson).toList(),
         );
   }
 
@@ -162,9 +166,9 @@ class StockController extends BaseController {
     return products.fold(0, (double currentTotal, Product nextProduct) {
       var price = 0.0;
       if (nextProduct.isIncomingStock != null && nextProduct.isIncomingStock!) {
-        price = nextProduct.buyPrice;
+        price = nextProduct.buyPrice ?? 0;
       } else {
-        price = nextProduct.salePrice;
+        price = nextProduct.salePrice ?? 0;
       }
       return currentTotal + price * (nextProduct.selectedQuantity ?? 0);
     });
@@ -191,7 +195,8 @@ class StockController extends BaseController {
       if (index == -1) {
         products.add(product);
       } else {
-        products[index].selectedQuantity = product.selectedQuantity;
+        products[index] = products[index]
+            .copyWith(selectedQuantity: product.selectedQuantity);
       }
       notifyListeners();
     }

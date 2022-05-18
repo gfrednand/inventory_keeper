@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
+import 'package:inventory_keeper/src/widgets/section_divider.dart';
 import 'package:provider/provider.dart';
 
 ///
@@ -102,13 +103,13 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
               ),
             ),
           ),
-          const Divider(),
+          const SectionDivider(),
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: filteredProducts.length,
               itemBuilder: (context, index) {
-                final item = filteredProducts[index];
+                var item = filteredProducts[index];
                 return ProductItem(
                   item: item,
                   trailing: Column(
@@ -152,7 +153,7 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
                           Navigator.pop(context);
                           if (success) {
                             setState(() {
-                              item.safetyStock = value;
+                              item = item.copyWith(safetyStock: value);
                             });
                             AppSnackbar().show(
                               context,

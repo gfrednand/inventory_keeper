@@ -4,6 +4,7 @@ import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 import 'package:inventory_keeper/src/settings/settings_controller.dart';
+import 'package:inventory_keeper/src/utility/themes.dart';
 import 'package:provider/provider.dart';
 
 /// The Widget that configures your application.
@@ -27,15 +28,9 @@ class MyApp extends StatelessWidget {
       // Remove debug banner
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        primaryColor: Colors.blueGrey,
-      ),
-      // darkTheme: ThemeData.dark(),
-      themeMode: settingsController.themeMode,
+      // themeMode: settingsController.themeMode,
+      // darkTheme: buildAppDarkTheme(context),
+      theme: buildAppLightTheme(context),
       initialRoute: LayoutPage.routeName,
       onGenerateRoute: AppRouter.generateRoute,
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:provider/provider.dart';

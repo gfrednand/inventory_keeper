@@ -10,6 +10,7 @@ import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
+import 'package:inventory_keeper/src/widgets/section_divider.dart';
 import 'package:provider/provider.dart';
 
 /// Add Product Page
@@ -53,8 +54,10 @@ class ProductDetails extends StatelessWidget {
                   if (success) {
                     Navigator.pop(context);
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     AppSnackbar().show(context, 'Deleted Successful');
                   } else {
+                    Navigator.pop(context);
                     Navigator.pop(context);
                     AppSnackbar().show(context, 'Not Deleted');
                   }
@@ -163,18 +166,18 @@ class ProductDetails extends StatelessWidget {
                             value:
                                 oCcy.format(controller.product?.salePrice ?? 0),
                           ),
-                          const Divider(),
+                          const SectionDivider(),
                           CustomDetailItemTile(
                             label: 'Category',
                             value: controller.product?.type?.name ?? '-',
                           ),
-                          const Divider(),
+                          const SectionDivider(),
                           CustomDetailItemTile(
                             hintText: 'Used for notification',
                             label: 'Safety Stock',
                             value: '${controller.product?.safetyStock ?? '-'}',
                           ),
-                          const Divider(),
+                          const SectionDivider(),
                           CustomDetailItemTile(
                             label: 'Unit Of Measure',
                             value: controller.product?.unit ?? '-',

@@ -3,10 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
+import 'package:inventory_keeper/src/products/past_quantity_view.dart';
 import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +22,20 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final productController = context.watch<ProductController>();
     final products = context.watch<List<Product>>();
+    var stockIn = 0;
+    var stockOut = 0;
+    context
+        .watch<List<Stock>?>()
+        ?.where((element) =>
+            DateTime.tryParse(element.createdAt)?.day == DateTime.now().day)
+        .forEach((element) {
+      if (element.isIncoming) {
+        stockIn = stockIn + element.totalSelectedQuantity;
+      } else {
+        stockOut = stockOut + element.totalSelectedQuantity;
+      }
+    });
+
     final totalQuantity =
         products.fold(0, (int currentQuantity, Product nextProduct) {
       return currentQuantity + nextProduct.currentStock;
@@ -27,7 +44,7 @@ class HomePage extends StatelessWidget {
       slivers: [
         const CustomAppBar(
           flexibleSpace: FlexibleSpaceBar(
-            titlePadding: EdgeInsets.all(8),
+            titlePadding: EdgeInsets.symmetric(horizontal: 22),
             title: Text(
               'Home',
               style: TextStyle(color: Colors.black, fontSize: 28),
@@ -41,6 +58,7 @@ class HomePage extends StatelessWidget {
               child: Column(
                 children: [
                   HomeItemContainer(
+                    withGradient: true,
                     label:
                         'Today, ${DateFormat.MMMMd().format(DateTime.now())}',
                     child: Column(
@@ -48,22 +66,32 @@ class HomePage extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TransactionDetailItemPart(
-                              quantity: totalQuantity,
-                              label: 'Total',
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: IntrinsicHeight(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TransactionDetailItemPart(
+                                  labelColor: Colors.white,
+                                  quantity: totalQuantity,
+                                  label: 'Total',
+                                ),
+                                const VerticalDivider(thickness: 2),
+                                TransactionDetailItemPart(
+                                  labelColor: Colors.white,
+                                  quantity: stockIn,
+                                  label: 'Stock In',
+                                ),
+                                const VerticalDivider(thickness: 2),
+                                TransactionDetailItemPart(
+                                  labelColor: Colors.white,
+                                  quantity: stockOut,
+                                  label: 'Stock Out',
+                                ),
+                              ],
                             ),
-                            const TransactionDetailItemPart(
-                              quantity: 0,
-                              label: 'Stock In',
-                            ),
-                            const TransactionDetailItemPart(
-                              quantity: 0,
-                              label: 'Stock Out',
-                            ),
-                          ],
+                          ),
                         ),
                         const SizedBox(
                           height: 16,
@@ -119,6 +147,27 @@ class HomePage extends StatelessWidget {
                       onTap: () => Navigator.pushNamed(
                         context,
                         LowStockReminderView.routeName,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  HomeItemContainer(
+                    label: 'Past Quantity',
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.history,
+                        color: AppColors.orange500,
+                      ),
+                      title: const Text('Items past quantity'),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                      ),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        PastQuantityView.routeName,
                       ),
                     ),
                   ),

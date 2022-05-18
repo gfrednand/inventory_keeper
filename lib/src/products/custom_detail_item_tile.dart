@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
+import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
 class CustomDetailItemTile extends StatelessWidget {
@@ -67,7 +68,7 @@ class CustomDetailItemTile extends StatelessWidget {
                 height: 16,
               ),
               ...children,
-              const Divider(),
+              const SectionDivider(),
               ElevatedButton(
                 onPressed: () {
                   if (hintText != null) children.removeAt(1);

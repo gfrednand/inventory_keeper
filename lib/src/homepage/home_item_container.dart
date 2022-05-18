@@ -9,6 +9,7 @@ class HomeItemContainer extends StatelessWidget {
     Key? key,
     required this.child,
     required this.label,
+    this.withGradient = false,
   }) : super(key: key);
 
   /// child
@@ -17,11 +18,15 @@ class HomeItemContainer extends StatelessWidget {
   /// label
   final String label;
 
+  /// With gradient
+  final bool withGradient;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 10, right: 10),
-      decoration: containerBoxDecoration(),
+      decoration:
+          withGradient ? decorationWithGradient() : containerBoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -29,9 +34,16 @@ class HomeItemContainer extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: withGradient ? Colors.white : Colors.black,
+              ),
+            ),
           ),
           child,
         ],

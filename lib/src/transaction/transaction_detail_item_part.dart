@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/models/stock.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 
 ///
 class TransactionDetailItemPart extends StatelessWidget {
@@ -8,6 +8,7 @@ class TransactionDetailItemPart extends StatelessWidget {
     Key? key,
     required this.quantity,
     required this.label,
+    this.labelColor,
   }) : super(key: key);
 
   ///
@@ -16,6 +17,9 @@ class TransactionDetailItemPart extends StatelessWidget {
   ///
   final String label;
 
+  ///
+  final Color? labelColor;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,9 +27,8 @@ class TransactionDetailItemPart extends StatelessWidget {
       children: [
         Text(
           '$quantity',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: labelColor, fontSize: 20),
         ),
         Text(
           label,

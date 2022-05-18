@@ -18,12 +18,41 @@ class AppDeleteMenu {
           shrinkWrap: true,
           children: <Widget>[
             TextButton(
-              onPressed: onPressed,
+              onPressed: () {
+                Navigator.pop(context);
+                _delete(context, onPressed);
+              },
               child: const Text('Delete'),
             )
           ],
         ),
       ),
+    );
+  }
+
+  void _delete(BuildContext context, void Function()? onPressed) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: const Text('Please Confirm'),
+          content: const Text('Are you sure to delete?'),
+          actions: [
+            // The "Yes" button
+            TextButton(
+              onPressed: onPressed,
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            )
+          ],
+        );
+      },
     );
   }
 }

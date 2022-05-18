@@ -69,6 +69,15 @@ Future<T?> displayDialog<T>(
       },
     );
 
+/// Date picker
+Future<DateTime?> selectDate(BuildContext context,{ DateTime? currentDate}) {
+  return showDatePicker(
+      context: context,
+      initialDate: currentDate?? DateTime.now(),
+      firstDate: DateTime(2015),
+      lastDate: DateTime(2050));
+}
+
 /// Out Icon
 Transform outIcon() {
   return Transform.rotate(

@@ -42,8 +42,6 @@ class FireBaseRepository
       final docRef =
           ref!.doc(map['id'] as String); //automatically generate unique id
       batch.update(docRef, map);
-
-      print(map);
     }
     return batch.commit().then((value) => true).catchError((dynamic error) {
       print('Failed to add: $error');
@@ -93,8 +91,9 @@ class FireBaseRepository
 
   @override
   Future<bool> addOne(Map<String, dynamic> p) async {
+    print(p);
     return ref!.add(p).then((value) => true).catchError((dynamic error) {
-      print('Failed to add user: $error');
+      print('Failed to add data: ${error.toString()}');
       return false;
     });
   }
@@ -113,6 +112,27 @@ class FireBaseRepository
     } else {
       return Future<bool>.value(false);
     }
+  }
+
+  ///
+  Future<Map<String, dynamic>?> getClosingStockByDate(String date) async {
+    final snapshot = await ref!.where('date', isEqualTo: date).get();
+    if (snapshot.docs.isNotEmpty && snapshot.docs[0].data() != null) {
+      return snapshot.docs[0].data()! as Map<String, dynamic>;
+    }
+    return null;
+  }
+
+  ///
+  Future<bool> createOrUpdate(Map<String, dynamic> map, String id) {
+    return ref!
+        .doc(id)
+        .set(map)
+        .then((value) => true)
+        .catchError((dynamic error) {
+      print('Failed to update user: $error');
+      return false;
+    });
   }
 
   /// Fetching stream of data

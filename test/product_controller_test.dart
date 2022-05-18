@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 
 void main() {
   test("Area of the circle with radius 1 should be 3.141592", () {

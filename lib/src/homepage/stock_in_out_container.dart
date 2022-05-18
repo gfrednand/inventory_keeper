@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';

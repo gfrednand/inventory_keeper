@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_stepper.dart';
 
 ///
@@ -164,7 +165,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: kPrimaryColor,
+                      primary: AppColors.blue700,
                       padding: const EdgeInsets.symmetric(
                         vertical: 16,
                       ),

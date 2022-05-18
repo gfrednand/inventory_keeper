@@ -1,7 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/home_page.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
-import 'package:inventory_keeper/src/settings/settings_view.dart';
 import 'package:inventory_keeper/src/transaction/transaction_page.dart';
 
 ///
@@ -19,11 +19,10 @@ class LayoutPage extends StatefulWidget {
 class _LayoutPageState extends State<LayoutPage> {
   int pageIndex = 0;
 
-  final pages = [
+  List<Widget> pageList = <Widget>[
     const HomePage(),
     const ProductListView(),
     const TransactionPage(),
-    // const SettingsView(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -44,8 +43,21 @@ class _LayoutPageState extends State<LayoutPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).canvasColor,
-        body: pages[pageIndex],
+        // extendBody: true,
+        body: PageTransitionSwitcher(
+          transitionBuilder: (
+            Widget child,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return FadeThroughTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            );
+          },
+          child: pageList[pageIndex],
+        ),
         bottomNavigationBar: buildNavBar(context),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
@@ -9,6 +9,8 @@ import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/section_divider.dart';
 
 ///
 class StockInOutItems extends StatelessWidget {
@@ -104,9 +106,9 @@ class StockInOutItems extends StatelessWidget {
                           restorationId: 'productListView',
                           itemCount: data.length,
                           separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
+                              const SectionDivider(),
                           itemBuilder: (BuildContext context, int index) {
-                            final item = data![index];
+                            var item = data![index];
 
                             var selectedQuantity = item.selectedQuantity;
                             if (selectedQuantity != null) {
@@ -151,7 +153,8 @@ class StockInOutItems extends StatelessWidget {
                                   ),
                                 ).then((value) {
                                   if (value != null && value > 0) {
-                                    item.selectedQuantity = value;
+                                    item =
+                                        item.copyWith(selectedQuantity: value);
                                     context
                                         .read<StockController>()
                                         .addToCart(item);

@@ -1,12 +1,11 @@
 // ignore_for_file: cascade_invocations
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
-import 'package:inventory_keeper/src/models/stock.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/transaction/transaction_details_page.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
@@ -61,8 +60,8 @@ class TransactionPage extends StatelessWidget {
                 : SliverFillRemaining(
                     child: GroupedListView<Stock, String>(
                       elements: stocks,
-                      groupBy: (element) =>
-                          DateFormat('MMM d, yyyy').format(element.createdAt),
+                      groupBy: (element) => DateFormat('MMM d, yyyy')
+                          .format(DateTime.parse(element.createdAt)),
                       groupComparator: (value1, value2) =>
                           value1.compareTo(value2),
                       itemComparator: (item1, item2) =>

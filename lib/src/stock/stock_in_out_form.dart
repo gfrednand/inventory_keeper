@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
+import 'package:inventory_keeper/src/widgets/section_divider.dart';
 import 'package:provider/provider.dart';
 
 ///
@@ -69,9 +71,8 @@ class StockInOutForm extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Divider(
+                      SectionDivider(
                         color: color,
-                        thickness: 2,
                       ),
                       ListTile(
                         title: const Text('Item'),
@@ -93,7 +94,7 @@ class StockInOutForm extends StatelessWidget {
                           );
                         },
                       ),
-                      const Divider(),
+                      const SectionDivider(),
                       SizedBox(
                         height: MediaQuery.of(context).size.height,
                         child: ListView.builder(
@@ -145,7 +146,7 @@ class StockInOutForm extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: kPrimaryColor,
+                        primary: AppColors.blue700,
                         padding: const EdgeInsets.only(
                           top: 16,
                           bottom: 16,
@@ -166,9 +167,15 @@ class StockInOutForm extends StatelessWidget {
                               if (products.isNotEmpty) {
                                 context
                                     .read<ProductController>()
-                                    .updateProducts(products);
+                                    .updateProducts(products)
+                                    .then((success) {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                });
                               } else {
                                 Navigator.pop(context);
+                                AppSnackbar()
+                                    .show(context, 'Failed to update stock');
                               }
                             },
                           );
@@ -194,24 +201,23 @@ class StockInOutForm extends StatelessWidget {
       // set up the buttons
       final cancelButton = ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: kPrimaryColor,
+          primary: AppColors.blue700,
         ),
         child: const Text(
           'Cancel',
-          style: TextStyle(color: Colors.black),
         ),
         onPressed: () {
           Navigator.pop(context);
         },
       );
-      final continueButton = ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: Colors.red, // Background color
+      final continueButton = TextButton(
+        child: const Text(
+          'Delete',
+          style: TextStyle(color: Colors.red),
         ),
-        child: const Text('Delete'),
         onPressed: () {
-          for (final p in products) {
-            p.selectedQuantity = 0;
+          for (var p in products) {
+            p = p.copyWith(selectedQuantity: 0);
           }
           context.read<StockController>().removeAllFromCart();
           var count = 0;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 ///

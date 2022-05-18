@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/models/product_type.dart';
+import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:provider/provider.dart';
 
@@ -34,30 +34,39 @@ class ProductTypesSelector extends StatelessWidget {
               top: 10,
               bottom: 16,
             ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  ProductTypeListView.routeName,
-                );
-              },
-              child: const Hero(
+            child: Hero(
                 tag: 'hero-category-title',
-                child: Card(
-                  elevation: 0.3,
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
+                child: Material(
+                  child: ListTile(
+                    dense: true,
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        ProductTypeListView.routeName,
+                      );
+                    },
+                    title: const Text(
                       'Categories',
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 20,
                       ),
                     ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                    ),
                   ),
+                )
+
+                //  Card(
+                //   elevation: 0.3,
+                //   child: Padding(
+                //     padding: EdgeInsets.all(8),
+                //     child: ,
+                //   ),
+                // ),
                 ),
-              ),
-            ),
           ),
         ),
         Padding(

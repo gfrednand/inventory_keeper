@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/models/product.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -8,6 +8,7 @@ import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/products/product_search_delegate.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,7 @@ class ProductListView extends StatelessWidget {
         slivers: [
           CustomAppBar(
             flexibleSpace: const FlexibleSpaceBar(
-              titlePadding: EdgeInsets.all(8),
+              titlePadding: EdgeInsets.symmetric(horizontal: 22),
               title: Text(
                 'Items',
                 style: TextStyle(color: Colors.black, fontSize: 28),
@@ -68,58 +69,57 @@ class ProductListView extends StatelessWidget {
             ),
           ),
 
-          Builder(builder: (context) {
-            var data = products;
-            if (data == null) {
-              return const SliverToBoxAdapter(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-            if (controller.type != null) {
-              data = data
-                  .where((p) => p.type?.name == controller.type?.name)
-                  .toList();
-              if (data.isEmpty) {
-                return SliverToBoxAdapter(
+          Builder(
+            builder: (context) {
+              var data = products;
+              if (data == null) {
+                return const SliverToBoxAdapter(
                   child: Center(
-                    child: Text(
-                      'Category *${controller.type!.name}*\n Has No Products',
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                    child: CircularProgressIndicator(),
                   ),
                 );
               }
-            }
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return ProductItem(
-                    item: data![index],
-                    trailing: Hero(
-                      tag: 'currentstock-${data[index].id}',
-                      child: CurrentStockQuantity(
-                        currentStock: data[index].currentStock,
+              if (controller.type != null) {
+                data = data
+                    .where((p) => p.type?.name == controller.type?.name)
+                    .toList();
+                if (data.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Text(
+                        'Category *${controller.type!.name}*\n Has No Products',
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
-                    onTap: () {
-                      // Navigate to the details page. If the user leaves and
-                      // returns to the app after it has been killed while running
-                      // in the background, the navigation stack is restored.
-
-                      controller.product = data![index];
-                      Navigator.pushNamed(
-                        context,
-                        ProductDetails.routeName,
-                      ).then((value) => controller.product = null);
-                    },
                   );
-                },
-                childCount: data.length,
-              ),
-            );
-          }),
+                }
+              }
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return ProductItem(
+                      item: data![index],
+                      trailing: CurrentStockQuantity(
+                        currentStock: data[index].currentStock,
+                      ),
+                      onTap: () {
+                        // Navigate to the details page. If the user leaves and
+                        // returns to the app after it has been killed while running
+                        // in the background, the navigation stack is restored.
+
+                        controller.product = data![index];
+                        Navigator.pushNamed(
+                          context,
+                          ProductDetails.routeName,
+                        ).then((value) => controller.product = null);
+                      },
+                    );
+                  },
+                  childCount: data.length,
+                ),
+              );
+            },
+          ),
           //   SliverFillRemaining(
           //     child: Column(
           //       children: [
@@ -202,7 +202,7 @@ class ProductListView extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         mini: true,
-        backgroundColor: kPrimaryColor,
+        backgroundColor: AppColors.blue600,
         elevation: 16,
         onPressed: () {
           controller.product = null;
@@ -211,7 +211,7 @@ class ProductListView extends StatelessWidget {
             AddProduct.routeName,
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

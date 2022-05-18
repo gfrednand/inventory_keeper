@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
-import 'package:inventory_keeper/src/routes/slide_top_route.dart';
-import 'package:inventory_keeper/src/stock/add_item_safety_quntity.dart';
-import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
+import 'package:inventory_keeper/src/products/past_quantity_view.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/routes/fade_route.dart';
-import 'package:inventory_keeper/src/routes/size_route.dart';
-import 'package:inventory_keeper/src/routes/slide_right_route.dart';
+import 'package:inventory_keeper/src/routes/slide_top_route.dart';
 import 'package:inventory_keeper/src/settings/settings_view.dart';
+import 'package:inventory_keeper/src/stock/add_item_safety_quntity.dart';
+import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
 import 'package:inventory_keeper/src/stock/stock_list_view.dart';
@@ -37,18 +36,22 @@ class AppRouter {
           },
         );
       case ProductDetails.routeName:
-        return CupertinoPageRoute<void>(
-          settings: routeSettings,
-          builder: (BuildContext context) {
-            return const ProductDetails();
-          },
-        );
+        return FadeRoute(page: const ProductDetails());
+      // case ProductDetails.routeName:
+      //   return CupertinoPageRoute<void>(
+      //     settings: routeSettings,
+      //     builder: (BuildContext context) {
+      //       return const ProductDetails();
+      //     },
+      //   );
       case LayoutPage.routeName:
         return FadeRoute(page: const LayoutPage());
       case TransactionDetailsPage.routeName:
         return FadeRoute(page: const TransactionDetailsPage());
       case LowStockReminderView.routeName:
         return SlideTopRoute(page: const LowStockReminderView());
+      case PastQuantityView.routeName:
+        return SlideTopRoute(page: const PastQuantityView());
       case ProductListView.routeName:
         return FadeRoute(page: const ProductListView());
       case AddItemSafetyQuantity.routeName:

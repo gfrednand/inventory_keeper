@@ -4,6 +4,7 @@ import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class AddProduct extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: kPrimaryColor,
+                primary: AppColors.blue700,
                 padding: const EdgeInsets.only(
                   top: 16,
                   bottom: 16,

@@ -4,6 +4,7 @@ import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
+import 'package:inventory_keeper/src/widgets/section_divider.dart';
 import 'package:provider/provider.dart';
 
 ///
@@ -42,7 +43,12 @@ class TransactionDetailsPage extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                AppDeleteMenu().show(context, controller.removeStock);
+                AppDeleteMenu().show(context, () {
+                  controller.removeStock().then((success) {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  });
+                });
               },
               icon: const Icon(Icons.more_horiz_rounded),
             ),
@@ -55,7 +61,7 @@ class TransactionDetailsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                formatter.format(stock.createdAt),
+                formatter.format(DateTime.parse(stock.createdAt)),
                 style: TextStyle(color: Colors.grey[400]),
               ),
               Padding(
@@ -69,9 +75,8 @@ class TransactionDetailsPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
+              SectionDivider(
                 color: color,
-                thickness: 2,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -86,12 +91,12 @@ class TransactionDetailsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(),
+              const SectionDivider(),
               ListView.separated(
                 shrinkWrap: true,
                 itemCount: stock.products.length,
                 separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+                    const SectionDivider(),
                 itemBuilder: (context, index) {
                   return ProductItem(
                     item: stock.products[index],
