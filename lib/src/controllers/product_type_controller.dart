@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
@@ -7,23 +8,38 @@ import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 class ProductTypeController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('productTypes');
 
+  Rx<ProductType>? type;
+
+  /// Product categories
+  void changeType(ProductType? newType) {
+    if (type?.value.name == newType?.name) {
+      type = null;
+    } else if (newType != null) {
+      type?.value = newType;
+    }
+  }
+
+  ///
+  Rx<List<ProductType>> productTypeList = Rx<List<ProductType>>([]);
+
+  ///
+  List<ProductType> get productTypes => productTypeList.value;
+  @override
+  void onReady() {
+    productTypeList.bindStream(
+      _api.streamDataCollection().map(
+            (maps) => maps.map((item) {
+              return ProductType.fromJson(item);
+            }).toList(),
+          ),
+    );
+  }
+
   ///
   TextEditingController nameController = TextEditingController();
 
   ///
   FocusNode nameFocusNode = FocusNode();
-
-  List<ProductType> _productTypes = [];
-
-  /// Get productTypes from current productTypes state
-  List<ProductType> get productTypes {
-    return [..._productTypes];
-  }
-
-  set productTypes(List<ProductType> item) {
-    _productTypes = item;
-    update();
-  }
 
   /// Future Items
   Future<List<ProductType>> fetchItems() async {
@@ -34,7 +50,7 @@ class ProductTypeController extends BaseController {
     for (final item in objs) {
       ps.add(ProductType.fromJson(item));
     }
-    _productTypes = ps;
+    // _productTypes = ps;
     return ps;
   }
 
@@ -49,15 +65,6 @@ class ProductTypeController extends BaseController {
     // notifyListeners();
   }
 
-  /// Update a product to a current productTypes state
-  Future<void> updateProductType(ProductType item) async {
-    busy = true;
-    final success = await _api.updateOne(item.toJson());
-    busy = false;
-    if (success) _productTypes.add(item);
-    update();
-  }
-
   /// Remove product from a current productTypes state
   Future<void> removeProductType(ProductType item) async {
     busy = true;
@@ -68,12 +75,5 @@ class ProductTypeController extends BaseController {
       // _productTypes.removeAt(index);
     }
     update();
-  }
-
-  /// Fetching stream of data
-  Stream<List<ProductType>> fetchProductTypesAsStream() {
-    return _api.streamDataCollection().map(
-          (maps) => maps.map(ProductType.fromJson).toList(),
-        );
   }
 }

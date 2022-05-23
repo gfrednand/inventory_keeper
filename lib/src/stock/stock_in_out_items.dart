@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
@@ -27,6 +28,8 @@ class StockInOutItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final productController = Get.find<ProductController>();
     final stockController = Get.find<StockController>();
+    final productTypeController = Get.find<ProductTypeController>();
+
     final titleLabel = isStockIn ? 'Stock In Items' : 'Stock Out Items';
     final color = isStockIn ? Colors.teal : Colors.red;
     final products = Get.find<List<Product>?>();
@@ -55,25 +58,26 @@ class StockInOutItems extends StatelessWidget {
                   child: ProductTypesSelector(),
                 ),
                 Expanded(
-                  child: Builder(
-                    builder: (_) {
+                  child: Obx(
+                    () {
                       var data = products;
                       if (data == null) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
-                      if (productController.type != null) {
+                      if (productTypeController.type?.value != null) {
                         data = data
                             .where(
                               (p) =>
-                                  p.type?.name == productController.type?.name,
+                                  p.type?.name ==
+                                  productTypeController.type?.value.name,
                             )
                             .toList();
                         if (data.isEmpty) {
                           return Center(
                             child: Text(
-                              'Category *${productController.type!.name}*\n Has No Products',
+                              'Category *${productTypeController.type!.value.name}*\n Has No Products',
                               style: const TextStyle(fontSize: 24),
                             ),
                           );

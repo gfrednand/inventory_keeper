@@ -64,48 +64,33 @@ class ProductTypeListView extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: StreamBuilder<List<ProductType>>(
-              stream: controller.fetchProductTypesAsStream(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('Something went wrong'));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasData) {
-                  final data = snapshot.data;
+            child: Obx(
+              () {
+                final data = controller.productTypeList.value;
 
-                  return ListView.builder(
-                    restorationId: 'productTypeListView',
-                    itemCount: data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final item = data[index];
-                      return ListTile(
-                        title: Text(item.name),
-                        trailing: TextButton(
-                          onPressed: () => controller.removeProductType(item),
-                          child: const Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.red),
-                          ),
+                return ListView.builder(
+                  restorationId: 'productTypeListView',
+                  itemCount: data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final item = data[index];
+                    return ListTile(
+                      title: Text(item.name),
+                      trailing: TextButton(
+                        onPressed: () => controller.removeProductType(item),
+                        child: const Text(
+                          'Delete',
+                          style: TextStyle(color: Colors.red),
                         ),
-                        onTap: () {
-                          // Navigator.restorablePushNamed(
-                          //   context,
-                          //   ProductDetailsView.routeName,
-                          // );
-                        },
-                      );
-                    },
-                  );
-                } else {
-                  return const Center(
-                    child: Text('No Data'),
-                  );
-                }
+                      ),
+                      onTap: () {
+                        // Navigator.restorablePushNamed(
+                        //   context,
+                        //   ProductDetailsView.routeName,
+                        // );
+                      },
+                    );
+                  },
+                );
               },
             ),
           ),

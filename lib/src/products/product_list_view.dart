@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
@@ -16,18 +17,15 @@ class ProductListView extends StatelessWidget {
   ///
   const ProductListView({
     Key? key,
-    this.products = const [],
   }) : super(key: key);
 
   /// Product list route
   static const routeName = '/productListView';
 
-  /// Products to be displayed
-  final List<Product> products;
-
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ProductController>();
+    final productTypeController = Get.find<ProductTypeController>();
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -67,29 +65,25 @@ class ProductListView extends StatelessWidget {
             ),
           ),
 
-          Builder(
-            builder: (context) {
-              var data = products;
-              if (data == null) {
-                return const SliverToBoxAdapter(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-              if (controller.type != null) {
+          Obx(
+            () {
+              var data = controller.products;
+              if (productTypeController.type?.value != null) {
                 data = data
-                    .where((p) => p.type?.name == controller.type?.name)
+                    .where((p) =>
+                        p.type?.name == productTypeController.type?.value.name)
                     .toList();
                 if (data.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: Text(
-                        'Category *${controller.type!.name}*\n Has No Products',
-                        style: const TextStyle(fontSize: 16),
+                  return Obx(() {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(
+                          'Category *${productTypeController.type!.value.name}*\n Has No Products',
+                          style: const TextStyle(fontSize: 16),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 }
               }
               return SliverList(

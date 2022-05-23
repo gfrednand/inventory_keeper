@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
@@ -24,8 +25,9 @@ class LowStockReminderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ProductController>();
-    final products = Get.find<List<Product>?>()
-        ?.where((p) => p.safetyStock > p.currentStock)
+    final productTypeController = Get.find<ProductTypeController>();
+    final products = controller.products
+        .where((p) => p.safetyStock > p.currentStock)
         .toList();
     return Scaffold(
       appBar: AppBar(
@@ -66,25 +68,26 @@ class LowStockReminderView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              'Low stock items (${products?.length ?? 0})',
+              'Low stock items (${products.length})',
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ),
-          Builder(builder: (context) {
+          Obx(() {
             var data = products;
             if (data == null) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (controller.type != null) {
+            if (productTypeController.type?.value != null) {
               data = data
-                  .where((p) => p.type?.name == controller.type?.name)
+                  .where((p) =>
+                      p.type?.name == productTypeController.type?.value.name)
                   .toList();
               if (data.isEmpty) {
                 return Center(
                   child: Text(
-                    'Category *${controller.type!.name}*\n Has No Products',
+                    'Category *${productTypeController.type!.value.name}*\n Has No Products',
                     style: const TextStyle(fontSize: 16),
                   ),
                 );
@@ -94,7 +97,7 @@ class LowStockReminderView extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return ProductItem(
-                  item: data![index],
+                  item: data[index],
                   trailing: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -120,7 +123,7 @@ class LowStockReminderView extends StatelessWidget {
                     // returns to the app after it has been killed while running
                     // in the background, the navigation stack is restored.
 
-                    controller.product = data![index];
+                    controller.product = data[index];
                     Navigator.pushNamed(
                       context,
                       ProductDetails.routeName,

@@ -1,17 +1,25 @@
 import 'package:get/get.dart';
+import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 
 ///
 class BaseController extends GetxController {
-  set products(List<Product> newProducts) {
-    _productList = newProducts;
-  }
+  final FireBaseRepository _productApi = FireBaseRepository('products');
 
-  List<Product> _productList = [];
+  ///
+  Rx<List<Product>> productList = Rx<List<Product>>([]);
 
-  /// Get products from current products state
-  List<Product> get products {
-    return [..._productList];
+  ///
+  List<Product> get products => productList.value;
+  @override
+  void onReady() {
+    productList.bindStream(
+      _productApi.streamDataCollection().map(
+            (maps) => maps.map((item) {
+              return Product.fromJson(item);
+            }).toList(),
+          ),
+    );
   }
 
   bool _busy = false;

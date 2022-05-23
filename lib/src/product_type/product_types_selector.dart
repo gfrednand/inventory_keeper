@@ -15,8 +15,8 @@ class ProductTypesSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productTypes = Get.find<ProductTypeController>().productTypes;
-    final controller = Get.find<ProductController>();
+    final productTypeController = Get.find<ProductTypeController>();
+
     // final allType = ProductType(id: 'all', name: 'All');
     // final index =
     //     productTypes?.indexWhere((element) => element.name == allType.name);
@@ -72,53 +72,50 @@ class ProductTypesSelector extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: SizedBox(
-            height: 30,
-            child: productTypes != null
-                ? ListView.separated(
-                    itemCount: productTypes.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (ctx, index) {
-                      final type = productTypes[index];
-                      return FilterChip(
-                        label: Text(
-                          productTypes[index].name,
-                        ),
-                        onSelected: (value) {
-                          controller.type = type;
-                        },
-                        // backgroundColor: Color.fromARGB(84, 158, 158, 158),
-                        selectedColor: const Color.fromARGB(170, 144, 202, 249),
-                        selected: controller.type?.id == type.id,
-                      );
-
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     controller.type = type;
-                      //   },
-                      //   child: Container(
-                      //     alignment: Alignment.center,
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(20),
-                      //       color: controller.type?.id == type.id
-                      //           ? const Color.fromARGB(170, 144, 202, 249)
-                      //           : const Color.fromARGB(84, 158, 158, 158),
-                      //     ),
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      //       child: Text(
-                      //         productTypes[index].name,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                      width: 8,
+              height: 30,
+              child: ListView.separated(
+                itemCount: productTypeController.productTypes.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (ctx, index) {
+                  final type = productTypeController.productTypes[index];
+                  return FilterChip(
+                    label: Text(
+                      productTypeController.productTypes[index].name,
                     ),
-                  )
-                : Container(),
-          ),
+                    onSelected: (value) {
+                      productTypeController.type = type.obs;
+                    },
+                    // backgroundColor: Color.fromARGB(84, 158, 158, 158),
+                    selectedColor: const Color.fromARGB(170, 144, 202, 249),
+                    selected: productTypeController.type?.value.id == type.id,
+                  );
+
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     controller.type = type;
+                  //   },
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(20),
+                  //       color: controller.type?.id == type.id
+                  //           ? const Color.fromARGB(170, 144, 202, 249)
+                  //           : const Color.fromARGB(84, 158, 158, 158),
+                  //     ),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 8),
+                  //       child: Text(
+                  //         productTypes[index].name,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(
+                  width: 8,
+                ),
+              )),
         ),
       ],
     );

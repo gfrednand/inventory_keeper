@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
-import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/services/navigation_service.dart';
 
 ///
@@ -18,6 +18,16 @@ enum SelectedQuantityEnum {
 
 /// Product Controller
 class ProductController extends BaseController {
+  // set products(List<Product> newProducts) {
+  //   _products = newProducts;
+  // }
+
+  // List<Product> _products = [];
+
+  // List<Product> get productsFromFetch {
+  //   return [..._products];
+  // }
+
   final NavigationService _navigationService = locator<NavigationService>();
   final FireBaseRepository _api = FireBaseRepository('products');
 
@@ -44,21 +54,7 @@ class ProductController extends BaseController {
     salePriceController.text = (newproduct?.salePrice ?? '').toString();
     buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
     unitController.text = newproduct?.unit ?? '';
-    type = newproduct?.type;
     currentStockQuantity = newproduct?.currentStock;
-    update();
-  }
-
-  ProductType? _type;
-
-  /// Product categories
-  ProductType? get type => _type;
-  set type(ProductType? newType) {
-    if (_type?.name == newType?.name) {
-      _type = null;
-    } else {
-      _type = newType;
-    }
     update();
   }
 
@@ -95,7 +91,7 @@ class ProductController extends BaseController {
     for (final item in objs) {
       ps.add(Product.fromJson(item));
     }
-    products = ps;
+    // products = ps;
   }
 
   /// Add a product to a current products state
@@ -180,7 +176,7 @@ class ProductController extends BaseController {
     var newProduct = Product(
       name: nameController.text,
       unit: unitController.text,
-      type: type,
+      // type: type?.value,
       salePrice: double.tryParse(salePriceController.text) ?? 0,
       buyPrice: double.tryParse(buyPriceController.text) ?? 0,
     );
@@ -204,7 +200,7 @@ class ProductController extends BaseController {
       nameController.text = '';
       unitController.text = '';
       salePriceController.text = '';
-      type = null;
+      // type = null;
       safetyQuantity = null;
       currentStockQuantity = null;
       product = p;
