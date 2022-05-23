@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
@@ -7,10 +8,8 @@ import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/products/product_search_delegate.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
-import 'package:provider/provider.dart';
 
 /// Displays a list of Products.
 class ProductListView extends StatelessWidget {
@@ -28,8 +27,7 @@ class ProductListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ProductController>();
-    final products = context.watch<List<Product>?>();
+    final controller = Get.find<ProductController>();
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -98,7 +96,7 @@ class ProductListView extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return ProductItem(
-                      item: data![index],
+                      item: data[index],
                       trailing: CurrentStockQuantity(
                         currentStock: data[index].currentStock,
                       ),
@@ -107,7 +105,7 @@ class ProductListView extends StatelessWidget {
                         // returns to the app after it has been killed while running
                         // in the background, the navigation stack is restored.
 
-                        controller.product = data![index];
+                        controller.product = data[index];
                         Navigator.pushNamed(
                           context,
                           ProductDetails.routeName,

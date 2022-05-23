@@ -1,7 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 
 ///
-class BaseController with ChangeNotifier {
+class BaseController extends GetxController {
+  set products(List<Product> newProducts) {
+    _productList = newProducts;
+  }
+
+  List<Product> _productList = [];
+
+  /// Get products from current products state
+  List<Product> get products {
+    return [..._productList];
+  }
+
   bool _busy = false;
   String? _errorMessage;
 
@@ -17,12 +29,10 @@ class BaseController with ChangeNotifier {
   ///
   void setErrorMessage(String? message) {
     _errorMessage = message;
-    notifyListeners();
   }
 
   /// Set Busy Status
   set busy(bool value) {
     _busy = value;
-    notifyListeners();
   }
 }

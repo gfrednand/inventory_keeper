@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:inventory_keeper/src/controllers/closing_stock_controller.dart';
-import 'package:inventory_keeper/src/models/closing_stock/closing_stock.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-
-import 'package:provider/provider.dart';
 
 /// Displays a list of Products.
 class PastQuantityView extends StatefulWidget {
@@ -29,11 +28,11 @@ class PastQuantityView extends StatefulWidget {
 
 class _PastQuantityViewState extends State<PastQuantityView> {
   String? currentDate;
-  ClosingStock? closingStock;
+  Stock? closingStock;
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ClosingStockController>();
+    final controller = Get.find<StockController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -62,7 +61,7 @@ class _PastQuantityViewState extends State<PastQuantityView> {
                   if (value != null) {
                     currentDate = DateFormat.yMMMEd().format(value);
                     closingStock =
-                        await controller.getClosingStockByDate(currentDate!);
+                        await controller.getStockByDate(currentDate!);
                     setState(() {});
                   }
                 });
@@ -86,44 +85,11 @@ class _PastQuantityViewState extends State<PastQuantityView> {
               return ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return ProductItem(
-                    item: closingStock!.products[index],
-                    trailing: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CurrentStockQuantity(
-                          backGroundColor: Colors.green,
-                          currentStock:
-                              closingStock!.products[index].safetyStock,
-                          withBackground: true,
-                          fontSize: 16,
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        CurrentStockQuantity(
-                          checkCurrentStock: false,
-                          backGroundColor: const Color(0xFFBDBDBD),
-                          currentStock:
-                              closingStock!.products[index].currentStock,
-                          fontSize: 16,
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      // Navigate to the details page. If the user leaves and
-                      // returns to the app after it has been killed while running
-                      // in the background, the navigation stack is restored.
-
-                      // controller.product = data[index];
-                      // Navigator.pushNamed(
-                      //   context,
-                      //   ProductDetails.routeName,
-                      // ).then((value) => controller.product = null);
-                    },
+                  return ListTile(
+                    title: Text(closingStock!.productsSummary[index].name),
                   );
                 },
-                itemCount: closingStock!.products.length,
+                itemCount: closingStock!.productsSummary.length,
               );
             },
           ),

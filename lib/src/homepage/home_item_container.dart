@@ -10,6 +10,7 @@ class HomeItemContainer extends StatelessWidget {
     required this.child,
     required this.label,
     this.withGradient = false,
+    this.moment,
   }) : super(key: key);
 
   /// child
@@ -17,6 +18,9 @@ class HomeItemContainer extends StatelessWidget {
 
   /// label
   final String label;
+
+  ///moment time
+  final String? moment;
 
   /// With gradient
   final bool withGradient;
@@ -36,14 +40,38 @@ class HomeItemContainer extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: Text(
-              label,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: withGradient ? Colors.white : Colors.black,
-              ),
-            ),
+            child: withGradient
+                ? Row(
+                    children: [
+                      Text(
+                        label,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        '$moment',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  )
+                : Text(
+                    label,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: withGradient ? Colors.white : Colors.black,
+                    ),
+                  ),
           ),
           child,
         ],

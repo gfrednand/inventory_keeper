@@ -23,17 +23,25 @@ class TransactionDetailItemPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      // mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '$quantity',
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: labelColor, fontSize: 20),
+            fontWeight: FontWeight.bold,
+            color: labelColor,
+            fontSize: 24,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Text(
           label,
-          style: TextStyle(
-            color: Colors.grey[400],
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white70,
           ),
         )
       ],

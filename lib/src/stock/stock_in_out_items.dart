@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
@@ -8,7 +9,6 @@ import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:provider/provider.dart';
 
 import '../widgets/section_divider.dart';
 
@@ -25,11 +25,11 @@ class StockInOutItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productController = context.watch<ProductController>();
-    final stockController = context.watch<StockController>();
+    final productController = Get.find<ProductController>();
+    final stockController = Get.find<StockController>();
     final titleLabel = isStockIn ? 'Stock In Items' : 'Stock Out Items';
     final color = isStockIn ? Colors.teal : Colors.red;
-    final products = context.watch<List<Product>?>();
+    final products = Get.find<List<Product>?>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -82,12 +82,13 @@ class StockInOutItems extends StatelessWidget {
 
                       if (data.isNotEmpty) {
                         var selectedProducts = <Product>[];
-                        selectedProducts = stockController.products;
+                        selectedProducts = stockController.cartProducts;
                         data = data.map((p) {
                           if (products != null) {
                             final selectedProduct = selectedProducts.firstWhere(
                               (prod) => prod.id == p.id,
-                              orElse: () => Product(name: 'null', unit: 'null'),
+                              orElse: () =>
+                                  const Product(name: 'null', unit: 'null'),
                             );
                             if (selectedProduct.id != null) {
                               return p.copyWith(
@@ -155,9 +156,7 @@ class StockInOutItems extends StatelessWidget {
                                   if (value != null && value > 0) {
                                     item =
                                         item.copyWith(selectedQuantity: value);
-                                    context
-                                        .read<StockController>()
-                                        .addToCart(item);
+                                    Get.find<StockController>().addToCart(item);
                                   }
                                 });
                               },

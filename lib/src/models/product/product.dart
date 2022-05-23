@@ -15,6 +15,10 @@ class Product with _$Product {
   ///
   const factory Product({
     String? id,
+
+    /// This is the name of the product.
+    ///
+    /// It's required must not be null.
     required String name,
     @Default(0) int currentStock,
     int? selectedQuantity,
@@ -26,9 +30,9 @@ class Product with _$Product {
     @Default(0) int safetyStock,
     bool? isIncomingStock,
     ProductType? type,
-    String? createdAt,
-    String? updatedAt,
-    String? expireDate,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? expireDate,
   }) = _Product;
 
   ///

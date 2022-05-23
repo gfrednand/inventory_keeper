@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/models/product_type/product_type.dart';
+import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
-import 'package:provider/provider.dart';
 
 ///
 class ProductTypesSelector extends StatelessWidget {
@@ -15,8 +15,8 @@ class ProductTypesSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productTypes = context.watch<List<ProductType>?>();
-    final controller = context.watch<ProductController>();
+    final productTypes = Get.find<ProductTypeController>().productTypes;
+    final controller = Get.find<ProductController>();
     // final allType = ProductType(id: 'all', name: 'All');
     // final index =
     //     productTypes?.indexWhere((element) => element.name == allType.name);

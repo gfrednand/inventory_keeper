@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/home_page.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/transaction/transaction_page.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 
 ///
 class LayoutPage extends StatefulWidget {
@@ -86,12 +87,12 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 0
                 ? const Icon(
                     Icons.home,
-                    color: Colors.blueGrey,
+                    color: AppColors.blue700,
                     size: 25,
                   )
-                : Icon(
+                : const Icon(
                     Icons.home_outlined,
-                    color: Colors.grey[400],
+                    color: AppColors.blue300,
                     size: 25,
                   ),
           ),
@@ -105,12 +106,12 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 1
                 ? const Icon(
                     Icons.view_cozy,
-                    color: Colors.blueGrey,
+                    color: AppColors.blue700,
                     size: 25,
                   )
-                : Icon(
+                : const Icon(
                     Icons.view_cozy_outlined,
-                    color: Colors.grey[400],
+                    color: AppColors.blue300,
                     size: 25,
                   ),
           ),
@@ -124,12 +125,12 @@ class _LayoutPageState extends State<LayoutPage> {
             icon: pageIndex == 2
                 ? const Icon(
                     Icons.swap_horizontal_circle,
-                    color: Colors.blueGrey,
+                    color: AppColors.blue700,
                     size: 25,
                   )
-                : Icon(
+                : const Icon(
                     Icons.swap_horizontal_circle_outlined,
-                    color: Colors.grey[400],
+                    color: AppColors.blue300,
                     size: 25,
                   ),
           ),

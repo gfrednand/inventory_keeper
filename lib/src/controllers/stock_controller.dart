@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/locator.dart';
@@ -12,6 +13,7 @@ class StockController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('stocks');
 
   Stock? _stock;
+  Transaction? _transaction;
   int? _currentStock;
   int? _incomingStock;
   int? _outgoingStock;
@@ -21,41 +23,50 @@ class StockController extends BaseController {
   ///
   set stock(Stock? i) {
     _stock = i;
-    notifyListeners();
+    update();
+  }
+
+  ///
+  set transaction(Transaction? i) {
+    _transaction = i;
+    update();
   }
 
   ///
   set currentStock(int? i) {
     currentStock = i;
-    notifyListeners();
+    update();
   }
 
   ///
   set incomingStock(int? i) {
     incomingStock = i;
-    notifyListeners();
+    update();
   }
 
   ///
   set outgoingStock(int? i) {
     outgoingStock = i;
-    notifyListeners();
+    update();
   }
 
   ///
   set updatedAt(DateTime? i) {
     updatedAt = i;
-    notifyListeners();
+    update();
   }
 
   ///
   set createdAt(DateTime? i) {
     createdAt = i;
-    notifyListeners();
+    update();
   }
 
   ///
   Stock? get stock => _stock;
+
+  ///
+  Transaction? get transaction => _transaction;
 
   ///
   int? get currentStock => _currentStock;
@@ -87,7 +98,7 @@ class StockController extends BaseController {
 
   set stocks(List<Stock> item) {
     _stocks = item;
-    notifyListeners();
+    update();
   }
 
   /// Future Items
@@ -103,38 +114,80 @@ class StockController extends BaseController {
     return ps;
   }
 
+  Future<Stock?> getStockByDate(String date) async {
+    final obj = await _api.getClosingStockByDate(date);
+
+    if (obj != null) {
+      return Stock.fromJson(obj);
+    }
+    return null;
+  }
+
+  ///
+
   /// Add a product to a current Stocks state
-  Future<List<Product>> addStock(bool isIncoming) async {
-    final tempProds = products.where((p) => p.isIncomingStock != null).toList();
-    final productsMap = tempProds.map((p) => p.toJson()).toList();
+  Future<List<Product>> addStock({required bool isIncoming}) async {
+    final productSummary = products
+        .map(
+          (e) => {
+            'active': e.active ?? true,
+            'buyPrice': e.buyPrice ?? 0,
+            'salePrice': e.salePrice ?? 0,
+            'id': e.id ?? '',
+            'name': e.name,
+            'summaryDate': DateTime.now(),
+            'currentStock': e.currentStock,
+          },
+        )
+        .toList();
+
+    final productsFromCart = cartProducts
+        .map(
+          (e) => {
+            'active': e.active ?? true,
+            'buyPrice': e.buyPrice ?? 0,
+            'salePrice': e.salePrice ?? 0,
+            'id': e.id ?? '',
+            'name': e.name,
+            'summaryDate': DateTime.now(),
+            'currentStock': e.currentStock,
+          },
+        )
+        .toList();
+
+    final tempProds =
+        cartProducts.where((p) => p.isIncomingStock != null).toList();
     final stock = Stock(
-      createdAt: DateTime.now().toString(),
-      totalSelectedQuantity: totalQuantity,
-      totalAmount: totalAmount,
-      isIncoming: isIncoming,
-      products: products,
+      totalAmount: 0,
+      totalQuantity: 8,
+      createdAt: DateFormat.yMMMEd().format(DateTime.now()),
+      productsSummary: [],
+      transactions: [],
     );
 
+    final transactionMap = {
+      'isIncoming': isIncoming,
+      'totalSelectedQuantity': 0,
+      'createdAt': DateTime.now(),
+      'productsSummary': productsFromCart,
+      'totalQuantity': totalQuantity,
+      'totalAmount': totalAmount,
+    };
+
     final map = stock.toJson();
+    map['productsSummary'] = productSummary;
 
-    map['products'] = productsMap;
-
-    final success = await _api.addOne(map);
+    final success = await _api.createOrUpdate(
+      map,
+      transactionMap,
+      stock.createdAt,
+    );
     if (success) {
       // _navigationService.goBackUntil(ProductListView.routeName);
       removeAllFromCart();
       return tempProds;
     }
     return [];
-  }
-
-  /// Update a product to a current Stocks state
-  Future<void> updateStock(Stock item) async {
-    busy = true;
-    final success = await _api.updateOne(item.toJson());
-    busy = false;
-    if (success) _stocks.add(item);
-    notifyListeners();
   }
 
   /// Remove product from a current Stocks state
@@ -147,7 +200,7 @@ class StockController extends BaseController {
       //   return count++ == 2;
       // });
     }
-    notifyListeners();
+    update();
     return success;
   }
 
@@ -159,11 +212,11 @@ class StockController extends BaseController {
   }
 
   ///
-  List<Product> products = [];
+  List<Product> cartProducts = [];
 
   ///
   double get totalAmount {
-    return products.fold(0, (double currentTotal, Product nextProduct) {
+    return cartProducts.fold(0, (double currentTotal, Product nextProduct) {
       var price = 0.0;
       if (nextProduct.isIncomingStock != null && nextProduct.isIncomingStock!) {
         price = nextProduct.buyPrice ?? 0;
@@ -176,14 +229,14 @@ class StockController extends BaseController {
 
   ///
   int get totalQuantity {
-    return products.fold(0, (int currentQuantity, Product nextProduct) {
+    return cartProducts.fold(0, (int currentQuantity, Product nextProduct) {
       return currentQuantity + nextProduct.selectedQuantity!;
     });
   }
 
   ///
   void updateCart(Product product) {
-    products = products.map((p) {
+    cartProducts = cartProducts.map((p) {
       return product.copyWith(selectedQuantity: p.selectedQuantity);
     }).toList();
   }
@@ -191,14 +244,14 @@ class StockController extends BaseController {
   ///
   void addToCart(Product? product) {
     if (product != null) {
-      final index = products.indexWhere((p) => p.id == product.id);
+      final index = cartProducts.indexWhere((p) => p.id == product.id);
       if (index == -1) {
-        products.add(product);
+        cartProducts.add(product);
       } else {
-        products[index] = products[index]
+        cartProducts[index] = cartProducts[index]
             .copyWith(selectedQuantity: product.selectedQuantity);
       }
-      notifyListeners();
+      update();
     }
   }
 
@@ -207,13 +260,13 @@ class StockController extends BaseController {
 
   ///
   void removeFromCart(Product product) {
-    products.remove(product);
-    notifyListeners();
+    cartProducts.remove(product);
+    update();
   }
 
   ///
   void removeAllFromCart() {
-    products = [];
-    notifyListeners();
+    cartProducts = [];
+    update();
   }
 }

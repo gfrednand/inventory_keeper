@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -11,7 +11,6 @@ import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
-import 'package:provider/provider.dart';
 
 /// Add Product Page
 class ProductDetails extends StatelessWidget {
@@ -23,7 +22,7 @@ class ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ProductController>();
+    final controller = Get.find<ProductController>();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 209, 209, 209),
       appBar: AppBar(

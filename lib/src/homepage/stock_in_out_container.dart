@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
@@ -6,7 +7,6 @@ import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:provider/provider.dart';
 
 /// Stock in / out container class
 class StockInOutContainer extends StatelessWidget {
@@ -28,8 +28,8 @@ class StockInOutContainer extends StatelessWidget {
   final BuildContext ctx;
   @override
   Widget build(BuildContext context) {
-    final productController = context.watch<ProductController>();
-    final stockController = context.watch<StockController>();
+    final productController = Get.find<ProductController>();
+    final stockController = Get.find<StockController>();
     return HomeItemContainer(
       label: 'Stock In/Out',
       child: Column(

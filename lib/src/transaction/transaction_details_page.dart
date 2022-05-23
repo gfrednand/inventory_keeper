@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
-import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
-import 'package:provider/provider.dart';
 
 ///
 class TransactionDetailsPage extends StatelessWidget {
@@ -19,14 +18,14 @@ class TransactionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<StockController>();
-    final stock = controller.stock;
-    if (stock != null) {
+    final controller = Get.find<StockController>();
+    final transaction = controller.transaction;
+    if (transaction != null) {
       final formatter = DateFormat(' MMM d, yyyy h:mm a');
-      final titleLabel = stock.isIncoming ? 'Stock In' : 'Stock Out';
-      final color = stock.isIncoming ? Colors.teal : Colors.red;
-      final sign = stock.isIncoming ? '+' : '-';
-      final totalItems = stock.products.length;
+      final titleLabel = transaction.isIncoming ? 'Stock In' : 'Stock Out';
+      final color = transaction.isIncoming ? Colors.teal : Colors.red;
+      final sign = transaction.isIncoming ? '+' : '-';
+      final totalItems = transaction.productsSummary.length;
       return Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -61,7 +60,7 @@ class TransactionDetailsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                formatter.format(DateTime.parse(stock.createdAt)),
+                formatter.format(transaction.createdAt),
                 style: TextStyle(color: Colors.grey[400]),
               ),
               Padding(
@@ -82,11 +81,11 @@ class TransactionDetailsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TransactionDetailItemPart(
-                    quantity: stock.products.length,
+                    quantity: transaction.productsSummary.length,
                     label: totalItems > 1 ? 'Items' : 'Item',
                   ),
                   TransactionDetailItemPart(
-                    quantity: stock.totalSelectedQuantity,
+                    quantity: transaction.totalSelectedQuantity,
                     label: 'Quantity',
                   ),
                 ],
@@ -94,17 +93,21 @@ class TransactionDetailsPage extends StatelessWidget {
               const SectionDivider(),
               ListView.separated(
                 shrinkWrap: true,
-                itemCount: stock.products.length,
+                itemCount: transaction.productsSummary.length,
                 separatorBuilder: (BuildContext context, int index) =>
                     const SectionDivider(),
                 itemBuilder: (context, index) {
-                  return ProductItem(
-                    item: stock.products[index],
-                    trailing: Text(
-                      '$sign${stock.products[index].selectedQuantity}',
-                      style: TextStyle(color: color),
-                    ),
+                  return ListTile(
+                    title: Text(transaction.productsSummary[index].name),
                   );
+
+                  // ProductItem(
+                  //   item: transaction.productsSummary[index],
+                  //   trailing: Text(
+                  //     '$sign${transaction.productsSummary[index].selectedQuantity}',
+                  //     style: TextStyle(color: color),
+                  //   ),
+                  // );
                 },
               )
             ],

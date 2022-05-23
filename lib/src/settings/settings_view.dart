@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/settings/settings_controller.dart';
-import 'package:provider/provider.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
@@ -15,7 +15,7 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsController = context.watch<SettingsController>();
+    final settingsController = Get.find<SettingsController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 1,

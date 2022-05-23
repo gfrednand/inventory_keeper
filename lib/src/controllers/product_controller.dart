@@ -20,7 +20,6 @@ enum SelectedQuantityEnum {
 class ProductController extends BaseController {
   final NavigationService _navigationService = locator<NavigationService>();
   final FireBaseRepository _api = FireBaseRepository('products');
-  List<Product> _productList = [];
 
   ///
   TextEditingController nameController = TextEditingController(text: ''),
@@ -47,7 +46,7 @@ class ProductController extends BaseController {
     unitController.text = newproduct?.unit ?? '';
     type = newproduct?.type;
     currentStockQuantity = newproduct?.currentStock;
-    notifyListeners();
+    update();
   }
 
   ProductType? _type;
@@ -60,7 +59,7 @@ class ProductController extends BaseController {
     } else {
       _type = newType;
     }
-    notifyListeners();
+    update();
   }
 
   ///
@@ -72,7 +71,7 @@ class ProductController extends BaseController {
   ///
   set safetyQuantity(int? q) {
     _safetyQuantity = q;
-    notifyListeners();
+    update();
   }
 
   ///
@@ -84,12 +83,7 @@ class ProductController extends BaseController {
   ///
   set currentStockQuantity(int? q) {
     _currentStockQuantity = q;
-    notifyListeners();
-  }
-
-  /// Get products from current products state
-  List<Product> get products {
-    return [..._productList];
+    update();
   }
 
   /// Future Products
@@ -104,16 +98,11 @@ class ProductController extends BaseController {
     products = ps;
   }
 
-  set products(List<Product> newProducts) {
-    _productList = newProducts;
-    notifyListeners();
-  }
-
   /// Add a product to a current products state
   Future<bool> addProduct() async {
     var newProduct = generateProduct();
     busy = true;
-    newProduct = newProduct.copyWith(createdAt: DateTime.now().toString());
+    newProduct = newProduct.copyWith(createdAt: DateTime.now());
 
     final success = await _api.addOne(newProduct.toJson());
     if (success) {
@@ -130,7 +119,7 @@ class ProductController extends BaseController {
         currentStockQuantity = p.currentStock;
       }
       p = p.copyWith(
-        updatedAt: DateTime.now().toString(),
+        updatedAt: DateTime.now(),
       );
       return p.toJson();
     }).toList();
@@ -148,7 +137,7 @@ class ProductController extends BaseController {
       id: prod.id,
       name: prod.name,
       safetyStock: safetStock,
-      updatedAt: DateTime.now().toString(),
+      updatedAt: DateTime.now(),
     );
 
     return _api.updateOne(productToUpdate.toJson());
@@ -160,16 +149,14 @@ class ProductController extends BaseController {
     if (updateProduct != _product) {
       updateProduct = updateProduct.copyWith(
         id: product?.id,
-        updatedAt: DateTime.now().toString(),
+        updatedAt: DateTime.now(),
       );
 
       final success = await _api.updateOne(updateProduct.toJson());
       if (success) {
-        _navigationService
-            .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
-        resetValues(success, updateProduct);
+        product = updateProduct;
+        return updateProduct;
       }
-      return updateProduct;
     }
     return null;
   }
@@ -225,6 +212,6 @@ class ProductController extends BaseController {
     } else {
       setErrorMessage('Error has occured');
     }
-    notifyListeners();
+    update();
   }
 }

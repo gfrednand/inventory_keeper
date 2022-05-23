@@ -21,9 +21,15 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       type: json['type'] == null
           ? null
           : ProductType.fromJson(json['type'] as Map<String, dynamic>),
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
-      expireDate: json['expireDate'] as String?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+      expireDate: json['expireDate'] == null
+          ? null
+          : DateTime.parse(json['expireDate'] as String),
     );
 
 Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
@@ -40,7 +46,7 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'safetyStock': instance.safetyStock,
       'isIncomingStock': instance.isIncomingStock,
       'type': instance.type,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'expireDate': instance.expireDate,
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+      'expireDate': instance.expireDate?.toIso8601String(),
     };

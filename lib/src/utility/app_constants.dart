@@ -5,15 +5,15 @@ import 'package:inventory_keeper/src/utility/colors.dart';
 
 ///
 BoxDecoration containerBoxDecoration() {
-  return const BoxDecoration(
+  return BoxDecoration(
     color: Colors.white,
-    borderRadius: BorderRadius.all(Radius.circular(10)),
+    borderRadius: const BorderRadius.all(Radius.circular(10)),
     boxShadow: [
       BoxShadow(
-        color: Color(0XFFE0E0E0),
-        spreadRadius: 5,
-        blurRadius: 7,
-        offset: Offset(0, 3),
+        color: Colors.grey.withOpacity(0.1),
+        spreadRadius: 2,
+        blurRadius: 2,
+        offset: const Offset(3, 3),
       )
     ],
   );
@@ -21,14 +21,14 @@ BoxDecoration containerBoxDecoration() {
 
 /// Box
 BoxDecoration decorationWithGradient() {
-  return const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(10)),
+  return BoxDecoration(
+    borderRadius: const BorderRadius.all(Radius.circular(10)),
     boxShadow: [
       BoxShadow(
-        color: Color(0XFFE0E0E0),
-        spreadRadius: 5,
-        blurRadius: 7,
-        offset: Offset(0, 3),
+        color: Colors.grey.withOpacity(0.1),
+        spreadRadius: 2,
+        blurRadius: 2,
+        offset: const Offset(3, 3),
       )
     ],
     gradient: LinearGradient(

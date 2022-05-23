@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
-import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
-
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/add_item_safety_quntity.dart';
-
-import 'package:provider/provider.dart';
 
 /// Displays a list of Products.
 class LowStockReminderView extends StatelessWidget {
@@ -26,9 +23,8 @@ class LowStockReminderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ProductController>();
-    final products = context
-        .watch<List<Product>?>()
+    final controller = Get.find<ProductController>();
+    final products = Get.find<List<Product>?>()
         ?.where((p) => p.safetyStock > p.currentStock)
         .toList();
     return Scaffold(

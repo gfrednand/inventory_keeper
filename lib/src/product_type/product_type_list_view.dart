@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
-import 'package:provider/provider.dart';
 
 ///
 class ProductTypeListView extends StatelessWidget {
@@ -13,7 +13,7 @@ class ProductTypeListView extends StatelessWidget {
   static const routeName = '/productTypeListView';
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ProductTypeController>();
+    final controller = Get.find<ProductTypeController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

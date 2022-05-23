@@ -9,7 +9,9 @@ class FireBaseRepository
         Api<Future<bool>, Map<String, dynamic>,
             Future<List<Map<String, dynamic>>>, Future<Map<String, dynamic>>> {
   ///
-  FireBaseRepository(this.path) {
+  FireBaseRepository(
+    this.path,
+  ) {
     ref = _db.collection(path);
   }
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -114,9 +116,10 @@ class FireBaseRepository
     }
   }
 
-  ///
+  ///firebase.firestore().collection("cities").where("timestamp", ">", timestamp);
   Future<Map<String, dynamic>?> getClosingStockByDate(String date) async {
-    final snapshot = await ref!.where('date', isEqualTo: date).get();
+    final snapshot =
+        await ref!.where('createdAt', isLessThanOrEqualTo: date).get();
     if (snapshot.docs.isNotEmpty && snapshot.docs[0].data() != null) {
       return snapshot.docs[0].data()! as Map<String, dynamic>;
     }
@@ -124,10 +127,21 @@ class FireBaseRepository
   }
 
   ///
-  Future<bool> createOrUpdate(Map<String, dynamic> map, String id) {
+  Future<bool> createOrUpdate(Map<String, dynamic> stockMap,
+      Map<String, dynamic> transactionMap, String id) async {
+    final dataRef = await ref!.doc(id).get();
+    if (dataRef.exists) {
+      final snapShot = dataRef as DocumentSnapshot<Map<String, dynamic>>;
+      final data = snapShot.data();
+      final transactions = data?['transctions'] as List<Map<String, dynamic>>;
+      transactions.add(transactionMap);
+      stockMap['transactions'] = transactions;
+    } else {
+      stockMap['transactions'] = [transactionMap];
+    }
     return ref!
         .doc(id)
-        .set(map)
+        .set(stockMap)
         .then((value) => true)
         .catchError((dynamic error) {
       print('Failed to update user: $error');
@@ -192,3 +206,4 @@ class FireBaseRepository
         //   }
         // }
         
+

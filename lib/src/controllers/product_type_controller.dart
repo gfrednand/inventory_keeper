@@ -22,7 +22,7 @@ class ProductTypeController extends BaseController {
 
   set productTypes(List<ProductType> item) {
     _productTypes = item;
-    notifyListeners();
+    update();
   }
 
   /// Future Items
@@ -55,7 +55,7 @@ class ProductTypeController extends BaseController {
     final success = await _api.updateOne(item.toJson());
     busy = false;
     if (success) _productTypes.add(item);
-    notifyListeners();
+    update();
   }
 
   /// Remove product from a current productTypes state
@@ -67,7 +67,7 @@ class ProductTypeController extends BaseController {
       // final index = _productTypes.indexWhere((p) => p.id == item.id);
       // _productTypes.removeAt(index);
     }
-    notifyListeners();
+    update();
   }
 
   /// Fetching stream of data

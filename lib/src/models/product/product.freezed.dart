@@ -21,6 +21,10 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   String? get id => throw _privateConstructorUsedError;
+
+  /// This is the name of the product.
+  ///
+  /// It's required must not be null.
   String get name => throw _privateConstructorUsedError;
   int get currentStock => throw _privateConstructorUsedError;
   int? get selectedQuantity => throw _privateConstructorUsedError;
@@ -32,9 +36,9 @@ mixin _$Product {
   int get safetyStock => throw _privateConstructorUsedError;
   bool? get isIncomingStock => throw _privateConstructorUsedError;
   ProductType? get type => throw _privateConstructorUsedError;
-  String? get createdAt => throw _privateConstructorUsedError;
-  String? get updatedAt => throw _privateConstructorUsedError;
-  String? get expireDate => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get expireDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -58,9 +62,9 @@ abstract class $ProductCopyWith<$Res> {
       int safetyStock,
       bool? isIncomingStock,
       ProductType? type,
-      String? createdAt,
-      String? updatedAt,
-      String? expireDate});
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      DateTime? expireDate});
 
   $ProductTypeCopyWith<$Res>? get type;
 }
@@ -143,15 +147,15 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       expireDate: expireDate == freezed
           ? _value.expireDate
           : expireDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
     ));
   }
 
@@ -186,9 +190,9 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       int safetyStock,
       bool? isIncomingStock,
       ProductType? type,
-      String? createdAt,
-      String? updatedAt,
-      String? expireDate});
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      DateTime? expireDate});
 
   @override
   $ProductTypeCopyWith<$Res>? get type;
@@ -273,15 +277,15 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       expireDate: expireDate == freezed
           ? _value.expireDate
           : expireDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
     ));
   }
 }
@@ -311,6 +315,10 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
 
   @override
   final String? id;
+
+  /// This is the name of the product.
+  ///
+  /// It's required must not be null.
   @override
   final String name;
   @override
@@ -336,11 +344,11 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
   @override
   final ProductType? type;
   @override
-  final String? createdAt;
+  final DateTime? createdAt;
   @override
-  final String? updatedAt;
+  final DateTime? updatedAt;
   @override
-  final String? expireDate;
+  final DateTime? expireDate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -442,15 +450,19 @@ abstract class _Product implements Product {
       final int safetyStock,
       final bool? isIncomingStock,
       final ProductType? type,
-      final String? createdAt,
-      final String? updatedAt,
-      final String? expireDate}) = _$_Product;
+      final DateTime? createdAt,
+      final DateTime? updatedAt,
+      final DateTime? expireDate}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
   @override
   String? get id => throw _privateConstructorUsedError;
   @override
+
+  /// This is the name of the product.
+  ///
+  /// It's required must not be null.
   String get name => throw _privateConstructorUsedError;
   @override
   int get currentStock => throw _privateConstructorUsedError;
@@ -473,11 +485,11 @@ abstract class _Product implements Product {
   @override
   ProductType? get type => throw _privateConstructorUsedError;
   @override
-  String? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   @override
-  String? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   @override
-  String? get expireDate => throw _privateConstructorUsedError;
+  DateTime? get expireDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

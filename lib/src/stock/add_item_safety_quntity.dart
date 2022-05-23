@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -7,7 +8,6 @@ import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
-import 'package:provider/provider.dart';
 
 ///
 class AddItemSafetyQuantity extends StatefulWidget {
@@ -28,13 +28,13 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
 
   @override
   void initState() {
-    filteredProducts = context.read<List<Product>>();
+    filteredProducts = Get.find<List<Product>>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final products = context.watch<List<Product>>();
+    final products = Get.find<List<Product>>();
     return Scaffold(
       body: Column(
         children: [
@@ -146,8 +146,7 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
                           context,
                           loadingText: 'Updating Safety Stock',
                         );
-                        context
-                            .read<ProductController>()
+                        Get.find<ProductController>()
                             .updateProductSafetyStock(item, value)
                             .then((success) {
                           Navigator.pop(context);

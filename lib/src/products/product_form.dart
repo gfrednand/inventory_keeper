@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
-import 'package:provider/provider.dart';
 
 ///
 class ProductForm extends StatelessWidget {
@@ -20,7 +19,7 @@ class ProductForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ProductController>();
+    final controller = Get.find<ProductController>();
     return Form(
       key: formKey,
       child: SingleChildScrollView(

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
-import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/past_quantity_view.dart';
 import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
-import 'package:provider/provider.dart';
 
 ///
 class HomePage extends StatelessWidget {
@@ -20,21 +20,23 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productController = context.watch<ProductController>();
-    final products = context.watch<List<Product>>();
+    final productController = Get.find<ProductController>();
+    final products = productController.products;
     var stockIn = 0;
     var stockOut = 0;
-    context
-        .watch<List<Stock>?>()
-        ?.where((element) =>
-            DateTime.tryParse(element.createdAt)?.day == DateTime.now().day)
-        .forEach((element) {
-      if (element.isIncoming) {
-        stockIn = stockIn + element.totalSelectedQuantity;
-      } else {
-        stockOut = stockOut + element.totalSelectedQuantity;
-      }
-    });
+    var stocks = Get.find<StockController>().stocks;
+
+    final index = stocks.indexWhere((element) =>
+        element.createdAt == DateFormat.yMMMEd().format(DateTime.now()));
+    if (index != null && index > -1) {
+      stocks[index].transactions.forEach((element) {
+        if (element.isIncoming) {
+          stockIn = stockIn + element.totalSelectedQuantity;
+        } else {
+          stockOut = stockOut + element.totalSelectedQuantity;
+        }
+      });
+    }
 
     final totalQuantity =
         products.fold(0, (int currentQuantity, Product nextProduct) {
@@ -59,12 +61,12 @@ class HomePage extends StatelessWidget {
                 children: [
                   HomeItemContainer(
                     withGradient: true,
-                    label:
-                        'Today, ${DateFormat.MMMMd().format(DateTime.now())}',
+                    label: 'Today',
+                    moment: DateFormat.MMMMd().format(DateTime.now()),
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 16,
+                          height: 10,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 16),

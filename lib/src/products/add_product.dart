@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
-import 'package:provider/provider.dart';
 
 /// Add Product Page
 class AddProduct extends StatelessWidget {
@@ -20,7 +19,7 @@ class AddProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    final controller = context.watch<ProductController>();
+    final controller = Get.find<ProductController>();
     var titleText = '';
     if (controller.product == null) {
       titleText = 'Add Item';
@@ -67,8 +66,11 @@ class AddProduct extends StatelessWidget {
                     loadDialog<dynamic>(context, loadingText: 'Updating item');
                     controller.updateProduct().then((product) {
                       if (product != null) {
-                        context.read<StockController>().updateCart(product);
+                        Get.find<StockController>().updateCart(product);
                       }
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      // AppSnackbar().show(context, 'Item Added');
                     });
                   } else {
                     displayDialog<int>(
