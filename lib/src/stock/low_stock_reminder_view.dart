@@ -79,15 +79,15 @@ class LowStockReminderView extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-            if (productTypeController.type?.value != null) {
+            if (productTypeController.type != null) {
               data = data
-                  .where((p) =>
-                      p.type?.name == productTypeController.type?.value.name)
+                  .where(
+                      (p) => p.type?.name == productTypeController.type?.name)
                   .toList();
               if (data.isEmpty) {
                 return Center(
                   child: Text(
-                    'Category *${productTypeController.type!.value.name}*\n Has No Products',
+                    'Category *${productTypeController.type!.name}*\n Has No Products',
                     style: const TextStyle(fontSize: 16),
                   ),
                 );
@@ -123,11 +123,10 @@ class LowStockReminderView extends StatelessWidget {
                     // returns to the app after it has been killed while running
                     // in the background, the navigation stack is restored.
 
-                    controller.product = data[index];
-                    Navigator.pushNamed(
-                      context,
-                      ProductDetails.routeName,
-                    ).then((value) => controller.product = null);
+                    Get.to<void>(
+                      () => const ProductDetails(),
+                      arguments: data[index],
+                    );
                   },
                 );
               },

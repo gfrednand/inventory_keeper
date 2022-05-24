@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/custom_detail_item_tile.dart';
@@ -15,14 +16,19 @@ import 'package:inventory_keeper/src/widgets/section_divider.dart';
 /// Add Product Page
 class ProductDetails extends StatelessWidget {
   ///
-  const ProductDetails({Key? key}) : super(key: key);
+  const ProductDetails({Key? key, this.showTransactionButton = true})
+      : super(key: key);
 
   /// Add Product route name
   static const routeName = '/productDetails';
 
+  ///
+  final bool showTransactionButton;
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductController>();
+    final product = Get.arguments as Product?;
+    final productController = Get.find<ProductController>();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 209, 209, 209),
       appBar: AppBar(
@@ -38,9 +44,9 @@ class ProductDetails extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.restorablePushNamed(
-                context,
-                AddProduct.routeName,
+              Get.to<void>(
+                () => const AddProduct(),
+                arguments: product,
               );
             },
             icon: const Icon(Icons.edit_note_outlined),
@@ -49,7 +55,7 @@ class ProductDetails extends StatelessWidget {
             onPressed: () {
               AppDeleteMenu().show(context, () {
                 loadDialog<void>(context, loadingText: 'Deleting ....');
-                controller.removeProduct().then((success) {
+                productController.removeProduct().then((success) {
                   if (success) {
                     Navigator.pop(context);
                     Navigator.pop(context);
@@ -82,7 +88,7 @@ class ProductDetails extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(8),
                             child: Hero(
-                              tag: 'avatar-${controller.product?.id}',
+                              tag: 'avatar-${product?.id}',
                               child: Container(
                                 height: 100,
                                 width: 100,
@@ -105,7 +111,7 @@ class ProductDetails extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  controller.product?.name ?? '-',
+                                  product?.name ?? '-',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     color: Color.fromARGB(255, 94, 94, 94),
@@ -118,8 +124,7 @@ class ProductDetails extends StatelessWidget {
                                 Row(
                                   children: [
                                     CurrentStockQuantity(
-                                      currentStock:
-                                          controller.currentStockQuantity ?? 0,
+                                      currentStock: product?.currentStock ?? 0,
                                       withBackground: true,
                                     ),
                                     const SizedBox(
@@ -156,30 +161,28 @@ class ProductDetails extends StatelessWidget {
                           CustomDetailItemTile(
                             hintText: 'Buying Cost of Item',
                             label: 'Cost',
-                            value:
-                                oCcy.format(controller.product?.buyPrice ?? 0),
+                            value: oCcy.format(product?.buyPrice ?? 0),
                           ),
                           CustomDetailItemTile(
                             hintText: 'Selling Price of Item',
                             label: 'Price',
-                            value:
-                                oCcy.format(controller.product?.salePrice ?? 0),
+                            value: oCcy.format(product?.salePrice ?? 0),
                           ),
                           const SectionDivider(),
                           CustomDetailItemTile(
                             label: 'Category',
-                            value: controller.product?.type?.name ?? '-',
+                            value: product?.type?.name ?? '-',
                           ),
                           const SectionDivider(),
                           CustomDetailItemTile(
                             hintText: 'Used for notification',
                             label: 'Safety Stock',
-                            value: '${controller.product?.safetyStock ?? '-'}',
+                            value: '${product?.safetyStock ?? 0}',
                           ),
                           const SectionDivider(),
                           CustomDetailItemTile(
                             label: 'Unit Of Measure',
-                            value: controller.product?.unit ?? '-',
+                            value: product?.unit ?? '-',
                           ),
                         ],
                       ),
@@ -189,25 +192,29 @@ class ProductDetails extends StatelessWidget {
               ),
             ),
           ),
-          ProductDetailBottomBar(
-            onPressed: () {
-              CustomModalSheet.show(
-                isExpanded: false,
-                context: context,
-                child: StockInOutContainer(
-                  title: const Text('Select'),
-                  ctx: context,
+          if (showTransactionButton)
+            ProductDetailBottomBar(
+              onPressed: () {
+                CustomModalSheet.show(
+                  isExpanded: false,
+                  context: context,
+                  child: StockInOutContainer(
+                    product: product,
+                    label: 'Select',
+                    ctx: context,
+                  ),
+                );
+              },
+              buttonLabel: 'Stock In/Out',
+              quantityWidget: Hero(
+                tag: 'currentstock-${product?.id}',
+                child: CurrentStockQuantity(
+                  currentStock: product?.currentStock ?? 0,
                 ),
-              );
-            },
-            buttonLabel: 'Stock In/Out',
-            quantityWidget: Hero(
-              tag: 'currentstock-${controller.product?.id}',
-              child: CurrentStockQuantity(
-                currentStock: controller.currentStockQuantity ?? 0,
               ),
-            ),
-          ),
+            )
+          else
+            Container(),
         ],
       ),
     );

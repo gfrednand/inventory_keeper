@@ -1,12 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
-import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
@@ -24,14 +25,12 @@ class StockInOutForm extends StatelessWidget {
   static const routeName = '/stockInOutForm';
   @override
   Widget build(BuildContext context) {
-    final stockController = Get.find<StockController>();
-    final productController = Get.find<ProductController>();
-    final products = Get.find<List<Product>?>();
+    final cartController = Get.put(CartController());
 
     final titleLabel = isStockIn ? 'Stock In' : 'Stock Out';
     final color = isStockIn ? Colors.teal : Colors.red;
     return WillPopScope(
-      onWillPop: () => _onBackPressed(context, stockController.cartProducts)
+      onWillPop: () => _onBackPressed(context, cartController)
           .then((value) => value ?? false),
       child: Scaffold(
         appBar: AppBar(
@@ -44,8 +43,7 @@ class StockInOutForm extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.black),
           leading: IconButton(
             onPressed: () =>
-                _onBackPressed(context, stockController.cartProducts)
-                    .then((value) {
+                _onBackPressed(context, cartController).then((value) {
               if (value ?? false) {
                 Navigator.pop(context);
               }
@@ -82,8 +80,7 @@ class StockInOutForm extends StatelessWidget {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                                '${stockController.cartProducts.length} Items'),
+                            Text('${cartController.itemCount} Items'),
                             const SizedBox(
                               width: 16,
                             ),
@@ -91,10 +88,10 @@ class StockInOutForm extends StatelessWidget {
                           ],
                         ),
                         onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            StockInOutItems.routeName,
-                            arguments: {'isStockIn': isStockIn},
+                          Get.to<void>(
+                            () => StockInOutItems(
+                              isStockIn: isStockIn,
+                            ),
                           );
                         },
                       ),
@@ -102,29 +99,31 @@ class StockInOutForm extends StatelessWidget {
                       SizedBox(
                         height: MediaQuery.of(context).size.height,
                         child: ListView.builder(
-                          itemCount: stockController.cartProducts.length,
+                          itemCount: cartController.itemCount,
                           itemBuilder: (context, index) {
-                            final products = stockController.cartProducts;
-                            var selectedQuantity =
-                                products[index].selectedQuantity;
-                            if (selectedQuantity != null) {
-                              selectedQuantity = isStockIn
-                                  ? selectedQuantity
-                                  : selectedQuantity * -1;
-                            }
+                            final cartProducts =
+                                cartController.items.values.toList();
+                            var selectedQuantity = cartController.totalQuantity;
+                            selectedQuantity = isStockIn
+                                ? selectedQuantity
+                                : selectedQuantity * -1;
+
+                            final prod =
+                                cartController.products.firstWhereOrNull(
+                              (element) => element.id == cartProducts[index].id,
+                            );
                             return ProductItem(
-                              item: products[index],
+                              item: prod!,
                               trailing: Text(
-                                '${selectedQuantity ?? ''}',
+                                '${cartProducts[index].selectedQuantity}',
                                 style: TextStyle(color: color),
                               ),
                               onTap: () {
-                                productController.product = products[index];
-                                Navigator.pushNamed(
-                                  context,
-                                  ProductDetails.routeName,
-                                ).then(
-                                  (value) => productController.product = null,
+                                Get.to<void>(
+                                  () => const ProductDetails(
+                                    showTransactionButton: false,
+                                  ),
+                                  arguments: prod,
                                 );
                               },
                             );
@@ -144,7 +143,7 @@ class StockInOutForm extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Total Cost: ${oCcy.format(stockController.totalAmount)}',
+                      'Total Cost: ${oCcy.format(cartController.totalAmount)}',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -160,32 +159,12 @@ class StockInOutForm extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        if (stockController.cartProducts.isEmpty) {
+                        if (cartController.items.isEmpty) {
                           AppSnackbar().show(context, 'Add items first');
                         } else {
                           loadDialog<void>(
                             context,
                             loadingText: 'Updating stock...',
-                          );
-                          stockController
-                              .addStock(
-                            isIncoming: isStockIn,
-                          )
-                              .then(
-                            (products) {
-                              if (products.isNotEmpty) {
-                                Get.find<ProductController>()
-                                    .updateProducts(products)
-                                    .then((success) {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                });
-                              } else {
-                                Navigator.pop(context);
-                                AppSnackbar()
-                                    .show(context, 'Failed to update stock');
-                              }
-                            },
                           );
                         }
                       },
@@ -202,8 +181,9 @@ class StockInOutForm extends StatelessWidget {
   }
 
   ///
-  Future<bool?> _onBackPressed(BuildContext context, List<Product> products) {
-    if (products.isEmpty) {
+  Future<bool?> _onBackPressed(
+      BuildContext context, CartController cartController) {
+    if (cartController.items.isEmpty) {
       return Future.value(true);
     } else {
       // set up the buttons
@@ -224,14 +204,9 @@ class StockInOutForm extends StatelessWidget {
           style: TextStyle(color: Colors.red),
         ),
         onPressed: () {
-          for (var p in products) {
-            p = p.copyWith(selectedQuantity: 0);
-          }
-          Get.find<StockController>().removeAllFromCart();
-          var count = 0;
-          Navigator.popUntil(context, (route) {
-            return count++ == 2;
-          });
+          Get.back<void>();
+          cartController.clear();
+          Get.back<void>();
         },
       );
       // set up the AlertDialog

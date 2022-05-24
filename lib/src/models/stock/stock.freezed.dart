@@ -265,9 +265,11 @@ mixin _$ProductSummary {
   bool get active => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  int get currentStock => throw _privateConstructorUsedError;
-  double get buyPrice => throw _privateConstructorUsedError;
-  double get salePrice => throw _privateConstructorUsedError;
+  int get currentQuantity => throw _privateConstructorUsedError;
+  int get selectedQuantity => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
+  bool get isIncoming => throw _privateConstructorUsedError;
+  @ServerTimestampConverter()
   DateTime get summaryDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -285,10 +287,11 @@ abstract class $ProductSummaryCopyWith<$Res> {
       {bool active,
       String id,
       String name,
-      int currentStock,
-      double buyPrice,
-      double salePrice,
-      DateTime summaryDate});
+      int currentQuantity,
+      int selectedQuantity,
+      double amount,
+      bool isIncoming,
+      @ServerTimestampConverter() DateTime summaryDate});
 }
 
 /// @nodoc
@@ -305,9 +308,10 @@ class _$ProductSummaryCopyWithImpl<$Res>
     Object? active = freezed,
     Object? id = freezed,
     Object? name = freezed,
-    Object? currentStock = freezed,
-    Object? buyPrice = freezed,
-    Object? salePrice = freezed,
+    Object? currentQuantity = freezed,
+    Object? selectedQuantity = freezed,
+    Object? amount = freezed,
+    Object? isIncoming = freezed,
     Object? summaryDate = freezed,
   }) {
     return _then(_value.copyWith(
@@ -323,18 +327,22 @@ class _$ProductSummaryCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      currentStock: currentStock == freezed
-          ? _value.currentStock
-          : currentStock // ignore: cast_nullable_to_non_nullable
+      currentQuantity: currentQuantity == freezed
+          ? _value.currentQuantity
+          : currentQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      buyPrice: buyPrice == freezed
-          ? _value.buyPrice
-          : buyPrice // ignore: cast_nullable_to_non_nullable
+      selectedQuantity: selectedQuantity == freezed
+          ? _value.selectedQuantity
+          : selectedQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as double,
-      salePrice: salePrice == freezed
-          ? _value.salePrice
-          : salePrice // ignore: cast_nullable_to_non_nullable
-              as double,
+      isIncoming: isIncoming == freezed
+          ? _value.isIncoming
+          : isIncoming // ignore: cast_nullable_to_non_nullable
+              as bool,
       summaryDate: summaryDate == freezed
           ? _value.summaryDate
           : summaryDate // ignore: cast_nullable_to_non_nullable
@@ -354,10 +362,11 @@ abstract class _$$_ProductSummaryCopyWith<$Res>
       {bool active,
       String id,
       String name,
-      int currentStock,
-      double buyPrice,
-      double salePrice,
-      DateTime summaryDate});
+      int currentQuantity,
+      int selectedQuantity,
+      double amount,
+      bool isIncoming,
+      @ServerTimestampConverter() DateTime summaryDate});
 }
 
 /// @nodoc
@@ -376,9 +385,10 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
     Object? active = freezed,
     Object? id = freezed,
     Object? name = freezed,
-    Object? currentStock = freezed,
-    Object? buyPrice = freezed,
-    Object? salePrice = freezed,
+    Object? currentQuantity = freezed,
+    Object? selectedQuantity = freezed,
+    Object? amount = freezed,
+    Object? isIncoming = freezed,
     Object? summaryDate = freezed,
   }) {
     return _then(_$_ProductSummary(
@@ -394,18 +404,22 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      currentStock: currentStock == freezed
-          ? _value.currentStock
-          : currentStock // ignore: cast_nullable_to_non_nullable
+      currentQuantity: currentQuantity == freezed
+          ? _value.currentQuantity
+          : currentQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      buyPrice: buyPrice == freezed
-          ? _value.buyPrice
-          : buyPrice // ignore: cast_nullable_to_non_nullable
+      selectedQuantity: selectedQuantity == freezed
+          ? _value.selectedQuantity
+          : selectedQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as double,
-      salePrice: salePrice == freezed
-          ? _value.salePrice
-          : salePrice // ignore: cast_nullable_to_non_nullable
-              as double,
+      isIncoming: isIncoming == freezed
+          ? _value.isIncoming
+          : isIncoming // ignore: cast_nullable_to_non_nullable
+              as bool,
       summaryDate: summaryDate == freezed
           ? _value.summaryDate
           : summaryDate // ignore: cast_nullable_to_non_nullable
@@ -423,10 +437,11 @@ class _$_ProductSummary
       {required this.active,
       required this.id,
       required this.name,
-      required this.currentStock,
-      required this.buyPrice,
-      required this.salePrice,
-      required this.summaryDate});
+      required this.currentQuantity,
+      required this.selectedQuantity,
+      required this.amount,
+      required this.isIncoming,
+      @ServerTimestampConverter() required this.summaryDate});
 
   factory _$_ProductSummary.fromJson(Map<String, dynamic> json) =>
       _$$_ProductSummaryFromJson(json);
@@ -438,17 +453,20 @@ class _$_ProductSummary
   @override
   final String name;
   @override
-  final int currentStock;
+  final int currentQuantity;
   @override
-  final double buyPrice;
+  final int selectedQuantity;
   @override
-  final double salePrice;
+  final double amount;
   @override
+  final bool isIncoming;
+  @override
+  @ServerTimestampConverter()
   final DateTime summaryDate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductSummary(active: $active, id: $id, name: $name, currentStock: $currentStock, buyPrice: $buyPrice, salePrice: $salePrice, summaryDate: $summaryDate)';
+    return 'ProductSummary(active: $active, id: $id, name: $name, currentQuantity: $currentQuantity, selectedQuantity: $selectedQuantity, amount: $amount, isIncoming: $isIncoming, summaryDate: $summaryDate)';
   }
 
   @override
@@ -459,9 +477,10 @@ class _$_ProductSummary
       ..add(DiagnosticsProperty('active', active))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('currentStock', currentStock))
-      ..add(DiagnosticsProperty('buyPrice', buyPrice))
-      ..add(DiagnosticsProperty('salePrice', salePrice))
+      ..add(DiagnosticsProperty('currentQuantity', currentQuantity))
+      ..add(DiagnosticsProperty('selectedQuantity', selectedQuantity))
+      ..add(DiagnosticsProperty('amount', amount))
+      ..add(DiagnosticsProperty('isIncoming', isIncoming))
       ..add(DiagnosticsProperty('summaryDate', summaryDate));
   }
 
@@ -474,9 +493,12 @@ class _$_ProductSummary
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
-                .equals(other.currentStock, currentStock) &&
-            const DeepCollectionEquality().equals(other.buyPrice, buyPrice) &&
-            const DeepCollectionEquality().equals(other.salePrice, salePrice) &&
+                .equals(other.currentQuantity, currentQuantity) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedQuantity, selectedQuantity) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.isIncoming, isIncoming) &&
             const DeepCollectionEquality()
                 .equals(other.summaryDate, summaryDate));
   }
@@ -488,9 +510,10 @@ class _$_ProductSummary
       const DeepCollectionEquality().hash(active),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(currentStock),
-      const DeepCollectionEquality().hash(buyPrice),
-      const DeepCollectionEquality().hash(salePrice),
+      const DeepCollectionEquality().hash(currentQuantity),
+      const DeepCollectionEquality().hash(selectedQuantity),
+      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(isIncoming),
       const DeepCollectionEquality().hash(summaryDate));
 
   @JsonKey(ignore: true)
@@ -506,13 +529,15 @@ class _$_ProductSummary
 
 abstract class _ProductSummary implements ProductSummary {
   const factory _ProductSummary(
-      {required final bool active,
-      required final String id,
-      required final String name,
-      required final int currentStock,
-      required final double buyPrice,
-      required final double salePrice,
-      required final DateTime summaryDate}) = _$_ProductSummary;
+          {required final bool active,
+          required final String id,
+          required final String name,
+          required final int currentQuantity,
+          required final int selectedQuantity,
+          required final double amount,
+          required final bool isIncoming,
+          @ServerTimestampConverter() required final DateTime summaryDate}) =
+      _$_ProductSummary;
 
   factory _ProductSummary.fromJson(Map<String, dynamic> json) =
       _$_ProductSummary.fromJson;
@@ -524,12 +549,15 @@ abstract class _ProductSummary implements ProductSummary {
   @override
   String get name => throw _privateConstructorUsedError;
   @override
-  int get currentStock => throw _privateConstructorUsedError;
+  int get currentQuantity => throw _privateConstructorUsedError;
   @override
-  double get buyPrice => throw _privateConstructorUsedError;
+  int get selectedQuantity => throw _privateConstructorUsedError;
   @override
-  double get salePrice => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
   @override
+  bool get isIncoming => throw _privateConstructorUsedError;
+  @override
+  @ServerTimestampConverter()
   DateTime get summaryDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
@@ -547,6 +575,7 @@ mixin _$Transaction {
   double get totalAmount => throw _privateConstructorUsedError;
   int get totalQuantity => throw _privateConstructorUsedError;
   int get totalSelectedQuantity => throw _privateConstructorUsedError;
+  @ServerTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;
@@ -567,7 +596,7 @@ abstract class $TransactionCopyWith<$Res> {
       double totalAmount,
       int totalQuantity,
       int totalSelectedQuantity,
-      DateTime createdAt,
+      @ServerTimestampConverter() DateTime createdAt,
       List<ProductSummary> productsSummary});
 }
 
@@ -629,7 +658,7 @@ abstract class _$$_TransactionCopyWith<$Res>
       double totalAmount,
       int totalQuantity,
       int totalSelectedQuantity,
-      DateTime createdAt,
+      @ServerTimestampConverter() DateTime createdAt,
       List<ProductSummary> productsSummary});
 }
 
@@ -689,7 +718,7 @@ class _$_Transaction with DiagnosticableTreeMixin implements _Transaction {
       required this.totalAmount,
       required this.totalQuantity,
       required this.totalSelectedQuantity,
-      required this.createdAt,
+      @ServerTimestampConverter() required this.createdAt,
       required final List<ProductSummary> productsSummary})
       : _productsSummary = productsSummary;
 
@@ -705,6 +734,7 @@ class _$_Transaction with DiagnosticableTreeMixin implements _Transaction {
   @override
   final int totalSelectedQuantity;
   @override
+  @ServerTimestampConverter()
   final DateTime createdAt;
   final List<ProductSummary> _productsSummary;
   @override
@@ -777,7 +807,7 @@ abstract class _Transaction implements Transaction {
       required final double totalAmount,
       required final int totalQuantity,
       required final int totalSelectedQuantity,
-      required final DateTime createdAt,
+      @ServerTimestampConverter() required final DateTime createdAt,
       required final List<ProductSummary> productsSummary}) = _$_Transaction;
 
   factory _Transaction.fromJson(Map<String, dynamic> json) =
@@ -792,6 +822,7 @@ abstract class _Transaction implements Transaction {
   @override
   int get totalSelectedQuantity => throw _privateConstructorUsedError;
   @override
+  @ServerTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   @override
   List<ProductSummary> get productsSummary =>

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
-import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
-import 'package:inventory_keeper/src/services/navigation_service.dart';
 
 ///
 enum SelectedQuantityEnum {
@@ -18,24 +15,9 @@ enum SelectedQuantityEnum {
 
 /// Product Controller
 class ProductController extends BaseController {
-  // set products(List<Product> newProducts) {
-  //   _products = newProducts;
-  // }
-
-  // List<Product> _products = [];
-
-  // List<Product> get productsFromFetch {
-  //   return [..._products];
-  // }
-
-  final NavigationService _navigationService = locator<NavigationService>();
   final FireBaseRepository _api = FireBaseRepository('products');
 
   ///
-  TextEditingController nameController = TextEditingController(text: ''),
-      salePriceController = TextEditingController(),
-      buyPriceController = TextEditingController(),
-      unitController = TextEditingController();
 
   ///
   FocusNode unitFocusNode = FocusNode(),
@@ -47,16 +29,16 @@ class ProductController extends BaseController {
 
   /// Product
   Product? get product => _product;
-  set product(Product? newproduct) {
-    _product = newproduct;
-    safetyQuantity = newproduct?.safetyStock;
-    nameController.text = newproduct?.name ?? '';
-    salePriceController.text = (newproduct?.salePrice ?? '').toString();
-    buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
-    unitController.text = newproduct?.unit ?? '';
-    currentStockQuantity = newproduct?.currentStock;
-    update();
-  }
+  // set product(Product? newproduct) {
+  //   _product = newproduct;
+  //   safetyQuantity = newproduct?.safetyStock;
+  //   nameController.text = newproduct?.name ?? '';
+  //   salePriceController.text = (newproduct?.salePrice ?? '').toString();
+  //   buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
+  //   unitController.text = newproduct?.unit ?? '';
+  //   currentStockQuantity = newproduct?.currentStock;
+  //   update();
+  // }
 
   ///
   int? _safetyQuantity;
@@ -67,6 +49,18 @@ class ProductController extends BaseController {
   ///
   set safetyQuantity(int? q) {
     _safetyQuantity = q;
+    update();
+  }
+
+  ///
+  ProductType? _productType;
+
+  ///
+  ProductType? get productType => _productType;
+
+  ///
+  set productType(ProductType? q) {
+    _productType = q;
     update();
   }
 
@@ -95,14 +89,23 @@ class ProductController extends BaseController {
   }
 
   /// Add a product to a current products state
-  Future<bool> addProduct() async {
-    var newProduct = generateProduct();
+  Future<bool> addProduct(Product product) async {
     busy = true;
-    newProduct = newProduct.copyWith(createdAt: DateTime.now());
+    final productMap = product.toJson();
+    productMap['createdAt'] = DateTime.now();
+    if (currentStockQuantity != null) {
+      productMap['currentStock'] = currentStockQuantity ?? 0;
+    }
+    if (productType != null) {
+      productMap['type'] = productType?.toJson();
+    }
 
-    final success = await _api.addOne(newProduct.toJson());
+    if (safetyQuantity != null) {
+      productMap['safetyStock'] = safetyQuantity ?? 0;
+    }
+    final success = await _api.addOne(productMap);
     if (success) {
-      resetValues(success, null);
+      resetValues(success: success);
     }
 
     return success;
@@ -140,21 +143,23 @@ class ProductController extends BaseController {
   }
 
   /// Update a product to a current products state
-  Future<Product?> updateProduct() async {
-    var updateProduct = generateProduct();
-    if (updateProduct != _product) {
-      updateProduct = updateProduct.copyWith(
-        id: product?.id,
-        updatedAt: DateTime.now(),
-      );
-
-      final success = await _api.updateOne(updateProduct.toJson());
-      if (success) {
-        product = updateProduct;
-        return updateProduct;
-      }
+  Future<bool> updateProduct(Product product) async {
+    final productMap = product.toJson();
+    if (currentStockQuantity != null) {
+      productMap[' currentStock'] = currentStockQuantity ?? 0;
     }
-    return null;
+    if (productType != null) {
+      productMap['type'] = productType?.toJson();
+    }
+    if (safetyQuantity != null) {
+      productMap['safetyStock'] = safetyQuantity ?? 0;
+    }
+    productMap['updatedAt'] = DateTime.now();
+    final success = await _api.updateOne(productMap);
+    if (success) {
+      resetValues(success: success);
+    }
+    return success;
   }
 
   /// Remove product from a current products state
@@ -172,38 +177,12 @@ class ProductController extends BaseController {
   }
 
   ///
-  Product generateProduct() {
-    var newProduct = Product(
-      name: nameController.text,
-      unit: unitController.text,
-      // type: type?.value,
-      salePrice: double.tryParse(salePriceController.text) ?? 0,
-      buyPrice: double.tryParse(buyPriceController.text) ?? 0,
-    );
-
-    if (currentStockQuantity != null) {
-      newProduct = newProduct.copyWith(
-        currentStock: currentStockQuantity ?? 0,
-      );
-    }
-
-    if (safetyQuantity != null) {
-      newProduct = newProduct.copyWith(safetyStock: safetyQuantity ?? 0);
-    }
-
-    return newProduct;
-  }
-
-  ///
-  void resetValues(bool success, Product? p) {
+  void resetValues({required bool success}) {
     if (success) {
-      nameController.text = '';
-      unitController.text = '';
-      salePriceController.text = '';
       // type = null;
       safetyQuantity = null;
       currentStockQuantity = null;
-      product = p;
+      productType = null;
       setErrorMessage(null);
     } else {
       setErrorMessage('Error has occured');

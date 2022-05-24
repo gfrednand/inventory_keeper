@@ -36,8 +36,11 @@ mixin _$Product {
   int get safetyStock => throw _privateConstructorUsedError;
   bool? get isIncomingStock => throw _privateConstructorUsedError;
   ProductType? get type => throw _privateConstructorUsedError;
+  @ServerTimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @ServerTimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @ServerTimestampConverter()
   DateTime? get expireDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -62,9 +65,9 @@ abstract class $ProductCopyWith<$Res> {
       int safetyStock,
       bool? isIncomingStock,
       ProductType? type,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      DateTime? expireDate});
+      @ServerTimestampConverter() DateTime? createdAt,
+      @ServerTimestampConverter() DateTime? updatedAt,
+      @ServerTimestampConverter() DateTime? expireDate});
 
   $ProductTypeCopyWith<$Res>? get type;
 }
@@ -190,9 +193,9 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       int safetyStock,
       bool? isIncomingStock,
       ProductType? type,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      DateTime? expireDate});
+      @ServerTimestampConverter() DateTime? createdAt,
+      @ServerTimestampConverter() DateTime? updatedAt,
+      @ServerTimestampConverter() DateTime? expireDate});
 
   @override
   $ProductTypeCopyWith<$Res>? get type;
@@ -306,9 +309,9 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
       this.safetyStock = 0,
       this.isIncomingStock,
       this.type,
-      this.createdAt,
-      this.updatedAt,
-      this.expireDate});
+      @ServerTimestampConverter() this.createdAt,
+      @ServerTimestampConverter() this.updatedAt,
+      @ServerTimestampConverter() this.expireDate});
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
       _$$_ProductFromJson(json);
@@ -344,10 +347,13 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
   @override
   final ProductType? type;
   @override
+  @ServerTimestampConverter()
   final DateTime? createdAt;
   @override
+  @ServerTimestampConverter()
   final DateTime? updatedAt;
   @override
+  @ServerTimestampConverter()
   final DateTime? expireDate;
 
   @override
@@ -450,9 +456,9 @@ abstract class _Product implements Product {
       final int safetyStock,
       final bool? isIncomingStock,
       final ProductType? type,
-      final DateTime? createdAt,
-      final DateTime? updatedAt,
-      final DateTime? expireDate}) = _$_Product;
+      @ServerTimestampConverter() final DateTime? createdAt,
+      @ServerTimestampConverter() final DateTime? updatedAt,
+      @ServerTimestampConverter() final DateTime? expireDate}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
@@ -485,10 +491,13 @@ abstract class _Product implements Product {
   @override
   ProductType? get type => throw _privateConstructorUsedError;
   @override
+  @ServerTimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @override
+  @ServerTimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   @override
+  @ServerTimestampConverter()
   DateTime? get expireDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

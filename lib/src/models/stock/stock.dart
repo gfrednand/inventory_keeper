@@ -4,6 +4,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:inventory_keeper/src/models/server_timestamp_converter.dart';
 
 part 'stock.freezed.dart';
 part 'stock.g.dart';
@@ -32,10 +33,11 @@ abstract class ProductSummary with _$ProductSummary {
     required bool active,
     required String id,
     required String name,
-    required int currentStock,
-    required double buyPrice,
-    required double salePrice,
-    required DateTime summaryDate,
+    required int currentQuantity,
+    required int selectedQuantity,
+    required double amount,
+    required bool isIncoming,
+    @ServerTimestampConverter() required DateTime summaryDate,
   }) = _ProductSummary;
 
   ///
@@ -52,7 +54,7 @@ abstract class Transaction with _$Transaction {
     required double totalAmount,
     required int totalQuantity,
     required int totalSelectedQuantity,
-    required DateTime createdAt,
+    @ServerTimestampConverter() required DateTime createdAt,
     required List<ProductSummary> productsSummary,
   }) = _Transaction;
 

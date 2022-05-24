@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
+import 'package:inventory_keeper/src/models/server_timestamp_converter.dart';
 
 part 'product.freezed.dart';
 part 'product.g.dart';
@@ -30,9 +31,9 @@ class Product with _$Product {
     @Default(0) int safetyStock,
     bool? isIncomingStock,
     ProductType? type,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    DateTime? expireDate,
+    @ServerTimestampConverter() DateTime? createdAt,
+    @ServerTimestampConverter() DateTime? updatedAt,
+    @ServerTimestampConverter() DateTime? expireDate,
   }) = _Product;
 
   ///

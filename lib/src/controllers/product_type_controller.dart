@@ -8,15 +8,19 @@ import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 class ProductTypeController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('productTypes');
 
-  Rx<ProductType>? type;
+  ///
+  ProductType? get type => _type;
+
+  ProductType? _type;
 
   /// Product categories
   void changeType(ProductType? newType) {
-    if (type?.value.name == newType?.name) {
-      type = null;
+    if (type?.name == newType?.name) {
+      _type = null;
     } else if (newType != null) {
-      type?.value = newType;
+      _type = newType;
     }
+    update();
   }
 
   ///

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/home_binding.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
-import 'package:inventory_keeper/src/locator.dart';
 import 'package:inventory_keeper/src/routes/app_router.dart';
-import 'package:inventory_keeper/src/services/navigation_service.dart';
 import 'package:inventory_keeper/src/utility/themes.dart';
 
 /// The Widget that configures your application.
@@ -22,7 +20,6 @@ class MyApp extends StatelessWidget {
       title: 'Inventory Keeper',
       // Remove debug banner
       debugShowCheckedModeBanner: false,
-      navigatorKey: locator<NavigationService>().navigatorKey,
       // themeMode: settingsController.themeMode,
       // darkTheme: buildAppDarkTheme(context),
       theme: buildAppLightTheme(context),

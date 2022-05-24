@@ -32,9 +32,10 @@ _$_ProductSummary _$$_ProductSummaryFromJson(Map<String, dynamic> json) =>
       active: json['active'] as bool,
       id: json['id'] as String,
       name: json['name'] as String,
-      currentStock: json['currentStock'] as int,
-      buyPrice: (json['buyPrice'] as num).toDouble(),
-      salePrice: (json['salePrice'] as num).toDouble(),
+      currentQuantity: json['currentQuantity'] as int,
+      selectedQuantity: json['selectedQuantity'] as int,
+      amount: (json['amount'] as num).toDouble(),
+      isIncoming: json['isIncoming'] as bool,
       summaryDate: DateTime.parse(json['summaryDate'] as String),
     );
 
@@ -43,9 +44,10 @@ Map<String, dynamic> _$$_ProductSummaryToJson(_$_ProductSummary instance) =>
       'active': instance.active,
       'id': instance.id,
       'name': instance.name,
-      'currentStock': instance.currentStock,
-      'buyPrice': instance.buyPrice,
-      'salePrice': instance.salePrice,
+      'currentQuantity': instance.currentQuantity,
+      'selectedQuantity': instance.selectedQuantity,
+      'amount': instance.amount,
+      'isIncoming': instance.isIncoming,
       'summaryDate': instance.summaryDate.toIso8601String(),
     };
 

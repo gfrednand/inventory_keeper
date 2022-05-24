@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
@@ -16,12 +17,21 @@ class AddProduct extends StatelessWidget {
   /// Add Product route name
   static const routeName = '/addProduct';
 
+  ///Form Controller
+  static TextEditingController nameController = TextEditingController(),
+      salePriceController = TextEditingController(),
+      buyPriceController = TextEditingController(),
+      unitController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final product = Get.arguments as Product?;
+
     final _formKey = GlobalKey<FormState>();
+
     final controller = Get.find<ProductController>();
     var titleText = '';
-    if (controller.product == null) {
+    if (product == null) {
       titleText = 'Add Item';
     } else {
       titleText = 'Edit Item';
@@ -44,7 +54,14 @@ class AddProduct extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 24, left: 12, right: 12),
-              child: ProductForm(formKey: _formKey),
+              child: ProductForm(
+                nameController: nameController,
+                salePriceController: salePriceController,
+                buyPriceController: buyPriceController,
+                unitController: unitController,
+                formKey: _formKey,
+                product: product,
+              ),
             ),
           ),
           Container(
@@ -62,22 +79,31 @@ class AddProduct extends StatelessWidget {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  if (controller.product?.id != null) {
+                  print('NAFIKA2s');
+                  final newProduct = Product(
+                    id: product?.id,
+                    name: nameController.text,
+                    unit: unitController.text,
+                    salePrice: double.tryParse(salePriceController.text) ?? 0,
+                    buyPrice: double.tryParse(buyPriceController.text) ?? 0,
+                  );
+
+                  print('NAFIKA ${newProduct.toJson()}');
+                  if (newProduct.id != null) {
                     loadDialog<dynamic>(context, loadingText: 'Updating item');
-                    controller.updateProduct().then((product) {
-                      if (product != null) {
-                        Get.find<StockController>().updateCart(product);
-                      }
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      // AppSnackbar().show(context, 'Item Added');
+                    controller.updateProduct(newProduct).then((product) {
+                      Get.back<void>();
+                      // ignore: cascade_invocations
+                      Get.snackbar('Product', 'Updated Successful');
+                      // ignore: cascade_invocations
+                      Get.back<void>();
                     });
                   } else {
                     displayDialog<int>(
                       context,
                       StockQuantityField(
-                        currentQuantity: controller.product?.currentStock ?? 0,
-                        productName: controller.nameController.text,
+                        currentQuantity: product?.currentStock ?? 0,
+                        productName: product?.name,
                         title: 'Input stock quantity',
                       ),
                     ).then((value) {
@@ -85,16 +111,18 @@ class AddProduct extends StatelessWidget {
                         controller.currentStockQuantity = value;
                       }
                       loadDialog<dynamic>(context, loadingText: 'Saving item');
-                      controller.addProduct().then((value) {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        AppSnackbar().show(context, 'Item Added');
+                      controller.addProduct(newProduct).then((value) {
+                        Get.back<void>();
+                        // ignore: cascade_invocations
+                        Get.snackbar('Product', 'Added Successful');
+                        // ignore: cascade_invocations
+                        Get.back<void>();
                       });
                     });
                   }
                 }
               },
-              child: const Text('Save'),
+              child: Text(product?.id == null ? 'Save' : 'Update'),
             ),
           ),
         ],

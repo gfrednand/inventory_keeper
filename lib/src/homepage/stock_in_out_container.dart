@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
+import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
@@ -13,13 +12,17 @@ class StockInOutContainer extends StatelessWidget {
   ///
   const StockInOutContainer({
     Key? key,
-    required this.title,
+    this.label,
+    this.product,
     required this.ctx,
     this.removeCurrentRoute = true,
   }) : super(key: key);
 
-  /// Title
-  final Widget title;
+  /// label
+  final String? label;
+
+  /// product
+  final Product? product;
 
   ///
   final bool? removeCurrentRoute;
@@ -28,10 +31,9 @@ class StockInOutContainer extends StatelessWidget {
   final BuildContext ctx;
   @override
   Widget build(BuildContext context) {
-    final productController = Get.find<ProductController>();
-    final stockController = Get.find<StockController>();
+    final cartController = Get.put(CartController());
     return HomeItemContainer(
-      label: 'Stock In/Out',
+      label: label ?? 'Stock In/Out',
       child: Column(
         children: [
           ListTile(
@@ -44,9 +46,8 @@ class StockInOutContainer extends StatelessWidget {
             onTap: () {
               onTap(
                 ctx,
-                productController.product,
                 true,
-                stockController,
+                cartController,
                 removeCurrentRoute ?? true,
               );
             },
@@ -62,8 +63,7 @@ class StockInOutContainer extends StatelessWidget {
               size: 16,
             ),
             onTap: () {
-              onTap(ctx, productController.product, false, stockController,
-                  removeCurrentRoute ?? true);
+              onTap(ctx, false, cartController, removeCurrentRoute ?? true);
             },
           ),
         ],
@@ -74,38 +74,36 @@ class StockInOutContainer extends StatelessWidget {
   /// on tap function
   void onTap(
     BuildContext context,
-    Product? product,
     bool isStockIn,
-    StockController stockController,
+    CartController cartController,
     bool removeCurrentRoute,
   ) {
     if (removeCurrentRoute) Navigator.pop(context);
     if (product == null) {
-      Navigator.pushNamed(
-        context,
-        StockInOutForm.routeName,
-        arguments: {'isStockIn': isStockIn},
+      Get.to<void>(
+        () => StockInOutForm(
+          isStockIn: isStockIn,
+        ),
       );
     } else {
       displayDialog<int>(
         context,
         StockQuantityField(
-          productName: product.name,
+          productName: product!.name,
           title: isStockIn ? 'Stock in quantity' : 'Stock out quantity',
-          currentQuantity: product.currentStock,
-          initialCounter: product.currentStock,
+          currentQuantity: product!.currentStock,
+          initialCounter: product!.currentStock,
           isIncrement: isStockIn,
         ),
       ).then((value) {
         if (value != null && value > 0) {
-          stockController.addToCart(
-            product.copyWith(
-              selectedQuantity: value,
-              isIncomingStock: isStockIn,
-              currentStock: isStockIn
-                  ? product.currentStock + value
-                  : product.currentStock - value,
-            ),
+          cartController.addItem(
+            amount: isStockIn ? product!.buyPrice : product!.salePrice,
+            id: product!.id ?? '',
+            name: product!.name,
+            selectedQuantity: value,
+            currentQuantity: product!.currentStock,
+            isIncoming: isStockIn,
           );
           Navigator.pushNamed(
             context,

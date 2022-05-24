@@ -34,10 +34,7 @@ class TransactionPage extends StatelessWidget {
                     isExpanded: false,
                     context: context,
                     child: StockInOutContainer(
-                      title: const Text(
-                        'Select',
-                        style: TextStyle(fontSize: 20),
-                      ),
+                      label: 'Select',
                       ctx: context,
                     ),
                   );

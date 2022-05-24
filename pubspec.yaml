@@ -19,7 +19,6 @@ dependencies:
   http: ^0.13.4
   cloud_firestore: ^3.1.13
   firebase_core: ^1.15.0
-  get_it: ^7.2.0
   uuid: ^3.0.6
   intl: ^0.17.0
   fake_cloud_firestore: ^1.2.2

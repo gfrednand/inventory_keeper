@@ -21,15 +21,9 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       type: json['type'] == null
           ? null
           : ProductType.fromJson(json['type'] as Map<String, dynamic>),
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      expireDate: json['expireDate'] == null
-          ? null
-          : DateTime.parse(json['expireDate'] as String),
+      createdAt: const ServerTimestampConverter().fromJson(json['createdAt']),
+      updatedAt: const ServerTimestampConverter().fromJson(json['updatedAt']),
+      expireDate: const ServerTimestampConverter().fromJson(json['expireDate']),
     );
 
 Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
@@ -46,7 +40,8 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'safetyStock': instance.safetyStock,
       'isIncomingStock': instance.isIncomingStock,
       'type': instance.type,
-      'createdAt': instance.createdAt?.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
-      'expireDate': instance.expireDate?.toIso8601String(),
+      'createdAt': const ServerTimestampConverter().toJson(instance.createdAt),
+      'updatedAt': const ServerTimestampConverter().toJson(instance.updatedAt),
+      'expireDate':
+          const ServerTimestampConverter().toJson(instance.expireDate),
     };

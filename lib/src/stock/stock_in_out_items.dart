@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
-import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-
-import '../widgets/section_divider.dart';
+import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
 class StockInOutItems extends StatelessWidget {
@@ -26,13 +24,12 @@ class StockInOutItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productController = Get.find<ProductController>();
-    final stockController = Get.find<StockController>();
+    // final cartController = Get.put(CartController());
+    final cartController = Get.find<CartController>();
     final productTypeController = Get.find<ProductTypeController>();
-
+    final products = Get.find<ProductController>().products;
     final titleLabel = isStockIn ? 'Stock In Items' : 'Stock Out Items';
     final color = isStockIn ? Colors.teal : Colors.red;
-    final products = Get.find<List<Product>?>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -58,115 +55,98 @@ class StockInOutItems extends StatelessWidget {
                   child: ProductTypesSelector(),
                 ),
                 Expanded(
-                  child: Obx(
-                    () {
+                  child: GetBuilder<ProductTypeController>(
+                    builder: (cont) {
                       var data = products;
-                      if (data == null) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (productTypeController.type?.value != null) {
+                      if (productTypeController.type != null) {
                         data = data
                             .where(
                               (p) =>
                                   p.type?.name ==
-                                  productTypeController.type?.value.name,
+                                  productTypeController.type?.name,
                             )
                             .toList();
                         if (data.isEmpty) {
                           return Center(
                             child: Text(
-                              'Category *${productTypeController.type!.value.name}*\n Has No Products',
-                              style: const TextStyle(fontSize: 24),
+                              'Category *${productTypeController.type!.name}*\n Has No Products',
+                              style: const TextStyle(fontSize: 16),
                             ),
                           );
                         }
                       }
 
                       if (data.isNotEmpty) {
-                        var selectedProducts = <Product>[];
-                        selectedProducts = stockController.cartProducts;
-                        data = data.map((p) {
-                          if (products != null) {
-                            final selectedProduct = selectedProducts.firstWhere(
-                              (prod) => prod.id == p.id,
-                              orElse: () =>
-                                  const Product(name: 'null', unit: 'null'),
-                            );
-                            if (selectedProduct.id != null) {
-                              return p.copyWith(
-                                selectedQuantity:
-                                    selectedProduct.selectedQuantity,
+                        return GetBuilder<CartController>(builder: (context) {
+                          return ListView.separated(
+                            restorationId: 'productListView',
+                            itemCount: data.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const SectionDivider(),
+                            itemBuilder: (BuildContext context, int index) {
+                              final item = data[index];
+                              var selectedQuantity = cartController
+                                  .items[item.id]?.selectedQuantity;
+                              if (selectedQuantity != null) {
+                                selectedQuantity = isStockIn
+                                    ? selectedQuantity
+                                    : selectedQuantity * -1;
+                              }
+                              return ProductItem(
+                                item: item,
+                                trailing: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '${item.currentStock}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color:
+                                            Color.fromARGB(171, 158, 158, 158),
+                                      ),
+                                    ),
+                                    Text(
+                                      '${selectedQuantity ?? ''}',
+                                      style: TextStyle(
+                                        color: color,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {
+                                  displayDialog<int>(
+                                    context,
+                                    StockQuantityField(
+                                      currentQuantity: item.currentStock,
+                                      productName: item.name,
+                                      isIncrement: isStockIn,
+                                      title:
+                                          '${isStockIn ? 'Stock In' : 'Stock Out'} quantity',
+                                      counter: selectedQuantity ?? 0,
+                                      initialCounter: item.currentStock +
+                                          (selectedQuantity ?? 0),
+                                    ),
+                                  ).then((value) {
+                                    if (value != null) {
+                                      cartController.addItem(
+                                        amount: isStockIn
+                                            ? item.buyPrice
+                                            : item.salePrice,
+                                        id: item.id ?? '',
+                                        name: item.name,
+                                        selectedQuantity: value,
+                                        currentQuantity: item.currentStock,
+                                        isIncoming: isStockIn,
+                                      );
+                                    }
+                                  });
+                                },
                               );
-                            }
-                          }
-                          return p;
-                        }).toList();
-                        return ListView.separated(
-                          // Providing a restorationId allows the ListView to restore
-                          // The scroll position when a user leaves and returns to
-                          // The app after it has been killed while running in the
-                          // Background.
-                          restorationId: 'productListView',
-                          itemCount: data.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SectionDivider(),
-                          itemBuilder: (BuildContext context, int index) {
-                            var item = data![index];
-
-                            var selectedQuantity = item.selectedQuantity;
-                            if (selectedQuantity != null) {
-                              selectedQuantity = isStockIn
-                                  ? selectedQuantity
-                                  : selectedQuantity * -1;
-                            }
-
-                            return ProductItem(
-                              item: item,
-                              trailing: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '${item.currentStock}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Color.fromARGB(171, 158, 158, 158),
-                                    ),
-                                  ),
-                                  Text(
-                                    '${selectedQuantity ?? ''}',
-                                    style: TextStyle(
-                                      color: color,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              onTap: () {
-                                displayDialog<int>(
-                                  context,
-                                  StockQuantityField(
-                                    currentQuantity: item.currentStock,
-                                    productName: item.name,
-                                    isIncrement: isStockIn,
-                                    title:
-                                        '${isStockIn ? 'Stock In' : 'Stock Out'} quantity',
-                                    counter: item.selectedQuantity ?? 0,
-                                    initialCounter: item.currentStock +
-                                        (item.selectedQuantity ?? 0),
-                                  ),
-                                ).then((value) {
-                                  if (value != null && value > 0) {
-                                    item =
-                                        item.copyWith(selectedQuantity: value);
-                                    Get.find<StockController>().addToCart(item);
-                                  }
-                                });
-                              },
-                            );
-                          },
-                        );
+                            },
+                          );
+                        });
                       } else {
                         return const Center(
                           child: Text(
@@ -181,15 +161,15 @@ class StockInOutItems extends StatelessWidget {
               ],
             ),
           ),
-          ProductDetailBottomBar(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            buttonLabel: 'Done',
-            quantityWidget: CurrentStockQuantity(
-              currentStock: stockController.totalQuantity,
-            ),
-          ),
+          GetBuilder<CartController>(builder: (cont) {
+            return ProductDetailBottomBar(
+              onPressed: Get.back,
+              buttonLabel: 'Done',
+              quantityWidget: CurrentStockQuantity(
+                currentStock: cartController.totalQuantity,
+              ),
+            );
+          }),
         ],
       ),
     );

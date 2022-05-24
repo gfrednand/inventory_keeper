@@ -21,27 +21,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productController = Get.find<ProductController>();
-    final products = productController.products;
-    var stockIn = 0;
-    var stockOut = 0;
-    var stocks = Get.find<StockController>().stocks;
 
-    final index = stocks.indexWhere((element) =>
-        element.createdAt == DateFormat.yMMMEd().format(DateTime.now()));
-    if (index != null && index > -1) {
-      stocks[index].transactions.forEach((element) {
-        if (element.isIncoming) {
-          stockIn = stockIn + element.totalSelectedQuantity;
-        } else {
-          stockOut = stockOut + element.totalSelectedQuantity;
-        }
-      });
-    }
-
-    final totalQuantity =
-        products.fold(0, (int currentQuantity, Product nextProduct) {
-      return currentQuantity + nextProduct.currentStock;
-    });
     return CustomScrollView(
       slivers: [
         const CustomAppBar(
@@ -59,48 +39,83 @@ class HomePage extends StatelessWidget {
             child: SizedBox(
               child: Column(
                 children: [
-                  HomeItemContainer(
-                    withGradient: true,
-                    label: 'Today',
-                    moment: DateFormat.MMMMd().format(DateTime.now()),
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TransactionDetailItemPart(
-                                  labelColor: Colors.white,
-                                  quantity: totalQuantity,
-                                  label: 'Total',
-                                ),
-                                const VerticalDivider(thickness: 2),
-                                TransactionDetailItemPart(
-                                  labelColor: Colors.white,
-                                  quantity: stockIn,
-                                  label: 'Stock In',
-                                ),
-                                const VerticalDivider(thickness: 2),
-                                TransactionDetailItemPart(
-                                  labelColor: Colors.white,
-                                  quantity: stockOut,
-                                  label: 'Stock Out',
-                                ),
-                              ],
+                  Obx(() {
+                    final products = productController.productList.value;
+                    var stockIn = 0;
+                    var stockOut = 0;
+                    products
+                        .where((element) =>
+                            element.createdAt?.day == DateTime.now().day)
+                        .forEach((element) {
+                      if (element.isIncomingStock ?? false) {
+                        stockIn = stockIn + (element.selectedQuantity ?? 0);
+                      } else {
+                        stockOut = stockOut + (element.selectedQuantity ?? 0);
+                      }
+                    });
+                    final stocks = Get.find<StockController>().stocks;
+
+                    final index = stocks.indexWhere((element) =>
+                        element.createdAt ==
+                        DateFormat.yMMMEd().format(DateTime.now()));
+                    if (index > -1) {
+                      for (final element in stocks[index].transactions) {
+                        if (element.isIncoming) {
+                          stockIn = stockIn + element.totalSelectedQuantity;
+                        } else {
+                          stockOut = stockOut + element.totalSelectedQuantity;
+                        }
+                      }
+                    }
+
+                    final totalQuantity = products.fold(0,
+                        (int currentQuantity, Product nextProduct) {
+                      return currentQuantity + nextProduct.currentStock;
+                    });
+                    return HomeItemContainer(
+                      withGradient: true,
+                      label: 'Today',
+                      moment: DateFormat.MMMMd().format(DateTime.now()),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: IntrinsicHeight(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TransactionDetailItemPart(
+                                    labelColor: Colors.white,
+                                    quantity: totalQuantity,
+                                    label: 'Total',
+                                  ),
+                                  const VerticalDivider(thickness: 2),
+                                  TransactionDetailItemPart(
+                                    labelColor: Colors.white,
+                                    quantity: stockIn,
+                                    label: 'Stock In',
+                                  ),
+                                  const VerticalDivider(thickness: 2),
+                                  TransactionDetailItemPart(
+                                    labelColor: Colors.white,
+                                    quantity: stockOut,
+                                    label: 'Stock Out',
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        )
-                      ],
-                    ),
-                  ),
+                          const SizedBox(
+                            height: 16,
+                          )
+                        ],
+                      ),
+                    );
+                  }),
                   const SizedBox(
                     height: 24,
                   ),
@@ -108,7 +123,6 @@ class HomePage extends StatelessWidget {
                     label: 'Add Item',
                     child: ListTile(
                       onTap: () {
-                        productController.product = null;
                         Navigator.pushNamed(
                           context,
                           AddProduct.routeName,
@@ -127,11 +141,7 @@ class HomePage extends StatelessWidget {
                   ),
                   StockInOutContainer(
                     removeCurrentRoute: false,
-                    title: const Text(
-                      'Stock In/ Out',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
+                    label: 'Stock In/ Out',
                     ctx: context,
                   ),
                   const SizedBox(

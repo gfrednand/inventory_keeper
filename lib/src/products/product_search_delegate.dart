@@ -68,11 +68,10 @@ class ProductSearchDelegate extends SearchDelegate<Product?> {
                   // returns to the app after it has been killed while running
                   // in the background, the navigation stack is restored.
 
-                  controller.product = item;
-                  Navigator.pushNamed(
-                    context,
-                    ProductDetails.routeName,
-                  ).then((value) => controller.product = null);
+                  Get.to<void>(
+                    () => const ProductDetails(),
+                    arguments: item,
+                  );
                 },
               );
             },

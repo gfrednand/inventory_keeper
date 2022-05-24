@@ -171,7 +171,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pop(context, _counter == 0 ? null : _counter);
+                      Navigator.pop(context, _counter);
                     },
                     child: const Text(
                       'Apply',
