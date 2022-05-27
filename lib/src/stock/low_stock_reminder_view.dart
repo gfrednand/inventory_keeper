@@ -44,7 +44,9 @@ class LowStockReminderView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.settings_outlined))
+            onPressed: () {},
+            icon: const Icon(Icons.settings_outlined),
+          )
         ],
         title: const Text('Safety Stock'),
       ),
@@ -72,17 +74,14 @@ class LowStockReminderView extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ),
-          Obx(() {
+          GetBuilder<ProductTypeController>(builder: (cont) {
             var data = products;
-            if (data == null) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+
             if (productTypeController.type != null) {
               data = data
                   .where(
-                      (p) => p.type?.name == productTypeController.type?.name)
+                    (p) => p.type?.name == productTypeController.type?.name,
+                  )
                   .toList();
               if (data.isEmpty) {
                 return Center(

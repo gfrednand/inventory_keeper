@@ -93,7 +93,6 @@ class FireBaseRepository
 
   @override
   Future<bool> addOne(Map<String, dynamic> p) async {
-    print(p);
     return ref!.add(p).then((value) => true).catchError((dynamic error) {
       print('Failed to add data: ${error.toString()}');
       return false;
@@ -117,7 +116,7 @@ class FireBaseRepository
   }
 
   ///firebase.firestore().collection("cities").where("timestamp", ">", timestamp);
-  Future<Map<String, dynamic>?> getClosingStockByDate(String date) async {
+  Future<Map<String, dynamic>?> getClosingStockByDate(int date) async {
     final snapshot =
         await ref!.where('createdAt', isLessThanOrEqualTo: date).get();
     if (snapshot.docs.isNotEmpty && snapshot.docs[0].data() != null) {
@@ -127,18 +126,10 @@ class FireBaseRepository
   }
 
   ///
-  Future<bool> createOrUpdate(Map<String, dynamic> stockMap,
-      Map<String, dynamic> transactionMap, String id) async {
-    final dataRef = await ref!.doc(id).get();
-    if (dataRef.exists) {
-      final snapShot = dataRef as DocumentSnapshot<Map<String, dynamic>>;
-      final data = snapShot.data();
-      final transactions = data?['transctions'] as List<Map<String, dynamic>>;
-      transactions.add(transactionMap);
-      stockMap['transactions'] = transactions;
-    } else {
-      stockMap['transactions'] = [transactionMap];
-    }
+  Future<bool> createOrUpdate(
+    Map<String, dynamic> stockMap,
+    String id,
+  ) async {
     return ref!
         .doc(id)
         .set(stockMap)
@@ -150,9 +141,17 @@ class FireBaseRepository
   }
 
   /// Fetching stream of data
-  Stream<List<Map<String, dynamic>>> streamDataCollection({String? query}) {
-    if (query != null) {
-      return ref!.where('name', isEqualTo: query).snapshots().map(mapFunction);
+  Stream<List<Map<String, dynamic>>> streamDataCollection({
+    Map<String, dynamic>? queryMap,
+  }) {
+    if (queryMap != null) {
+      return ref!
+          .where(
+            '${queryMap['parameter']}',
+            isLessThanOrEqualTo: queryMap['value'],
+          )
+          .snapshots()
+          .map(mapFunction);
     }
 
     final snapshots = ref!.snapshots();
@@ -161,16 +160,9 @@ class FireBaseRepository
 
   ///
   List<Map<String, dynamic>> mapFunction(QuerySnapshot<Object?> asyncSnapshot) {
-    // print('JAMANI ${asyncSnapshot}');
-    // final docSnapshot = asyncSnapshot.docChanges;
-    //  for (final change in docSnapshot) {
-    //    change.
-    //  }
-    // if (asyncSnapshot.docChanges.isNotEmpty) {}
     final objs = <Map<String, dynamic>>[];
 
     for (final doc in asyncSnapshot.docs) {
-      // print('JAMANI ${doc.data()}');
       final obj = doc.data() as Map<String, dynamic>?;
       if (obj != null) {
         obj['id'] = doc.id;
@@ -180,30 +172,3 @@ class FireBaseRepository
     return objs;
   }
 }
-
-
-        // final docSnapshot = asyncSnapshot.docChanges;
-
-  
-        // for (final change in docSnapshot) {
-        //   final obj = change.doc.data() as Map<String, dynamic>?;
-        //   print('AAA ${change.doc.exists}');
-        //   if (obj != null) {
-        //     switch (change.type) {
-        //       case DocumentChangeType.added:
-        //         obj['id'] = change.doc.id;
-        //         obj['added'] = true;
-        //         objs.add(obj);
-        //         break;
-        //       case DocumentChangeType.modified:
-        //         obj['id'] = change.doc.id;
-        //         obj['modified'] = true;
-        //         objs.add(obj);
-        //         break;
-        //       case DocumentChangeType.removed:
-        //         break;
-        //     }
-        //   }
-        // }
-        
-

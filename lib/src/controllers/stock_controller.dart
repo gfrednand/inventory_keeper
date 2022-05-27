@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/models/stock/stock.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Stock Controller
 class StockController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('stocks');
 
   Stock? _stock;
-  Transaction? _transaction;
+  Stock? _closingStock;
+  String? _closingStockDate;
+  ProductTransaction? _transaction;
   int? _currentStock;
   int? _incomingStock;
   int? _outgoingStock;
   DateTime? _updatedAt;
   DateTime? _createdAt;
+  int _totalSelectedQuantity = 0;
 
   ///
   set stock(Stock? i) {
@@ -24,7 +31,7 @@ class StockController extends BaseController {
   }
 
   ///
-  set transaction(Transaction? i) {
+  set transaction(ProductTransaction? i) {
     _transaction = i;
     update();
   }
@@ -63,7 +70,13 @@ class StockController extends BaseController {
   Stock? get stock => _stock;
 
   ///
-  Transaction? get transaction => _transaction;
+  Stock? get closingStock => _closingStock;
+
+  ///
+  String? get closingStockDate => _closingStockDate;
+
+  ///
+  ProductTransaction? get productTransaction => _transaction;
 
   ///
   int? get currentStock => _currentStock;
@@ -86,16 +99,20 @@ class StockController extends BaseController {
   ///
   FocusNode nameFocusNode = FocusNode();
 
-  List<Stock> _stocks = [];
+  ///
+  Rx<List<Stock>> stockList = Rx<List<Stock>>([]);
 
-  /// Get Stocks from current Stocks state
-  List<Stock> get stocks {
-    return [..._stocks];
-  }
-
-  set stocks(List<Stock> item) {
-    _stocks = item;
-    update();
+  ///
+  List<Stock> get stocks => stockList.value;
+  @override
+  void onReady() {
+    stockList.bindStream(
+      _api.streamDataCollection().map(
+            (maps) => maps.map((item) {
+              return Stock.fromJson(item);
+            }).toList(),
+          ),
+    );
   }
 
   /// Future Items
@@ -107,80 +124,129 @@ class StockController extends BaseController {
     for (final item in objs) {
       ps.add(Stock.fromJson(item));
     }
-    _stocks = ps;
     return ps;
   }
 
-  Future<Stock?> getStockByDate(String date) async {
-    final obj = await _api.getClosingStockByDate(date);
-
+  ///
+  Future<void> getStockByDate(DateTime date) async {
+    _closingStockDate = DateFormat.yMMMEd().format(date);
+    busy = true;
+    final obj = await _api.getClosingStockByDate(dateToMillSeconds(date));
+    busy = false;
     if (obj != null) {
-      return Stock.fromJson(obj);
+      _closingStock = Stock.fromJson(obj);
+      update();
+    } else {
+      _closingStock = null;
     }
-    return null;
   }
 
   ///
 
-  /// Add a product to a current Stocks state
-  Future<List<Product>> addStock(
-      {required bool isIncoming, required Transaction transaction}) async {
-    final productSummary = products
-        .map(
-          (e) => {
-            'active': e.active ?? true,
-            'buyPrice': e.buyPrice ?? 0,
-            'salePrice': e.salePrice ?? 0,
-            'id': e.id ?? '',
-            'name': e.name,
-            'summaryDate': DateTime.now(),
-            'currentStock': e.currentStock,
-          },
-        )
-        .toList();
+  // /// Add a product to a current Stocks state
+  // Future<bool> addStock({
+  //   required bool isIncoming,
+  //   required double totalAmount,
+  //   required Map<String, ProductSummary> items,
+  //   required List<Product> allProducts,
+  //   required int totalQuantity,
+  //   DateTime? date,
+  // }) async {
+  //   final stockDate = date ?? DateTime.now();
+  //   final existingStock = stocks.firstWhereOrNull(
+  //     (stock) => stock.createdAt == dateToMillSeconds(stockDate),
+  //   );
+  //   final formattedDateString = DateFormat.yMMMEd().format(stockDate);
 
-    final productsSummary = transaction.productsSummary
-        .map(
-          (e) => {
-            'active': e.active,
-            'amount': e.amount,
-            'isIncoming': e.isIncoming,
-            'id': e.id,
-            'name': e.name,
-            'summaryDate': e.summaryDate,
-            'currentQuantity': e.currentQuantity,
-          },
-        )
-        .toList();
-    final stock = Stock(
-      totalAmount: 0,
-      totalQuantity: 8,
-      createdAt: DateFormat.yMMMEd().format(DateTime.now()),
-      productsSummary: [],
-      transactions: [],
-    );
+  //   var summaryTotalQuantity = 0;
+  //   final overAllProductSummaryMap = allProducts.map(
+  //     (prod) {
+  //       // prod = productWithLatestInfo(prod, ]);
+  //       summaryTotalQuantity =
+  //           summaryTotalQuantity + (items[prod.id]?.currentStock ?? 0);
+  //       final mapItem = <String, dynamic>{
+  //         'active': prod.active ?? true,
+  //         'amount': isIncoming ? prod.buyPrice : prod.salePrice,
+  //         'isIncoming': isIncoming,
+  //         'id': prod.id ?? '',
+  //         'name': prod.name,
+  //         'summaryDate': stockDate,
+  //         'currentStock': items[prod.id]?.currentStock ?? prod.currentStock,
+  //         'selectedQuantity': items[prod.id]?.quantity ?? prod.selectedQuantity,
+  //       };
 
-    final transactionMap = {
-      'isIncoming': transaction.isIncoming,
-      'totalSelectedQuantity': 0,
-      'createdAt': transaction.createdAt,
-      'productsSummary': productsSummary,
-      'totalQuantity': transaction.totalQuantity,
-      'totalAmount': transaction.totalAmount,
-    };
+  //       return mapItem;
+  //     },
+  //   ).toList();
 
-    final map = stock.toJson();
-    map['productsSummary'] = productSummary;
+  //   final stock = Stock(
+  //     totalAmount: 0,
+  //     totalQuantity: summaryTotalQuantity,
+  //     createdAt: dateToMillSeconds(stockDate),
+  //     productsSummary: [],
+  //     transactions: [],
+  //   );
 
-    final success = await _api.createOrUpdate(
-      map,
-      transactionMap,
-      stock.createdAt,
-    );
-    if (success) {
-      // _navigationService.goBackUntil(ProductListView.routeName);
-    }
-    return [];
+  //   final transactionMap = <String, dynamic>{
+  //     'isIncoming': isIncoming,
+  //     'totalSelectedQuantity': _totalSelectedQuantity,
+  //     'createdAt': stockDate,
+  //     'productsSummary': prodSummaryMap(items.values.toList()),
+  //     'totalQuantity': isIncoming ? totalQuantity : -1 * totalQuantity,
+  //     'totalAmount': totalAmount,
+  //   };
+
+  //   final map = stock.toJson();
+  //   map['productsSummary'] = overAllProductSummaryMap;
+
+  //   if (existingStock?.transactions != null) {
+  //     final List<Map<String, dynamic>> transactions =
+  //         existingStock!.transactions
+  //             .map(
+  //               (e) => {
+  //                 'transactionType': e.transactionType,
+  //                 'totalSelectedQuantity': e.totalSelectedQuantity,
+  //                 'createdAt': e.transactionDate,
+  //                 'productsSummary': prodSummaryMap(e.productsSummary),
+  //                 'totalQuantity': e.totalQuantity,
+  //                 'totalAmount': e.totalAmount,
+  //               },
+  //             )
+  //             .toList();
+
+  //     // ignore: cascade_invocations
+  //     transactions.add(transactionMap);
+  //     map['transactions'] = transactions;
+  //   } else {
+  //     map['transactions'] = [transactionMap];
+  //   }
+
+  //   final success = await _api.createOrUpdate(
+  //     map,
+  //     formattedDateString,
+  //   );
+  //   if (success) {
+  //     // _navigationService.goBackUntil(ProductListView.routeName);
+  //   }
+  //   return success;
+  // }
+
+  ///
+  List<Map<String, dynamic>> prodSummaryMap(List<ProductSummary> prods) {
+    return prods.map(
+      (e) {
+        _totalSelectedQuantity = _totalSelectedQuantity + (e.quantity);
+        return {
+          'active': e.active,
+          'amount': e.amount,
+          'id': e.id,
+          'name': e.name,
+          'summaryDate': e.summaryDate,
+          'currentStock': e.currentStock,
+          'selectedQuantity': e.quantity,
+        };
+      },
+    ).toList();
   }
 
   /// Remove product from a current Stocks state

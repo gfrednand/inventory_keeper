@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/models/stock/stock.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
+import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
@@ -16,10 +15,11 @@ import 'package:inventory_keeper/src/widgets/section_divider.dart';
 ///
 class StockInOutForm extends StatelessWidget {
   ///
-  const StockInOutForm({Key? key, required this.isStockIn}) : super(key: key);
+  const StockInOutForm({Key? key, required this.transactionType})
+      : super(key: key);
 
   ///
-  final bool isStockIn;
+  final TransactionType transactionType;
 
   ///
   static const routeName = '/stockInOutForm';
@@ -27,8 +27,19 @@ class StockInOutForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
 
-    final titleLabel = isStockIn ? 'Stock In' : 'Stock Out';
-    final color = isStockIn ? Colors.teal : Colors.red;
+    var titleLabel = '';
+    Color? color;
+
+    if (transactionType == TransactionType.inStock) {
+      titleLabel = 'Stock In';
+      color = Colors.teal;
+    } else if (transactionType == TransactionType.outStock) {
+      titleLabel = 'Stock Out';
+      color = Colors.red;
+    } else if (transactionType == TransactionType.audit) {
+      titleLabel = 'Audit';
+      color = Colors.orange;
+    }
     return WillPopScope(
       onWillPop: () => _onBackPressed(context, cartController)
           .then((value) => value ?? false),
@@ -90,7 +101,7 @@ class StockInOutForm extends StatelessWidget {
                         onTap: () {
                           Get.to<void>(
                             () => StockInOutItems(
-                              isStockIn: isStockIn,
+                              transactionType: transactionType,
                             ),
                           );
                         },
@@ -104,9 +115,12 @@ class StockInOutForm extends StatelessWidget {
                             final cartProducts =
                                 cartController.items.values.toList();
                             var selectedQuantity = cartController.totalQuantity;
-                            selectedQuantity = isStockIn
-                                ? selectedQuantity
-                                : selectedQuantity * -1;
+                            if (transactionType == TransactionType.inStock) {
+                              selectedQuantity = selectedQuantity;
+                            } else if (transactionType ==
+                                TransactionType.outStock) {
+                              selectedQuantity = selectedQuantity * -1;
+                            }
 
                             final prod =
                                 cartController.products.firstWhereOrNull(
@@ -115,7 +129,7 @@ class StockInOutForm extends StatelessWidget {
                             return ProductItem(
                               item: prod!,
                               trailing: Text(
-                                '${cartProducts[index].selectedQuantity}',
+                                '${cartProducts[index].quantity}',
                                 style: TextStyle(color: color),
                               ),
                               onTap: () {
@@ -166,6 +180,13 @@ class StockInOutForm extends StatelessWidget {
                             context,
                             loadingText: 'Updating stock...',
                           );
+
+                          if (cartController.products.isNotEmpty) {
+                            Get.find<TransactionController>().addTransaction(
+                              cartController: cartController,
+                              transactionType: transactionType,
+                            );
+                          }
                         }
                       },
                       child: const Text('Submit'),
@@ -182,7 +203,9 @@ class StockInOutForm extends StatelessWidget {
 
   ///
   Future<bool?> _onBackPressed(
-      BuildContext context, CartController cartController) {
+    BuildContext context,
+    CartController cartController,
+  ) {
     if (cartController.items.isEmpty) {
       return Future.value(true);
     } else {

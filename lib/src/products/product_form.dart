@@ -37,9 +37,9 @@ class ProductForm extends StatelessWidget {
     final productController = Get.find<ProductController>();
     if (product != null) {
       nameController.text = product!.name;
-      salePriceController.text = '${product!.salePrice}';
-      buyPriceController.text = '${product!.buyPrice}';
-      unitController.text = '${product!.unit}';
+      salePriceController.text = '${product!.salePrice ?? ''}';
+      buyPriceController.text = '${product!.buyPrice ?? ''}';
+      unitController.text = product!.unit ?? '';
     } else {
       nameController.text = '';
       salePriceController.text = '';
@@ -117,44 +117,35 @@ class ProductForm extends StatelessWidget {
               focusNode: productController.unitFocusNode,
             ),
             const Divider(),
-            GetBuilder<ProductController>(builder: (cont) {
-              return ListTile(
-                onTap: () {
-                  displayDialog<int>(
-                    context,
-                    StockQuantityField(
-                      productName: product?.name,
-                      title: 'Safety Stock',
-                      counter: product?.safetyStock ?? 0,
-                    ),
-                  ).then((value) {
-                    if (value != null && value > 0) {
-                      productController.safetyQuantity = value;
-                    }
-                  });
-                },
-                dense: true,
-                title: const Text(
-                  'Safety Stock',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                trailing: Text('${productController.safetyQuantity ?? 0}'),
-              );
-            }),
+            GetBuilder<ProductController>(
+              builder: (cont) {
+                return ListTile(
+                  onTap: () {
+                    displayDialog<int>(
+                      context,
+                      StockQuantityField(
+                        productName: product?.name,
+                        title: 'Safety Stock',
+                        counter: product?.safetyStock ?? 0,
+                      ),
+                    ).then((value) {
+                      if (value != null && value > 0) {
+                        productController.safetyQuantity = value;
+                      }
+                    });
+                  },
+                  dense: true,
+                  title: const Text(
+                    'Safety Stock',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  trailing: Text('${productController.safetyQuantity ?? 0}'),
+                );
+              },
+            ),
             const SizedBox(height: 16),
             const ProductTypesSelector(),
             const SizedBox(height: 16),
-            if (productController.hasErrorMessage)
-              Text(
-                productController.errorMessage!,
-                style: TextStyle(
-                  color: Colors.red[800],
-                  fontSize: 20,
-                  fontWeight: FontWeight.w300,
-                ),
-              )
-            else
-              Container(),
             // Expanded(child: Container()),
             const SizedBox(
               height: 24,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 
 ///

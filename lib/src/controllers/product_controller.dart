@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
@@ -155,6 +156,8 @@ class ProductController extends BaseController {
       productMap['safetyStock'] = safetyQuantity ?? 0;
     }
     productMap['updatedAt'] = DateTime.now();
+
+    print(productMap);
     final success = await _api.updateOne(productMap);
     if (success) {
       resetValues(success: success);
@@ -168,8 +171,8 @@ class ProductController extends BaseController {
   }
 
   /// Fetching stream of data
-  Stream<List<Product>> fetchProductsAsStream({String? query}) {
-    return _api.streamDataCollection(query: query).map(
+  Stream<List<Product>> fetchProductsAsStream() {
+    return _api.streamDataCollection().map(
           (maps) => maps.map((item) {
             return Product.fromJson(item);
           }).toList(),
@@ -179,13 +182,20 @@ class ProductController extends BaseController {
   ///
   void resetValues({required bool success}) {
     if (success) {
-      // type = null;
       safetyQuantity = null;
       currentStockQuantity = null;
       productType = null;
-      setErrorMessage(null);
+      Get.snackbar(
+        'Product',
+        'Successful',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } else {
-      setErrorMessage('Error has occured');
+      Get.snackbar(
+        'Product',
+        'Failed',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
     update();
   }

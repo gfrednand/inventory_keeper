@@ -2,7 +2,12 @@ import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 
 /// Check if number is integer
 
@@ -13,6 +18,30 @@ DateTime? parseTime(dynamic date) {
   return date == null ? null : (date as Timestamp).toDate();
 }
 
+/// GEt today date without time in millseconds
+int dateToMillSeconds(DateTime? date) {
+  if (date != null) {
+    return DateTime(date.year, date.month, date.day).millisecondsSinceEpoch;
+  } else {
+    return 0;
+  }
+}
+
+/// Get product with current stock
+
+Product productWithLatestInfo(Product product, ProductTransaction transaction) {
+  ProductSummary? prod;
+  prod = transaction.productsSummary.firstWhereOrNull(
+    (item) => item.id == product.id,
+  );
+
+  return product.copyWith(
+    currentStock: prod?.currentStock ?? 0,
+    selectedQuantity: prod?.quantity,
+  );
+}
+
+///
 final oCcy = NumberFormat.currency(
   locale: 'en_TZ',
   customPattern: '#,### \u00a4',
@@ -70,12 +99,13 @@ Future<T?> displayDialog<T>(
     );
 
 /// Date picker
-Future<DateTime?> selectDate(BuildContext context,{ DateTime? currentDate}) {
+Future<DateTime?> selectDate(BuildContext context, {DateTime? currentDate}) {
   return showDatePicker(
-      context: context,
-      initialDate: currentDate?? DateTime.now(),
-      firstDate: DateTime(2015),
-      lastDate: DateTime(2050));
+    context: context,
+    initialDate: currentDate ?? DateTime.now(),
+    firstDate: DateTime(2015),
+    lastDate: DateTime(2050),
+  );
 }
 
 /// Out Icon

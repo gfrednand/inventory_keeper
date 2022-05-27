@@ -31,7 +31,7 @@ BoxDecoration decorationWithGradient() {
         offset: const Offset(3, 3),
       )
     ],
-    gradient: LinearGradient(
+    gradient: const LinearGradient(
       begin: Alignment.topRight,
       end: Alignment.bottomLeft,
       colors: [

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -10,6 +12,7 @@ import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/products/product_search_delegate.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
 
 /// Displays a list of Products.
@@ -25,6 +28,7 @@ class ProductListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final products = Get.find<ProductController>().products;
+    final stocks = Get.find<StockController>().stocks;
     final productTypeController = Get.find<ProductTypeController>();
     return Scaffold(
       body: CustomScrollView(
@@ -50,7 +54,7 @@ class ProductListView extends StatelessWidget {
             ],
           ),
           SliverAppBar(
-            backgroundColor: Theme.of(context).canvasColor,
+            backgroundColor: AppColors.blue50Alpha060,
             pinned: true,
             bottom: PreferredSize(
               // Add this code
@@ -87,6 +91,7 @@ class ProductListView extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
+                    // data[index] = productWithLatestInfo(data[index], stocks);
                     return ProductItem(
                       item: data[index],
                       trailing: CurrentStockQuantity(

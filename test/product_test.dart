@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,7 +11,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   test('test 1', () {
     // The model should be able to receive the following data:
-    var product = Product(
+    var product = const Product(
       id: 'ABC',
       name: 'Pepsi',
       buyPrice: 500,

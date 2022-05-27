@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
-import 'package:inventory_keeper/src/models/stock/stock.dart';
-import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
-import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Displays a list of Products.
-class PastQuantityView extends StatefulWidget {
+class PastQuantityView extends StatelessWidget {
   ///
   const PastQuantityView({
     Key? key,
@@ -23,16 +19,8 @@ class PastQuantityView extends StatefulWidget {
   final List<Product> products;
 
   @override
-  State<PastQuantityView> createState() => _PastQuantityViewState();
-}
-
-class _PastQuantityViewState extends State<PastQuantityView> {
-  String? currentDate;
-  Stock? closingStock;
-
-  @override
   Widget build(BuildContext context) {
-    final controller = Get.find<StockController>();
+    final stockController = Get.find<StockController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -48,53 +36,68 @@ class _PastQuantityViewState extends State<PastQuantityView> {
         ),
         title: const Text('Past Quantity'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            color: const Color.fromARGB(255, 236, 232, 232),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: ListTile(
-              onTap: () {
-                selectDate(context).then((value) async {
-                  if (value != null) {
-                    currentDate = DateFormat.yMMMEd().format(value);
-                    closingStock =
-                        await controller.getStockByDate(currentDate!);
-                    setState(() {});
-                  }
-                });
-              },
-              title: Text(currentDate ?? 'Select Date'),
-              trailing: const Icon(
-                Icons.arrow_downward_outlined,
-                size: 16,
+      body: GetBuilder<StockController>(builder: (cont) {
+        final closingStock = stockController.closingStock;
+
+        if (stockController.busy) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              color: const Color.fromARGB(255, 236, 232, 232),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: ListTile(
+                onTap: () {
+                  selectDate(context).then((value) {
+                    if (value != null) {
+                      stockController.getStockByDate(value);
+                    }
+                  });
+                },
+                title: Text(stockController.closingStockDate ?? 'Select Date'),
+                trailing: const Icon(
+                  Icons.arrow_downward_outlined,
+                  size: 16,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Builder(
-            builder: (context) {
-              if (closingStock == null) {
-                return const Center(
+            const SizedBox(height: 16),
+            if (closingStock == null)
+              const Expanded(
+                child: Center(
                   child: Text('No Data'),
-                );
-              }
-
-              return ListView.builder(
+                ),
+              )
+            else
+              ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
+                  final productSummary = closingStock.productsSummary[index];
                   return ListTile(
-                    title: Text(closingStock!.productsSummary[index].name),
+                    title: Text(
+                      productSummary.name,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    subtitle: Text(
+                      productSummary.amount != null
+                          ? oCcy.format(productSummary.amount)
+                          : '',
+                    ),
+                    trailing: Text(
+                      '${productSummary.currentStock}',
+                    ),
                   );
                 },
-                itemCount: closingStock!.productsSummary.length,
-              );
-            },
-          ),
-        ],
-      ),
+                itemCount: closingStock.productsSummary.length,
+              )
+          ],
+        );
+      }),
     );
   }
 }

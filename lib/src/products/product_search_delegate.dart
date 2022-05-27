@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
@@ -48,7 +47,6 @@ class ProductSearchDelegate extends SearchDelegate<Product?> {
     final data = products
         .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
-    final controller = Get.find<ProductController>();
     return data.isEmpty
         ? Column(
             children: const <Widget>[

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 
 ///
 class ProductTypesSelector extends StatelessWidget {
@@ -22,7 +23,6 @@ class ProductTypesSelector extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(
-              left: 8,
               top: 10,
               bottom: 16,
             ),
@@ -30,12 +30,13 @@ class ProductTypesSelector extends StatelessWidget {
               tag: 'hero-category-title',
               child: Material(
                 child: ListTile(
+                  leading: const Icon(
+                    Icons.view_timeline_outlined,
+                    color: AppColors.blue700,
+                  ),
                   dense: true,
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      ProductTypeListView.routeName,
-                    );
+                    Get.to<void>(() => const ProductTypeListView());
                   },
                   title: const Text(
                     'Categories',

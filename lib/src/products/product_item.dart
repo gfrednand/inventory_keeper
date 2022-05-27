@@ -23,6 +23,12 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final type = item.type == null ? '' : ('${item.type!.name} | ');
+    final buyPrice =
+        item.buyPrice == null ? '' : ('${oCcy.format(item.buyPrice)} | ');
+    final salePrice =
+        item.salePrice == null ? '' : ('${oCcy.format(item.salePrice)} ');
+
     return Material(
       type: MaterialType.transparency,
       child: ListTile(
@@ -31,7 +37,8 @@ class ProductItem extends StatelessWidget {
           style: const TextStyle(fontSize: 15),
         ),
         subtitle: Text(
-            '${item.type?.name ?? ''}${item.type == null ? '' : ' | '}${oCcy.format(item.buyPrice)}${item.buyPrice == null ? '' : ' | '}${oCcy.format(item.salePrice)}'),
+          type + buyPrice + salePrice,
+        ),
         leading: Hero(
           tag: 'avatar-${item.id}',
           child: Container(

@@ -1,6 +1,6 @@
-import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
-import 'package:inventory_keeper/src/models/stock/stock.dart';
+import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 
 /// Cart controller
 class CartController extends BaseController {
@@ -34,8 +34,8 @@ class CartController extends BaseController {
     var quantity = 0;
     var total = 0.0;
     _items.forEach((key, cartItem) {
-      quantity += cartItem.selectedQuantity;
-      total += cartItem.amount * cartItem.selectedQuantity;
+      quantity += cartItem.quantity;
+      total += (cartItem.amount ?? 0) * (cartItem.quantity);
     });
     _totalQuantity = quantity;
     _totalAmount = total;
@@ -43,15 +43,15 @@ class CartController extends BaseController {
   }
 
   /// Adding item to cart
-  void addItem(
-      {required String id,
-      required String name,
-      int? selectedQuantity,
-      required int currentQuantity,
-      required bool isIncoming,
-      double? amount,
-      bool? active,
-      DateTime? summaryDate}) {
+  void addItem({
+    required String id,
+    required String name,
+    int? quantity,
+    int? currentStock,
+    double? amount,
+    bool? active,
+    DateTime? summaryDate,
+  }) {
     if (_items.containsKey(id)) {
       _items.update(
         id,
@@ -59,11 +59,9 @@ class CartController extends BaseController {
           id: existingCartItem.id,
           name: existingCartItem.name,
           summaryDate: existingCartItem.summaryDate,
-          currentQuantity: existingCartItem.currentQuantity,
-          selectedQuantity:
-              selectedQuantity ?? existingCartItem.selectedQuantity,
+          currentStock: currentStock ?? existingCartItem.currentStock,
+          quantity: quantity ?? existingCartItem.quantity,
           amount: amount ?? existingCartItem.amount,
-          isIncoming: existingCartItem.isIncoming,
           active: existingCartItem.active,
         ),
       );
@@ -74,15 +72,14 @@ class CartController extends BaseController {
           id: id,
           name: name,
           summaryDate: summaryDate ?? DateTime.now(),
-          currentQuantity: currentQuantity,
-          selectedQuantity: selectedQuantity ?? 0,
-          isIncoming: isIncoming,
+          currentStock: currentStock ?? 0,
+          quantity: quantity ?? 0,
           amount: amount ?? 0,
           active: active ?? true,
         ),
       );
     }
-    if (selectedQuantity == 0) {
+    if (quantity == 0) {
       removeitem(id);
     } else {
       calculateTotalQuantity();

@@ -27,14 +27,8 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
   List<Product> filteredProducts = [];
 
   @override
-  void initState() {
-    filteredProducts = Get.find<List<Product>>();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final products = Get.find<List<Product>>();
+    final products = Get.find<ProductController>().products;
     return Scaffold(
       body: Column(
         children: [
@@ -175,27 +169,5 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
         ],
       ),
     );
-  }
-
-  void _searchItem(String searchQuery, List<Product> products) {
-    final searchResult = <Product>[];
-    if (searchQuery.isEmpty) {
-      setState(() {
-        filteredProducts = products;
-      });
-    } else {
-      for (final product in products) {
-        if ((product.type != null &&
-                product.type!.name
-                    .toLowerCase()
-                    .contains(searchQuery.toLowerCase())) ||
-            product.name.toLowerCase().contains(searchQuery.toLowerCase())) {
-          searchResult.add(product);
-        }
-      }
-      setState(() {
-        filteredProducts = searchResult;
-      });
-    }
   }
 }

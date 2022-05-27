@@ -18,13 +18,14 @@ class CustomStepper extends StatelessWidget {
     this.step = 1,
     this.iconSize = 25,
     required this.initialValue,
-  })  : assert(maxValue > minValue, 'Max Value is less than min value'),
-        assert(
-          initialValue >= minValue && initialValue <= maxValue,
-          'Initial Value is less than min value or greater than Max value',
-        ),
-        assert(step > 0, 'Step is less than 0'),
-        selectedValue = initialValue,
+  })  :
+        // assert(maxValue > minValue, 'Max Value is less than min value'),
+        //       assert(
+        //         initialValue >= minValue && initialValue <= maxValue,
+        //         'Initial Value is less than min value or greater than Max value',
+        //       ),
+        //       assert(step > 0, 'Step is less than 0'),
+        selectedValue = initialValue.abs(),
         super(key: key);
 
   ///min value user can pick
@@ -130,6 +131,7 @@ class CustomStepper extends StatelessWidget {
     );
   }
 
+  ///
   void getCursorCurrentPosn(String newText) {
     final cursorPos = quantityController.selection.base.offset;
 
@@ -146,6 +148,7 @@ class CustomStepper extends StatelessWidget {
     quantityController.text = prefixText + specialChars + suffixText;
 
     // Cursor move to end of added text
+    // ignore: cascade_invocations
     quantityController.selection = TextSelection(
       baseOffset: cursorPos + length,
       extentOffset: cursorPos + length,

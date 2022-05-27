@@ -95,7 +95,8 @@ class ProductDetails extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: Colors.grey[400],
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
+                                    Radius.circular(20),
+                                  ),
                                 ),
                               ),
                             ),
@@ -133,8 +134,9 @@ class ProductDetails extends StatelessWidget {
                                     Text(
                                       'Total Quantity',
                                       style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey[400]),
+                                        fontSize: 13,
+                                        color: Colors.grey[400],
+                                      ),
                                     ),
                                   ],
                                 ),

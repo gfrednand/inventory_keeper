@@ -20,6 +20,7 @@ class CustomAppBar extends StatelessWidget {
   ///
   final Widget? flexibleSpace;
 
+  ///
   final List<Widget>? actions;
 
   @override

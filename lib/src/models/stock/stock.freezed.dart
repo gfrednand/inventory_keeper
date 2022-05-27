@@ -20,12 +20,14 @@ Stock _$StockFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Stock {
-  String get createdAt => throw _privateConstructorUsedError;
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
   int get totalQuantity => throw _privateConstructorUsedError;
-  List<Transaction> get transactions => throw _privateConstructorUsedError;
+  int get totalIn => throw _privateConstructorUsedError;
+  int get totalOut => throw _privateConstructorUsedError;
+  double get totalSale => throw _privateConstructorUsedError;
+  double get totalBuy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,11 +39,13 @@ abstract class $StockCopyWith<$Res> {
   factory $StockCopyWith(Stock value, $Res Function(Stock) then) =
       _$StockCopyWithImpl<$Res>;
   $Res call(
-      {String createdAt,
-      List<ProductSummary> productsSummary,
+      {List<ProductSummary> productsSummary,
       double totalAmount,
       int totalQuantity,
-      List<Transaction> transactions});
+      int totalIn,
+      int totalOut,
+      double totalSale,
+      double totalBuy});
 }
 
 /// @nodoc
@@ -54,17 +58,15 @@ class _$StockCopyWithImpl<$Res> implements $StockCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? createdAt = freezed,
     Object? productsSummary = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
-    Object? transactions = freezed,
+    Object? totalIn = freezed,
+    Object? totalOut = freezed,
+    Object? totalSale = freezed,
+    Object? totalBuy = freezed,
   }) {
     return _then(_value.copyWith(
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
       productsSummary: productsSummary == freezed
           ? _value.productsSummary
           : productsSummary // ignore: cast_nullable_to_non_nullable
@@ -77,10 +79,22 @@ class _$StockCopyWithImpl<$Res> implements $StockCopyWith<$Res> {
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      transactions: transactions == freezed
-          ? _value.transactions
-          : transactions // ignore: cast_nullable_to_non_nullable
-              as List<Transaction>,
+      totalIn: totalIn == freezed
+          ? _value.totalIn
+          : totalIn // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalOut: totalOut == freezed
+          ? _value.totalOut
+          : totalOut // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalSale: totalSale == freezed
+          ? _value.totalSale
+          : totalSale // ignore: cast_nullable_to_non_nullable
+              as double,
+      totalBuy: totalBuy == freezed
+          ? _value.totalBuy
+          : totalBuy // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -91,11 +105,13 @@ abstract class _$$_StockCopyWith<$Res> implements $StockCopyWith<$Res> {
       __$$_StockCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String createdAt,
-      List<ProductSummary> productsSummary,
+      {List<ProductSummary> productsSummary,
       double totalAmount,
       int totalQuantity,
-      List<Transaction> transactions});
+      int totalIn,
+      int totalOut,
+      double totalSale,
+      double totalBuy});
 }
 
 /// @nodoc
@@ -109,17 +125,15 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? createdAt = freezed,
     Object? productsSummary = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
-    Object? transactions = freezed,
+    Object? totalIn = freezed,
+    Object? totalOut = freezed,
+    Object? totalSale = freezed,
+    Object? totalBuy = freezed,
   }) {
     return _then(_$_Stock(
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
       productsSummary: productsSummary == freezed
           ? _value._productsSummary
           : productsSummary // ignore: cast_nullable_to_non_nullable
@@ -132,10 +146,22 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res>
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      transactions: transactions == freezed
-          ? _value._transactions
-          : transactions // ignore: cast_nullable_to_non_nullable
-              as List<Transaction>,
+      totalIn: totalIn == freezed
+          ? _value.totalIn
+          : totalIn // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalOut: totalOut == freezed
+          ? _value.totalOut
+          : totalOut // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalSale: totalSale == freezed
+          ? _value.totalSale
+          : totalSale // ignore: cast_nullable_to_non_nullable
+              as double,
+      totalBuy: totalBuy == freezed
+          ? _value.totalBuy
+          : totalBuy // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -144,19 +170,18 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Stock with DiagnosticableTreeMixin implements _Stock {
   const _$_Stock(
-      {required this.createdAt,
-      required final List<ProductSummary> productsSummary,
+      {required final List<ProductSummary> productsSummary,
       required this.totalAmount,
       required this.totalQuantity,
-      required final List<Transaction> transactions})
-      : _productsSummary = productsSummary,
-        _transactions = transactions;
+      required this.totalIn,
+      required this.totalOut,
+      required this.totalSale,
+      required this.totalBuy})
+      : _productsSummary = productsSummary;
 
   factory _$_Stock.fromJson(Map<String, dynamic> json) =>
       _$$_StockFromJson(json);
 
-  @override
-  final String createdAt;
   final List<ProductSummary> _productsSummary;
   @override
   List<ProductSummary> get productsSummary {
@@ -168,16 +193,18 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
   final double totalAmount;
   @override
   final int totalQuantity;
-  final List<Transaction> _transactions;
   @override
-  List<Transaction> get transactions {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_transactions);
-  }
+  final int totalIn;
+  @override
+  final int totalOut;
+  @override
+  final double totalSale;
+  @override
+  final double totalBuy;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Stock(createdAt: $createdAt, productsSummary: $productsSummary, totalAmount: $totalAmount, totalQuantity: $totalQuantity, transactions: $transactions)';
+    return 'Stock(productsSummary: $productsSummary, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalIn: $totalIn, totalOut: $totalOut, totalSale: $totalSale, totalBuy: $totalBuy)';
   }
 
   @override
@@ -185,11 +212,13 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Stock'))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('productsSummary', productsSummary))
       ..add(DiagnosticsProperty('totalAmount', totalAmount))
       ..add(DiagnosticsProperty('totalQuantity', totalQuantity))
-      ..add(DiagnosticsProperty('transactions', transactions));
+      ..add(DiagnosticsProperty('totalIn', totalIn))
+      ..add(DiagnosticsProperty('totalOut', totalOut))
+      ..add(DiagnosticsProperty('totalSale', totalSale))
+      ..add(DiagnosticsProperty('totalBuy', totalBuy));
   }
 
   @override
@@ -197,26 +226,29 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Stock &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality()
                 .equals(other._productsSummary, _productsSummary) &&
             const DeepCollectionEquality()
                 .equals(other.totalAmount, totalAmount) &&
             const DeepCollectionEquality()
                 .equals(other.totalQuantity, totalQuantity) &&
-            const DeepCollectionEquality()
-                .equals(other._transactions, _transactions));
+            const DeepCollectionEquality().equals(other.totalIn, totalIn) &&
+            const DeepCollectionEquality().equals(other.totalOut, totalOut) &&
+            const DeepCollectionEquality().equals(other.totalSale, totalSale) &&
+            const DeepCollectionEquality().equals(other.totalBuy, totalBuy));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(_productsSummary),
       const DeepCollectionEquality().hash(totalAmount),
       const DeepCollectionEquality().hash(totalQuantity),
-      const DeepCollectionEquality().hash(_transactions));
+      const DeepCollectionEquality().hash(totalIn),
+      const DeepCollectionEquality().hash(totalOut),
+      const DeepCollectionEquality().hash(totalSale),
+      const DeepCollectionEquality().hash(totalBuy));
 
   @JsonKey(ignore: true)
   @override
@@ -231,17 +263,17 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
 
 abstract class _Stock implements Stock {
   const factory _Stock(
-      {required final String createdAt,
-      required final List<ProductSummary> productsSummary,
+      {required final List<ProductSummary> productsSummary,
       required final double totalAmount,
       required final int totalQuantity,
-      required final List<Transaction> transactions}) = _$_Stock;
+      required final int totalIn,
+      required final int totalOut,
+      required final double totalSale,
+      required final double totalBuy}) = _$_Stock;
 
   factory _Stock.fromJson(Map<String, dynamic> json) = _$_Stock.fromJson;
 
   @override
-  String get createdAt => throw _privateConstructorUsedError;
-  @override
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;
   @override
@@ -249,586 +281,15 @@ abstract class _Stock implements Stock {
   @override
   int get totalQuantity => throw _privateConstructorUsedError;
   @override
-  List<Transaction> get transactions => throw _privateConstructorUsedError;
+  int get totalIn => throw _privateConstructorUsedError;
+  @override
+  int get totalOut => throw _privateConstructorUsedError;
+  @override
+  double get totalSale => throw _privateConstructorUsedError;
+  @override
+  double get totalBuy => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_StockCopyWith<_$_Stock> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-ProductSummary _$ProductSummaryFromJson(Map<String, dynamic> json) {
-  return _ProductSummary.fromJson(json);
-}
-
-/// @nodoc
-mixin _$ProductSummary {
-  bool get active => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  int get currentQuantity => throw _privateConstructorUsedError;
-  int get selectedQuantity => throw _privateConstructorUsedError;
-  double get amount => throw _privateConstructorUsedError;
-  bool get isIncoming => throw _privateConstructorUsedError;
-  @ServerTimestampConverter()
-  DateTime get summaryDate => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ProductSummaryCopyWith<ProductSummary> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ProductSummaryCopyWith<$Res> {
-  factory $ProductSummaryCopyWith(
-          ProductSummary value, $Res Function(ProductSummary) then) =
-      _$ProductSummaryCopyWithImpl<$Res>;
-  $Res call(
-      {bool active,
-      String id,
-      String name,
-      int currentQuantity,
-      int selectedQuantity,
-      double amount,
-      bool isIncoming,
-      @ServerTimestampConverter() DateTime summaryDate});
-}
-
-/// @nodoc
-class _$ProductSummaryCopyWithImpl<$Res>
-    implements $ProductSummaryCopyWith<$Res> {
-  _$ProductSummaryCopyWithImpl(this._value, this._then);
-
-  final ProductSummary _value;
-  // ignore: unused_field
-  final $Res Function(ProductSummary) _then;
-
-  @override
-  $Res call({
-    Object? active = freezed,
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? currentQuantity = freezed,
-    Object? selectedQuantity = freezed,
-    Object? amount = freezed,
-    Object? isIncoming = freezed,
-    Object? summaryDate = freezed,
-  }) {
-    return _then(_value.copyWith(
-      active: active == freezed
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      currentQuantity: currentQuantity == freezed
-          ? _value.currentQuantity
-          : currentQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      selectedQuantity: selectedQuantity == freezed
-          ? _value.selectedQuantity
-          : selectedQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as double,
-      isIncoming: isIncoming == freezed
-          ? _value.isIncoming
-          : isIncoming // ignore: cast_nullable_to_non_nullable
-              as bool,
-      summaryDate: summaryDate == freezed
-          ? _value.summaryDate
-          : summaryDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$$_ProductSummaryCopyWith<$Res>
-    implements $ProductSummaryCopyWith<$Res> {
-  factory _$$_ProductSummaryCopyWith(
-          _$_ProductSummary value, $Res Function(_$_ProductSummary) then) =
-      __$$_ProductSummaryCopyWithImpl<$Res>;
-  @override
-  $Res call(
-      {bool active,
-      String id,
-      String name,
-      int currentQuantity,
-      int selectedQuantity,
-      double amount,
-      bool isIncoming,
-      @ServerTimestampConverter() DateTime summaryDate});
-}
-
-/// @nodoc
-class __$$_ProductSummaryCopyWithImpl<$Res>
-    extends _$ProductSummaryCopyWithImpl<$Res>
-    implements _$$_ProductSummaryCopyWith<$Res> {
-  __$$_ProductSummaryCopyWithImpl(
-      _$_ProductSummary _value, $Res Function(_$_ProductSummary) _then)
-      : super(_value, (v) => _then(v as _$_ProductSummary));
-
-  @override
-  _$_ProductSummary get _value => super._value as _$_ProductSummary;
-
-  @override
-  $Res call({
-    Object? active = freezed,
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? currentQuantity = freezed,
-    Object? selectedQuantity = freezed,
-    Object? amount = freezed,
-    Object? isIncoming = freezed,
-    Object? summaryDate = freezed,
-  }) {
-    return _then(_$_ProductSummary(
-      active: active == freezed
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      currentQuantity: currentQuantity == freezed
-          ? _value.currentQuantity
-          : currentQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      selectedQuantity: selectedQuantity == freezed
-          ? _value.selectedQuantity
-          : selectedQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as double,
-      isIncoming: isIncoming == freezed
-          ? _value.isIncoming
-          : isIncoming // ignore: cast_nullable_to_non_nullable
-              as bool,
-      summaryDate: summaryDate == freezed
-          ? _value.summaryDate
-          : summaryDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_ProductSummary
-    with DiagnosticableTreeMixin
-    implements _ProductSummary {
-  const _$_ProductSummary(
-      {required this.active,
-      required this.id,
-      required this.name,
-      required this.currentQuantity,
-      required this.selectedQuantity,
-      required this.amount,
-      required this.isIncoming,
-      @ServerTimestampConverter() required this.summaryDate});
-
-  factory _$_ProductSummary.fromJson(Map<String, dynamic> json) =>
-      _$$_ProductSummaryFromJson(json);
-
-  @override
-  final bool active;
-  @override
-  final String id;
-  @override
-  final String name;
-  @override
-  final int currentQuantity;
-  @override
-  final int selectedQuantity;
-  @override
-  final double amount;
-  @override
-  final bool isIncoming;
-  @override
-  @ServerTimestampConverter()
-  final DateTime summaryDate;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductSummary(active: $active, id: $id, name: $name, currentQuantity: $currentQuantity, selectedQuantity: $selectedQuantity, amount: $amount, isIncoming: $isIncoming, summaryDate: $summaryDate)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'ProductSummary'))
-      ..add(DiagnosticsProperty('active', active))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('currentQuantity', currentQuantity))
-      ..add(DiagnosticsProperty('selectedQuantity', selectedQuantity))
-      ..add(DiagnosticsProperty('amount', amount))
-      ..add(DiagnosticsProperty('isIncoming', isIncoming))
-      ..add(DiagnosticsProperty('summaryDate', summaryDate));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ProductSummary &&
-            const DeepCollectionEquality().equals(other.active, active) &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.currentQuantity, currentQuantity) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedQuantity, selectedQuantity) &&
-            const DeepCollectionEquality().equals(other.amount, amount) &&
-            const DeepCollectionEquality()
-                .equals(other.isIncoming, isIncoming) &&
-            const DeepCollectionEquality()
-                .equals(other.summaryDate, summaryDate));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(active),
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(currentQuantity),
-      const DeepCollectionEquality().hash(selectedQuantity),
-      const DeepCollectionEquality().hash(amount),
-      const DeepCollectionEquality().hash(isIncoming),
-      const DeepCollectionEquality().hash(summaryDate));
-
-  @JsonKey(ignore: true)
-  @override
-  _$$_ProductSummaryCopyWith<_$_ProductSummary> get copyWith =>
-      __$$_ProductSummaryCopyWithImpl<_$_ProductSummary>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_ProductSummaryToJson(this);
-  }
-}
-
-abstract class _ProductSummary implements ProductSummary {
-  const factory _ProductSummary(
-          {required final bool active,
-          required final String id,
-          required final String name,
-          required final int currentQuantity,
-          required final int selectedQuantity,
-          required final double amount,
-          required final bool isIncoming,
-          @ServerTimestampConverter() required final DateTime summaryDate}) =
-      _$_ProductSummary;
-
-  factory _ProductSummary.fromJson(Map<String, dynamic> json) =
-      _$_ProductSummary.fromJson;
-
-  @override
-  bool get active => throw _privateConstructorUsedError;
-  @override
-  String get id => throw _privateConstructorUsedError;
-  @override
-  String get name => throw _privateConstructorUsedError;
-  @override
-  int get currentQuantity => throw _privateConstructorUsedError;
-  @override
-  int get selectedQuantity => throw _privateConstructorUsedError;
-  @override
-  double get amount => throw _privateConstructorUsedError;
-  @override
-  bool get isIncoming => throw _privateConstructorUsedError;
-  @override
-  @ServerTimestampConverter()
-  DateTime get summaryDate => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$$_ProductSummaryCopyWith<_$_ProductSummary> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Transaction _$TransactionFromJson(Map<String, dynamic> json) {
-  return _Transaction.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Transaction {
-  bool get isIncoming => throw _privateConstructorUsedError;
-  double get totalAmount => throw _privateConstructorUsedError;
-  int get totalQuantity => throw _privateConstructorUsedError;
-  int get totalSelectedQuantity => throw _privateConstructorUsedError;
-  @ServerTimestampConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  List<ProductSummary> get productsSummary =>
-      throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $TransactionCopyWith<Transaction> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TransactionCopyWith<$Res> {
-  factory $TransactionCopyWith(
-          Transaction value, $Res Function(Transaction) then) =
-      _$TransactionCopyWithImpl<$Res>;
-  $Res call(
-      {bool isIncoming,
-      double totalAmount,
-      int totalQuantity,
-      int totalSelectedQuantity,
-      @ServerTimestampConverter() DateTime createdAt,
-      List<ProductSummary> productsSummary});
-}
-
-/// @nodoc
-class _$TransactionCopyWithImpl<$Res> implements $TransactionCopyWith<$Res> {
-  _$TransactionCopyWithImpl(this._value, this._then);
-
-  final Transaction _value;
-  // ignore: unused_field
-  final $Res Function(Transaction) _then;
-
-  @override
-  $Res call({
-    Object? isIncoming = freezed,
-    Object? totalAmount = freezed,
-    Object? totalQuantity = freezed,
-    Object? totalSelectedQuantity = freezed,
-    Object? createdAt = freezed,
-    Object? productsSummary = freezed,
-  }) {
-    return _then(_value.copyWith(
-      isIncoming: isIncoming == freezed
-          ? _value.isIncoming
-          : isIncoming // ignore: cast_nullable_to_non_nullable
-              as bool,
-      totalAmount: totalAmount == freezed
-          ? _value.totalAmount
-          : totalAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      totalQuantity: totalQuantity == freezed
-          ? _value.totalQuantity
-          : totalQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalSelectedQuantity: totalSelectedQuantity == freezed
-          ? _value.totalSelectedQuantity
-          : totalSelectedQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      productsSummary: productsSummary == freezed
-          ? _value.productsSummary
-          : productsSummary // ignore: cast_nullable_to_non_nullable
-              as List<ProductSummary>,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$$_TransactionCopyWith<$Res>
-    implements $TransactionCopyWith<$Res> {
-  factory _$$_TransactionCopyWith(
-          _$_Transaction value, $Res Function(_$_Transaction) then) =
-      __$$_TransactionCopyWithImpl<$Res>;
-  @override
-  $Res call(
-      {bool isIncoming,
-      double totalAmount,
-      int totalQuantity,
-      int totalSelectedQuantity,
-      @ServerTimestampConverter() DateTime createdAt,
-      List<ProductSummary> productsSummary});
-}
-
-/// @nodoc
-class __$$_TransactionCopyWithImpl<$Res> extends _$TransactionCopyWithImpl<$Res>
-    implements _$$_TransactionCopyWith<$Res> {
-  __$$_TransactionCopyWithImpl(
-      _$_Transaction _value, $Res Function(_$_Transaction) _then)
-      : super(_value, (v) => _then(v as _$_Transaction));
-
-  @override
-  _$_Transaction get _value => super._value as _$_Transaction;
-
-  @override
-  $Res call({
-    Object? isIncoming = freezed,
-    Object? totalAmount = freezed,
-    Object? totalQuantity = freezed,
-    Object? totalSelectedQuantity = freezed,
-    Object? createdAt = freezed,
-    Object? productsSummary = freezed,
-  }) {
-    return _then(_$_Transaction(
-      isIncoming: isIncoming == freezed
-          ? _value.isIncoming
-          : isIncoming // ignore: cast_nullable_to_non_nullable
-              as bool,
-      totalAmount: totalAmount == freezed
-          ? _value.totalAmount
-          : totalAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      totalQuantity: totalQuantity == freezed
-          ? _value.totalQuantity
-          : totalQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalSelectedQuantity: totalSelectedQuantity == freezed
-          ? _value.totalSelectedQuantity
-          : totalSelectedQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      productsSummary: productsSummary == freezed
-          ? _value._productsSummary
-          : productsSummary // ignore: cast_nullable_to_non_nullable
-              as List<ProductSummary>,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_Transaction with DiagnosticableTreeMixin implements _Transaction {
-  const _$_Transaction(
-      {required this.isIncoming,
-      required this.totalAmount,
-      required this.totalQuantity,
-      required this.totalSelectedQuantity,
-      @ServerTimestampConverter() required this.createdAt,
-      required final List<ProductSummary> productsSummary})
-      : _productsSummary = productsSummary;
-
-  factory _$_Transaction.fromJson(Map<String, dynamic> json) =>
-      _$$_TransactionFromJson(json);
-
-  @override
-  final bool isIncoming;
-  @override
-  final double totalAmount;
-  @override
-  final int totalQuantity;
-  @override
-  final int totalSelectedQuantity;
-  @override
-  @ServerTimestampConverter()
-  final DateTime createdAt;
-  final List<ProductSummary> _productsSummary;
-  @override
-  List<ProductSummary> get productsSummary {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_productsSummary);
-  }
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Transaction(isIncoming: $isIncoming, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalSelectedQuantity: $totalSelectedQuantity, createdAt: $createdAt, productsSummary: $productsSummary)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Transaction'))
-      ..add(DiagnosticsProperty('isIncoming', isIncoming))
-      ..add(DiagnosticsProperty('totalAmount', totalAmount))
-      ..add(DiagnosticsProperty('totalQuantity', totalQuantity))
-      ..add(DiagnosticsProperty('totalSelectedQuantity', totalSelectedQuantity))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('productsSummary', productsSummary));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_Transaction &&
-            const DeepCollectionEquality()
-                .equals(other.isIncoming, isIncoming) &&
-            const DeepCollectionEquality()
-                .equals(other.totalAmount, totalAmount) &&
-            const DeepCollectionEquality()
-                .equals(other.totalQuantity, totalQuantity) &&
-            const DeepCollectionEquality()
-                .equals(other.totalSelectedQuantity, totalSelectedQuantity) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality()
-                .equals(other._productsSummary, _productsSummary));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(isIncoming),
-      const DeepCollectionEquality().hash(totalAmount),
-      const DeepCollectionEquality().hash(totalQuantity),
-      const DeepCollectionEquality().hash(totalSelectedQuantity),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(_productsSummary));
-
-  @JsonKey(ignore: true)
-  @override
-  _$$_TransactionCopyWith<_$_Transaction> get copyWith =>
-      __$$_TransactionCopyWithImpl<_$_Transaction>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_TransactionToJson(this);
-  }
-}
-
-abstract class _Transaction implements Transaction {
-  const factory _Transaction(
-      {required final bool isIncoming,
-      required final double totalAmount,
-      required final int totalQuantity,
-      required final int totalSelectedQuantity,
-      @ServerTimestampConverter() required final DateTime createdAt,
-      required final List<ProductSummary> productsSummary}) = _$_Transaction;
-
-  factory _Transaction.fromJson(Map<String, dynamic> json) =
-      _$_Transaction.fromJson;
-
-  @override
-  bool get isIncoming => throw _privateConstructorUsedError;
-  @override
-  double get totalAmount => throw _privateConstructorUsedError;
-  @override
-  int get totalQuantity => throw _privateConstructorUsedError;
-  @override
-  int get totalSelectedQuantity => throw _privateConstructorUsedError;
-  @override
-  @ServerTimestampConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  @override
-  List<ProductSummary> get productsSummary =>
-      throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$$_TransactionCopyWith<_$_Transaction> get copyWith =>
       throw _privateConstructorUsedError;
 }

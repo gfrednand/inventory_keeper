@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/models/stock/stock.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 
 ///
 class TransactionDetailItemPart extends StatelessWidget {
@@ -8,17 +8,21 @@ class TransactionDetailItemPart extends StatelessWidget {
     Key? key,
     required this.quantity,
     required this.label,
-    this.labelColor,
+    this.labelColor = AppColors.blue200,
+    this.quantityColor,
   }) : super(key: key);
 
   ///
-  final int quantity;
+  final String quantity;
 
   ///
   final String label;
 
   ///
   final Color? labelColor;
+
+  ///
+  final Color? quantityColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +31,10 @@ class TransactionDetailItemPart extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '$quantity',
+          quantity,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: labelColor,
+            color: quantityColor,
             fontSize: 24,
           ),
         ),
@@ -39,9 +43,9 @@ class TransactionDetailItemPart extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white70,
+            color: labelColor,
           ),
         )
       ],

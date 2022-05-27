@@ -29,18 +29,15 @@ class BaseController extends GetxController {
   bool get busy => _busy;
 
   ///
-  String? get errorMessage => _errorMessage;
 
   ///
   bool get hasErrorMessage => _errorMessage != null && _errorMessage != '';
 
   ///
-  void setErrorMessage(String? message) {
-    _errorMessage = message;
-  }
 
   /// Set Busy Status
   set busy(bool value) {
     _busy = value;
+    update();
   }
 }

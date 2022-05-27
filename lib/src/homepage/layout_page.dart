@@ -52,6 +52,7 @@ class _LayoutPageState extends State<LayoutPage> {
             Animation<double> secondaryAnimation,
           ) {
             return FadeThroughTransition(
+              fillColor: Colors.transparent,
               animation: animation,
               secondaryAnimation: secondaryAnimation,
               child: child,

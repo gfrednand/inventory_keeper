@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
@@ -11,86 +14,130 @@ class TransactionDetailsPage extends StatelessWidget {
   ///
   const TransactionDetailsPage({
     Key? key,
+    required this.transaction,
   }) : super(key: key);
 
-  /// Transaction history
+  /// Transaction model/definition
+  final ProductTransaction transaction;
+
+  /// Transaction route name
   static const routeName = '/transactionDetailsPage';
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<StockController>();
-    final transaction = controller.transaction;
-    if (transaction != null) {
-      final formatter = DateFormat(' MMM d, yyyy h:mm a');
-      final titleLabel = transaction.isIncoming ? 'Stock In' : 'Stock Out';
-      final color = transaction.isIncoming ? Colors.teal : Colors.red;
-      final sign = transaction.isIncoming ? '+' : '-';
-      final totalItems = transaction.productsSummary.length;
-      return Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          backgroundColor: Theme.of(context).canvasColor,
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-          iconTheme: const IconThemeData(color: Colors.black),
-          title: const Text(
-            'History',
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                AppDeleteMenu().show(context, () {
-                  controller.removeStock().then((success) {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  });
-                });
-              },
-              icon: const Icon(Icons.more_horiz_rounded),
-            ),
-          ],
+
+    final totalItems = transaction.productsSummary.length;
+
+    Widget? icon;
+    var titleLabel = 'Audit';
+    Color? color;
+    if (transaction.transactionType == TransactionType.inStock) {
+      titleLabel = 'Stock In';
+      icon = inIcon();
+      color = Colors.teal;
+    } else if (transaction.transactionType == TransactionType.outStock) {
+      titleLabel = 'Stock Out';
+      icon = outIcon();
+      color = Colors.red;
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: SingleChildScrollView(
-              child: Column(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
+          'History',
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              AppDeleteMenu().show(context, () {
+                controller.removeStock().then((success) {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                });
+              });
+            },
+            icon: const Icon(Icons.more_horiz_rounded),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                formatter.format(transaction.createdAt),
-                style: TextStyle(color: Colors.grey[400]),
+              const SizedBox(
+                height: 16,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  titleLabel,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+              Text(
+                '${transaction.transactionDate}',
+                style:
+                    const TextStyle(color: AppColors.greyLabel, fontSize: 16),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    titleLabel,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                  Text(
+                    oCcy.format(transaction.totalAmount),
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
               SectionDivider(
                 color: color,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TransactionDetailItemPart(
-                    quantity: transaction.productsSummary.length,
-                    label: totalItems > 1 ? 'Items' : 'Item',
+              Container(
+                decoration: containerBoxDecoration(),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: IntrinsicHeight(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TransactionDetailItemPart(
+                        quantityColor: AppColors.blue300,
+                        labelColor: AppColors.blue600,
+                        quantity: '${transaction.productsSummary.length}',
+                        label: totalItems > 1 ? 'Items' : 'Item',
+                      ),
+                      const VerticalDivider(
+                        thickness: 2,
+                        color: AppColors.blue100,
+                      ),
+                      TransactionDetailItemPart(
+                        quantityColor: AppColors.blue300,
+                        labelColor: AppColors.blue600,
+                        quantity: '${transaction.totalQuantity}',
+                        label: 'Quantity',
+                      ),
+                    ],
                   ),
-                  TransactionDetailItemPart(
-                    quantity: transaction.totalSelectedQuantity,
-                    label: 'Quantity',
-                  ),
-                ],
+                ),
               ),
-              const SectionDivider(),
               ListView.separated(
                 shrinkWrap: true,
                 itemCount: transaction.productsSummary.length,
@@ -98,25 +145,25 @@ class TransactionDetailsPage extends StatelessWidget {
                     const SectionDivider(),
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(transaction.productsSummary[index].name),
+                    dense: true,
+                    title: Text(
+                      transaction.productsSummary[index].name,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    subtitle: Text(
+                      oCcy.format(transaction.productsSummary[index].amount),
+                    ),
+                    trailing: Text(
+                      '${transaction.productsSummary[index].quantity}',
+                      style: TextStyle(color: color),
+                    ),
                   );
-
-                  // ProductItem(
-                  //   item: transaction.productsSummary[index],
-                  //   trailing: Text(
-                  //     '$sign${transaction.productsSummary[index].selectedQuantity}',
-                  //     style: TextStyle(color: color),
-                  //   ),
-                  // );
                 },
               )
             ],
-          )),
+          ),
         ),
-      );
-    }
-    return Scaffold(
-      appBar: AppBar(title: const Text('Transactions')),
+      ),
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
+import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -27,11 +29,17 @@ class StockInOutContainer extends StatelessWidget {
   ///
   final bool? removeCurrentRoute;
 
+  ///
+  static Product? modifiedProduct;
+
   /// Context
   final BuildContext ctx;
   @override
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
+    final currentStock =
+        Get.find<TransactionController>().getCurrentStockSummary();
+
     return HomeItemContainer(
       label: label ?? 'Stock In/Out',
       child: Column(
@@ -46,7 +54,7 @@ class StockInOutContainer extends StatelessWidget {
             onTap: () {
               onTap(
                 ctx,
-                true,
+                TransactionType.inStock,
                 cartController,
                 removeCurrentRoute ?? true,
               );
@@ -63,7 +71,12 @@ class StockInOutContainer extends StatelessWidget {
               size: 16,
             ),
             onTap: () {
-              onTap(ctx, false, cartController, removeCurrentRoute ?? true);
+              onTap(
+                ctx,
+                TransactionType.outStock,
+                cartController,
+                removeCurrentRoute ?? true,
+              );
             },
           ),
         ],
@@ -74,41 +87,60 @@ class StockInOutContainer extends StatelessWidget {
   /// on tap function
   void onTap(
     BuildContext context,
-    bool isStockIn,
+    TransactionType transactionType,
     CartController cartController,
     bool removeCurrentRoute,
   ) {
     if (removeCurrentRoute) Navigator.pop(context);
-    if (product == null) {
+    if (modifiedProduct == null) {
       Get.to<void>(
         () => StockInOutForm(
-          isStockIn: isStockIn,
+          transactionType: transactionType,
         ),
       );
     } else {
       displayDialog<int>(
         context,
         StockQuantityField(
-          productName: product!.name,
-          title: isStockIn ? 'Stock in quantity' : 'Stock out quantity',
-          currentQuantity: product!.currentStock,
-          initialCounter: product!.currentStock,
-          isIncrement: isStockIn,
+          productName: modifiedProduct!.name,
+          title: transactionType == TransactionType.outStock
+              ? 'Stock Out quantity'
+              : transactionType != TransactionType.inStock
+                  ? 'Stock In quantity'
+                  : transactionType == TransactionType.audit
+                      ? 'Audit Quantity'
+                      : '',
+          currentStock: modifiedProduct!.currentStock,
+          initialCounter: modifiedProduct!.currentStock,
+          isIncrement: transactionType != TransactionType.outStock,
         ),
       ).then((value) {
         if (value != null && value > 0) {
+          var currentStock = 0;
+          if (transactionType != TransactionType.inStock) {
+            currentStock = (modifiedProduct?.currentStock ?? 0) + value;
+          } else if (transactionType != TransactionType.outStock) {
+            currentStock = (modifiedProduct?.currentStock ?? 0) - value;
+          } else if (transactionType != TransactionType.audit) {
+            currentStock = value;
+          }
           cartController.addItem(
-            amount: isStockIn ? product!.buyPrice : product!.salePrice,
-            id: product!.id ?? '',
-            name: product!.name,
-            selectedQuantity: value,
-            currentQuantity: product!.currentStock,
-            isIncoming: isStockIn,
+            amount: transactionType == TransactionType.inStock
+                ? modifiedProduct?.buyPrice
+                : transactionType == TransactionType.outStock
+                    ? modifiedProduct?.salePrice
+                    : 0,
+            id: modifiedProduct!.id ?? '',
+            name: modifiedProduct!.name,
+            quantity: value,
+            currentStock: currentStock,
           );
-          Navigator.pushNamed(
-            context,
-            StockInOutForm.routeName,
-            arguments: {'isStockIn': isStockIn},
+
+          Get.to<void>(
+            () => StockInOutForm(
+              transactionType: transactionType,
+            ),
+            transition: Transition.topLevel,
           );
         }
       });

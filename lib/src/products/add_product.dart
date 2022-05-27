@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 
 /// Add Product Page
 class AddProduct extends StatelessWidget {
@@ -79,7 +77,6 @@ class AddProduct extends StatelessWidget {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  print('NAFIKA2s');
                   final newProduct = Product(
                     id: product?.id,
                     name: nameController.text,
@@ -87,22 +84,21 @@ class AddProduct extends StatelessWidget {
                     salePrice: double.tryParse(salePriceController.text) ?? 0,
                     buyPrice: double.tryParse(buyPriceController.text) ?? 0,
                   );
-
-                  print('NAFIKA ${newProduct.toJson()}');
                   if (newProduct.id != null) {
                     loadDialog<dynamic>(context, loadingText: 'Updating item');
                     controller.updateProduct(newProduct).then((product) {
                       Get.back<void>();
                       // ignore: cascade_invocations
+                      Get.back<void>();
+                      // ignore: cascade_invocations
                       Get.snackbar('Product', 'Updated Successful');
                       // ignore: cascade_invocations
-                      Get.back<void>();
                     });
                   } else {
                     displayDialog<int>(
                       context,
                       StockQuantityField(
-                        currentQuantity: product?.currentStock ?? 0,
+                        currentStock: product?.currentStock ?? 0,
                         productName: product?.name,
                         title: 'Input stock quantity',
                       ),
@@ -114,9 +110,9 @@ class AddProduct extends StatelessWidget {
                       controller.addProduct(newProduct).then((value) {
                         Get.back<void>();
                         // ignore: cascade_invocations
-                        Get.snackbar('Product', 'Added Successful');
-                        // ignore: cascade_invocations
                         Get.back<void>();
+                        // ignore: cascade_invocations
+                        Get.snackbar('Product', 'Added Successful');
                       });
                     });
                   }

@@ -46,8 +46,8 @@ class AppRouter {
       //   );
       case LayoutPage.routeName:
         return FadeRoute(page: const LayoutPage());
-      case TransactionDetailsPage.routeName:
-        return FadeRoute(page: const TransactionDetailsPage());
+      // case TransactionDetailsPage.routeName:
+      //   return FadeRoute(page: const TransactionDetailsPage());
       case LowStockReminderView.routeName:
         return SlideTopRoute(page: const LowStockReminderView());
       case PastQuantityView.routeName:
@@ -56,26 +56,26 @@ class AppRouter {
         return FadeRoute(page: const ProductListView());
       case AddItemSafetyQuantity.routeName:
         return FadeRoute(page: const AddItemSafetyQuantity());
-      case StockInOutForm.routeName:
-        if (routeSettings.arguments != null) {
-          final data = routeSettings.arguments! as Map<String, bool>;
-          return FadeRoute(
-            page: StockInOutForm(
-              isStockIn: data['isStockIn']!,
-            ),
-          );
-        }
-        return FadeRoute(page: const NothingFoundPage());
-      case StockInOutItems.routeName:
-        if (routeSettings.arguments != null) {
-          final data = routeSettings.arguments! as Map<String, bool>;
-          return FadeRoute(
-            page: StockInOutItems(
-              isStockIn: data['isStockIn']!,
-            ),
-          );
-        }
-        return FadeRoute(page: const NothingFoundPage());
+      // case StockInOutForm.routeName:
+      //   if (routeSettings.arguments != null) {
+      //     final data = routeSettings.arguments! as Map<String, bool>;
+      //     return FadeRoute(
+      //       page: StockInOutForm(
+      //         isStockIn: data['isStockIn']!,
+      //       ),
+      //     );
+      // }
+      // return FadeRoute(page: const NothingFoundPage());
+      // case StockInOutItems.routeName:
+      //   if (routeSettings.arguments != null) {
+      //     final data = routeSettings.arguments! as Map<String, bool>;
+      //     return FadeRoute(
+      //       page: StockInOutItems(
+      //         isStockIn: data['isStockIn']!,
+      //       ),
+      //     );
+      //   }
+      //   return FadeRoute(page: const NothingFoundPage());
       default:
         return FadeRoute(page: const NothingFoundPage());
     }

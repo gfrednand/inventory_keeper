@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 /// your model state is Busy
 class BusyOverlay extends StatelessWidget {
   ///
-  const BusyOverlay(
-      {Key? key,
-      required this.child,
-      this.title = 'Please wait...',
-      this.show = false})
-      : super(key: key);
+  const BusyOverlay({
+    Key? key,
+    required this.child,
+    this.title = 'Please wait...',
+    this.show = false,
+  }) : super(key: key);
 
   ///
   final Widget child;

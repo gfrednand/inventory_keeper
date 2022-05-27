@@ -72,7 +72,7 @@ ChipThemeData _buildChipTheme(
               ? AppColors.white50
               : AppColors.black900,
         ),
-    secondaryLabelStyle: GoogleFonts.workSansTextTheme().bodyText2!,
+    secondaryLabelStyle: GoogleFonts.workSansTextTheme().bodyText2,
     brightness: brightness,
   );
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_stepper.dart';
 
@@ -10,7 +9,7 @@ class StockQuantityField extends StatefulWidget {
   const StockQuantityField({
     Key? key,
     this.productName,
-    this.currentQuantity,
+    this.currentStock,
     required this.title,
     this.counter = 0,
     this.initialCounter = 0,
@@ -35,7 +34,7 @@ class StockQuantityField extends StatefulWidget {
   final double minValue, maxValue;
 
   ///
-  final int? currentQuantity;
+  final int? currentStock;
 
   ///
   final int? initialCounter;
@@ -87,10 +86,10 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                 _counter = val;
 
                 if (widget.isIncrement) {
-                  _initialCounter = (widget.currentQuantity ?? 0) + val;
+                  _initialCounter = (widget.currentStock ?? 0) + val;
                 } else {
                   // _initialCounter = _initialCounter - val;
-                  _initialCounter = (widget.currentQuantity ?? 0) - val;
+                  _initialCounter = (widget.currentStock ?? 0) - val;
                 }
               });
             },
@@ -98,7 +97,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
           const SizedBox(
             height: 16,
           ),
-          if (widget.currentQuantity == null)
+          if (widget.currentStock == null)
             Container()
           else
             Center(
@@ -106,7 +105,7 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '${widget.currentQuantity}',
+                    '${widget.currentStock}',
                     style: TextStyle(
                       color: Colors.grey[400],
                       fontWeight: FontWeight.bold,
