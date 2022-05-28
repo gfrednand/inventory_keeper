@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
@@ -133,32 +134,12 @@ class _AddItemSafetyQuantityState extends State<AddItemSafetyQuantity> {
                         productName: item.name,
                         title: 'Safety Stock',
                         counter: item.safetyStock,
+                        transactionType: TransactionType.all,
                       ),
                     ).then((value) {
                       if (value != null && value > 0) {
-                        loadDialog<dynamic>(
-                          context,
-                          loadingText: 'Updating Safety Stock',
-                        );
                         Get.find<ProductController>()
-                            .updateProductSafetyStock(item, value)
-                            .then((success) {
-                          Navigator.pop(context);
-                          if (success) {
-                            setState(() {
-                              item = item.copyWith(safetyStock: value);
-                            });
-                            AppSnackbar().show(
-                              context,
-                              'Safety Stock Successful Updated',
-                            );
-                          } else {
-                            AppSnackbar().show(
-                              context,
-                              'Safety Stock Failed To Updated',
-                            );
-                          }
-                        });
+                            .updateProductSafetyStock(item, value);
                       }
                     });
                   },

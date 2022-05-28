@@ -67,13 +67,13 @@ class HomePage extends StatelessWidget {
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
                                       quantity: '${currentStock.totalIn}',
-                                      label: 'Stock In',
+                                      label: 'Items In',
                                     ),
                                     const VerticalDivider(thickness: 2),
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
                                       quantity: '${currentStock.totalOut}',
-                                      label: 'Stock Out',
+                                      label: 'Items Out',
                                     ),
                                   ],
                                 ),
@@ -112,7 +112,7 @@ class HomePage extends StatelessWidget {
                   ),
                   StockInOutContainer(
                     removeCurrentRoute: false,
-                    label: 'Stock In/ Out',
+                    label: 'Items In/ Out',
                     ctx: context,
                   ),
                   const SizedBox(

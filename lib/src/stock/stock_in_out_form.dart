@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
@@ -31,17 +30,17 @@ class StockInOutForm extends StatelessWidget {
     Color? color;
 
     if (transactionType == TransactionType.inStock) {
-      titleLabel = 'Stock In';
-      color = Colors.teal;
+      titleLabel = 'Items In';
+      color = Colors.blue;
     } else if (transactionType == TransactionType.outStock) {
-      titleLabel = 'Stock Out';
+      titleLabel = 'Items Out';
       color = Colors.red;
     } else if (transactionType == TransactionType.audit) {
       titleLabel = 'Audit';
-      color = Colors.orange;
+      color = Colors.teal;
     }
     return WillPopScope(
-      onWillPop: () => _onBackPressed(context, cartController)
+      onWillPop: () => _onBackPressed(context, cartController, titleLabel)
           .then((value) => value ?? false),
       child: Scaffold(
         appBar: AppBar(
@@ -53,8 +52,8 @@ class StockInOutForm extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(color: Colors.black),
           leading: IconButton(
-            onPressed: () =>
-                _onBackPressed(context, cartController).then((value) {
+            onPressed: () => _onBackPressed(context, cartController, titleLabel)
+                .then((value) {
               if (value ?? false) {
                 Navigator.pop(context);
               }
@@ -174,14 +173,13 @@ class StockInOutForm extends StatelessWidget {
                       ),
                       onPressed: () {
                         if (cartController.items.isEmpty) {
-                          AppSnackbar().show(context, 'Add items first');
-                        } else {
-                          loadDialog<void>(
-                            context,
-                            loadingText: 'Updating stock...',
+                          Get.snackbar(
+                            'Heey',
+                            'Add items first',
+                            snackPosition: SnackPosition.BOTTOM,
                           );
-
-                          if (cartController.products.isNotEmpty) {
+                        } else {
+                          if (cartController.items.isNotEmpty) {
                             Get.find<TransactionController>().addTransaction(
                               cartController: cartController,
                               transactionType: transactionType,
@@ -202,10 +200,10 @@ class StockInOutForm extends StatelessWidget {
   }
 
   ///
-  Future<bool?> _onBackPressed(
-    BuildContext context,
-    CartController cartController,
-  ) {
+  Future<bool?> _onBackPressed(BuildContext context,
+      CartController cartController, String transactionType) {
+    var title = '';
+
     if (cartController.items.isEmpty) {
       return Future.value(true);
     } else {
@@ -234,7 +232,7 @@ class StockInOutForm extends StatelessWidget {
       );
       // set up the AlertDialog
       final alert = AlertDialog(
-        title: const Text('Quit Stock Out'),
+        title: Text('Quit $transactionType'),
         content: const Text('Delete Draft?'),
         actions: [
           cancelButton,

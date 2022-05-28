@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
@@ -9,7 +8,7 @@ import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
-/// Stock in / out container class
+/// Items In / out container class
 class StockInOutContainer extends StatelessWidget {
   ///
   const StockInOutContainer({
@@ -41,12 +40,12 @@ class StockInOutContainer extends StatelessWidget {
     // final currentStock = transactionController.getTransactionSummary();
 
     return HomeItemContainer(
-      label: label ?? 'Stock In/Out',
+      label: label ?? 'Items In/Out',
       child: Column(
         children: [
           ListTile(
             leading: inIcon(),
-            title: const Text('Stock In'),
+            title: const Text('Items In'),
             trailing: const Icon(
               Icons.arrow_forward_ios_outlined,
               size: 16,
@@ -65,7 +64,7 @@ class StockInOutContainer extends StatelessWidget {
           ),
           ListTile(
             leading: outIcon(),
-            title: const Text('Stock Out'),
+            title: const Text('Items Out'),
             trailing: const Icon(
               Icons.arrow_forward_ios_outlined,
               size: 16,
@@ -74,6 +73,25 @@ class StockInOutContainer extends StatelessWidget {
               onTap(
                 ctx,
                 TransactionType.outStock,
+                cartController,
+                removeCurrentRoute ?? true,
+              );
+            },
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          ListTile(
+            leading: auditIcon(),
+            title: const Text('Audit'),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_outlined,
+              size: 16,
+            ),
+            onTap: () {
+              onTap(
+                ctx,
+                TransactionType.audit,
                 cartController,
                 removeCurrentRoute ?? true,
               );
@@ -104,22 +122,25 @@ class StockInOutContainer extends StatelessWidget {
         StockQuantityField(
           productName: modifiedProduct!.name,
           title: transactionType == TransactionType.outStock
-              ? 'Stock Out quantity'
+              ? 'Items Out quantity'
               : transactionType != TransactionType.inStock
-                  ? 'Stock In quantity'
+                  ? 'Items In quantity'
                   : transactionType == TransactionType.audit
                       ? 'Audit Quantity'
                       : '',
           currentStock: modifiedProduct!.currentStock,
           initialCounter: modifiedProduct!.currentStock,
-          isIncrement: transactionType != TransactionType.outStock,
+          transactionType: transactionType,
         ),
       ).then((value) {
-        if (value != null && value > 0) {
+        if (value != null) {
           var currentStock = 0;
+          var quantity = value;
+
           if (transactionType != TransactionType.inStock) {
             currentStock = (modifiedProduct?.currentStock ?? 0) + value;
           } else if (transactionType != TransactionType.outStock) {
+            quantity = -1 * value;
             currentStock = (modifiedProduct?.currentStock ?? 0) - value;
           } else if (transactionType != TransactionType.audit) {
             currentStock = value;
@@ -132,7 +153,7 @@ class StockInOutContainer extends StatelessWidget {
                     : 0,
             id: modifiedProduct!.id ?? '',
             name: modifiedProduct!.name,
-            quantity: value,
+            quantity: quantity,
             currentStock: currentStock,
           );
 

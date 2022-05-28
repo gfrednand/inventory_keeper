@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:inventory_keeper/src/utility/app_constants.dart';
 
-/// Stock in / out container class
+/// Items In / out container class
 class HomeItemContainer extends StatelessWidget {
   ///
   const HomeItemContainer({

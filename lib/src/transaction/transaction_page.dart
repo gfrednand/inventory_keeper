@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:intl/intl.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
@@ -89,18 +87,18 @@ class TransactionPage extends StatelessWidget {
                     Widget? title;
                     Color? color;
                     if (item.transactionType == TransactionType.inStock) {
-                      title = const Text('Stock In');
+                      title = const Text('Items In');
                       icon = inIcon();
-                      color = Colors.teal;
+                      color = Colors.blue;
                     } else if (item.transactionType ==
                         TransactionType.outStock) {
-                      title = const Text('Stock Out');
+                      title = const Text('Items Out');
                       icon = outIcon();
                       color = Colors.red;
                     } else if (item.transactionType == TransactionType.audit) {
                       title = const Text('Audit');
-                      // icon = outIcon();
-                      color = Colors.orange;
+                      icon = auditIcon();
+                      color = Colors.teal;
                     }
                     return Column(
                       mainAxisSize: MainAxisSize.min,

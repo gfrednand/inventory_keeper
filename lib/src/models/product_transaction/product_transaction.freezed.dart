@@ -23,7 +23,6 @@ mixin _$ProductTransaction {
   TransactionType get transactionType => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
   int get totalQuantity => throw _privateConstructorUsedError;
-  int get totalSelectedQuantity => throw _privateConstructorUsedError;
   int get transactionDate => throw _privateConstructorUsedError;
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;
@@ -43,7 +42,6 @@ abstract class $ProductTransactionCopyWith<$Res> {
       {TransactionType transactionType,
       double totalAmount,
       int totalQuantity,
-      int totalSelectedQuantity,
       int transactionDate,
       List<ProductSummary> productsSummary});
 }
@@ -62,7 +60,6 @@ class _$ProductTransactionCopyWithImpl<$Res>
     Object? transactionType = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
-    Object? totalSelectedQuantity = freezed,
     Object? transactionDate = freezed,
     Object? productsSummary = freezed,
   }) {
@@ -78,10 +75,6 @@ class _$ProductTransactionCopyWithImpl<$Res>
       totalQuantity: totalQuantity == freezed
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalSelectedQuantity: totalSelectedQuantity == freezed
-          ? _value.totalSelectedQuantity
-          : totalSelectedQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       transactionDate: transactionDate == freezed
           ? _value.transactionDate
@@ -106,7 +99,6 @@ abstract class _$$_ProductTransactionCopyWith<$Res>
       {TransactionType transactionType,
       double totalAmount,
       int totalQuantity,
-      int totalSelectedQuantity,
       int transactionDate,
       List<ProductSummary> productsSummary});
 }
@@ -127,7 +119,6 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
     Object? transactionType = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
-    Object? totalSelectedQuantity = freezed,
     Object? transactionDate = freezed,
     Object? productsSummary = freezed,
   }) {
@@ -143,10 +134,6 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
       totalQuantity: totalQuantity == freezed
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalSelectedQuantity: totalSelectedQuantity == freezed
-          ? _value.totalSelectedQuantity
-          : totalSelectedQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       transactionDate: transactionDate == freezed
           ? _value.transactionDate
@@ -169,7 +156,6 @@ class _$_ProductTransaction
       {required this.transactionType,
       required this.totalAmount,
       required this.totalQuantity,
-      required this.totalSelectedQuantity,
       required this.transactionDate,
       required final List<ProductSummary> productsSummary})
       : _productsSummary = productsSummary;
@@ -184,8 +170,6 @@ class _$_ProductTransaction
   @override
   final int totalQuantity;
   @override
-  final int totalSelectedQuantity;
-  @override
   final int transactionDate;
   final List<ProductSummary> _productsSummary;
   @override
@@ -196,7 +180,7 @@ class _$_ProductTransaction
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductTransaction(transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalSelectedQuantity: $totalSelectedQuantity, transactionDate: $transactionDate, productsSummary: $productsSummary)';
+    return 'ProductTransaction(transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, transactionDate: $transactionDate, productsSummary: $productsSummary)';
   }
 
   @override
@@ -207,7 +191,6 @@ class _$_ProductTransaction
       ..add(DiagnosticsProperty('transactionType', transactionType))
       ..add(DiagnosticsProperty('totalAmount', totalAmount))
       ..add(DiagnosticsProperty('totalQuantity', totalQuantity))
-      ..add(DiagnosticsProperty('totalSelectedQuantity', totalSelectedQuantity))
       ..add(DiagnosticsProperty('transactionDate', transactionDate))
       ..add(DiagnosticsProperty('productsSummary', productsSummary));
   }
@@ -224,8 +207,6 @@ class _$_ProductTransaction
             const DeepCollectionEquality()
                 .equals(other.totalQuantity, totalQuantity) &&
             const DeepCollectionEquality()
-                .equals(other.totalSelectedQuantity, totalSelectedQuantity) &&
-            const DeepCollectionEquality()
                 .equals(other.transactionDate, transactionDate) &&
             const DeepCollectionEquality()
                 .equals(other._productsSummary, _productsSummary));
@@ -238,7 +219,6 @@ class _$_ProductTransaction
       const DeepCollectionEquality().hash(transactionType),
       const DeepCollectionEquality().hash(totalAmount),
       const DeepCollectionEquality().hash(totalQuantity),
-      const DeepCollectionEquality().hash(totalSelectedQuantity),
       const DeepCollectionEquality().hash(transactionDate),
       const DeepCollectionEquality().hash(_productsSummary));
 
@@ -259,7 +239,6 @@ abstract class _ProductTransaction implements ProductTransaction {
           {required final TransactionType transactionType,
           required final double totalAmount,
           required final int totalQuantity,
-          required final int totalSelectedQuantity,
           required final int transactionDate,
           required final List<ProductSummary> productsSummary}) =
       _$_ProductTransaction;
@@ -273,8 +252,6 @@ abstract class _ProductTransaction implements ProductTransaction {
   double get totalAmount => throw _privateConstructorUsedError;
   @override
   int get totalQuantity => throw _privateConstructorUsedError;
-  @override
-  int get totalSelectedQuantity => throw _privateConstructorUsedError;
   @override
   int get transactionDate => throw _privateConstructorUsedError;
   @override

@@ -63,7 +63,7 @@ class ProductListView extends StatelessWidget {
             flexibleSpace: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(8),
-              child: const ProductTypesSelector(),
+              child: ProductTypesSelector(allProducts: products),
             ),
           ),
           GetBuilder(
@@ -100,6 +100,7 @@ class ProductListView extends StatelessWidget {
                         currentStock: data[index].currentStock,
                       ),
                       onTap: () {
+                        productTypeController.changeType(null);
                         Get.to<void>(
                           () => const ProductDetails(),
                           arguments: data[index],

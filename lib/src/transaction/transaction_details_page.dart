@@ -29,11 +29,14 @@ class TransactionDetailsPage extends StatelessWidget {
     var titleLabel = 'Audit';
     Color? color;
     if (transaction.transactionType == TransactionType.inStock) {
-      titleLabel = 'Stock In';
-      color = Colors.teal;
+      titleLabel = 'Items In';
+      color = Colors.blue;
     } else if (transaction.transactionType == TransactionType.outStock) {
-      titleLabel = 'Stock Out';
+      titleLabel = 'Items Out';
       color = Colors.red;
+    } else if (transaction.transactionType == TransactionType.audit) {
+      titleLabel = 'Audit';
+      color = Colors.teal;
     }
 
     final summaryDate = transaction.productsSummary[0].summaryDate ??
@@ -106,6 +109,7 @@ class TransactionDetailsPage extends StatelessWidget {
               ),
               SectionDivider(
                 color: color,
+                thickness: 1.1,
               ),
               Container(
                 decoration: containerBoxDecoration(),

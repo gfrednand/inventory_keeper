@@ -13,7 +13,6 @@ _$_ProductTransaction _$$_ProductTransactionFromJson(
           $enumDecode(_$TransactionTypeEnumMap, json['transactionType']),
       totalAmount: (json['totalAmount'] as num).toDouble(),
       totalQuantity: json['totalQuantity'] as int,
-      totalSelectedQuantity: json['totalSelectedQuantity'] as int,
       transactionDate: json['transactionDate'] as int,
       productsSummary: (json['productsSummary'] as List<dynamic>)
           .map(
@@ -27,7 +26,6 @@ Map<String, dynamic> _$$_ProductTransactionToJson(
       'transactionType': _$TransactionTypeEnumMap[instance.transactionType],
       'totalAmount': instance.totalAmount,
       'totalQuantity': instance.totalQuantity,
-      'totalSelectedQuantity': instance.totalSelectedQuantity,
       'transactionDate': instance.transactionDate,
       'productsSummary': instance.productsSummary,
     };
@@ -36,4 +34,5 @@ const _$TransactionTypeEnumMap = {
   TransactionType.inStock: 'inStock',
   TransactionType.outStock: 'outStock',
   TransactionType.audit: 'audit',
+  TransactionType.all: 'all',
 };

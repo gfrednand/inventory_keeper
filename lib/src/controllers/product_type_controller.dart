@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 
 /// ProductType Controller
@@ -13,13 +14,19 @@ class ProductTypeController extends BaseController {
 
   ProductType? _type;
 
+  List<ProductType> _filteredproductTypes = [];
+
+  /// Filtered all types used
+  List<ProductType> get filteredproductTypes => _filteredproductTypes;
+
   /// Product categories
   void changeType(ProductType? newType) {
-    if (type?.name == newType?.name) {
+    if ((type?.name == newType?.name) || newType == null) {
       _type = null;
-    } else if (newType != null) {
+    } else {
       _type = newType;
     }
+
     update();
   }
 
@@ -79,5 +86,24 @@ class ProductTypeController extends BaseController {
       // _productTypes.removeAt(index);
     }
     update();
+  }
+
+  ///
+  void getProductTypes(List<Product> allProducts) {
+    if (allProducts.isNotEmpty) {
+      final types = <ProductType>[];
+      print(allProducts.length);
+      for (final product in allProducts) {
+        final type = productTypes
+            .firstWhereOrNull((type) => type.name == product.type?.name);
+        if (type != null) {
+          types.add(type);
+        }
+      }
+      _filteredproductTypes = types;
+    } else {
+      _filteredproductTypes = productTypes;
+    }
+    // update();
   }
 }

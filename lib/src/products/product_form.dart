@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -124,6 +125,7 @@ class ProductForm extends StatelessWidget {
                     displayDialog<int>(
                       context,
                       StockQuantityField(
+                        transactionType: TransactionType.all,
                         productName: product?.name,
                         title: 'Safety Stock',
                         counter: product?.safetyStock ?? 0,

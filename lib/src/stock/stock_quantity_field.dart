@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_stepper.dart';
 
@@ -13,9 +14,9 @@ class StockQuantityField extends StatefulWidget {
     required this.title,
     this.counter = 0,
     this.initialCounter = 0,
-    this.isIncrement = true,
-    this.minValue = 0,
-    this.maxValue = 999999999,
+    required this.transactionType,
+    this.minValue,
+    this.maxValue,
   }) : super(key: key);
 
   ///
@@ -25,13 +26,13 @@ class StockQuantityField extends StatefulWidget {
   final String title;
 
   ///
-  final bool isIncrement;
+  final TransactionType transactionType;
 
   ///
   final int? counter;
 
   ///
-  final double minValue, maxValue;
+  final double? minValue, maxValue;
 
   ///
   final int? currentStock;
@@ -46,12 +47,13 @@ class StockQuantityField extends StatefulWidget {
 }
 
 class _StockQuantityFieldState extends State<StockQuantityField> {
-  int _counter = 0;
+  int? _counter;
   int _initialCounter = 0;
+  int _valDisplay = 0;
 
   @override
   void initState() {
-    _counter = widget.counter ?? 0;
+    _counter = widget.counter?.abs() ?? 0;
     _initialCounter = widget.initialCounter ?? 0;
     super.initState();
   }
@@ -65,13 +67,14 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
         children: [
           Text(
             widget.title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           const SizedBox(
             height: 16,
           ),
           Text(
             widget.productName ?? '',
+            style: const TextStyle(color: AppColors.blue200, fontSize: 18),
           ),
           const SizedBox(
             height: 16,
@@ -81,15 +84,22 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
             minValue: widget.minValue,
             maxValue: widget.maxValue,
             initialValue: _counter,
-            onChanged: (val) {
+            onChanged: (value) {
               setState(() {
-                _counter = val;
-
-                if (widget.isIncrement) {
-                  _initialCounter = (widget.currentStock ?? 0) + val;
-                } else {
-                  // _initialCounter = _initialCounter - val;
-                  _initialCounter = (widget.currentStock ?? 0) - val;
+                final val = value ?? widget.initialCounter ?? 0;
+                if (widget.transactionType == TransactionType.inStock) {
+                  _counter = val > -1 ? val : 0;
+                  _initialCounter = (widget.currentStock ?? 0) + _counter!;
+                } else if (widget.transactionType == TransactionType.outStock) {
+                  _counter = val > -1 ? val : 0;
+                  _initialCounter = (widget.currentStock ?? 0) - _counter!;
+                } else if (widget.transactionType == TransactionType.audit) {
+                  _counter = val;
+                  _initialCounter = val;
+                  _valDisplay = val - (widget.currentStock ?? 0);
+                } else if (widget.transactionType == TransactionType.all) {
+                  _counter = val;
+                  _initialCounter = val;
                 }
               });
             },
@@ -106,8 +116,8 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                 children: [
                   Text(
                     '${widget.currentStock}',
-                    style: TextStyle(
-                      color: Colors.grey[400],
+                    style: const TextStyle(
+                      color: AppColors.blue200,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -131,6 +141,19 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                     ),
                   )
                 ],
+              ),
+            ),
+          const SizedBox(
+            width: 20,
+          ),
+          if (widget.transactionType == TransactionType.audit &&
+              _valDisplay != 0)
+            Text(
+              '(${_valDisplay > 0 ? ' +' : ''}$_valDisplay)',
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 20,
+                color: _valDisplay > 0 ? Colors.blue : Colors.red,
               ),
             ),
           const SizedBox(

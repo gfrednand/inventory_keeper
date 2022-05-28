@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:inventory_keeper/src/widgets/circle_with_icon_button.dart';
 
 ///
-typedef CounterChangeCallback = void Function(int value);
+typedef CounterChangeCallback = void Function(int? value);
 
 ///
 // ignore: must_be_immutable
@@ -11,13 +11,13 @@ class CustomStepper extends StatelessWidget {
   ///
   CustomStepper({
     Key? key,
-    required this.minValue,
-    required this.maxValue,
+    this.minValue,
+    this.maxValue,
     required this.onChanged,
     this.decimalPlaces = 0,
     this.step = 1,
     this.iconSize = 25,
-    required this.initialValue,
+    this.initialValue,
   })  :
         // assert(maxValue > minValue, 'Max Value is less than min value'),
         //       assert(
@@ -25,14 +25,15 @@ class CustomStepper extends StatelessWidget {
         //         'Initial Value is less than min value or greater than Max value',
         //       ),
         //       assert(step > 0, 'Step is less than 0'),
-        selectedValue = initialValue.abs(),
+        // selectedValue = initialValue?.abs(),
+        selectedValue = initialValue,
         super(key: key);
 
   ///min value user can pick
-  final double minValue;
+  final double? minValue;
 
   ///max value user can pick
-  final double maxValue;
+  final double? maxValue;
 
   /// if min=0, max=5, step=3, then items will be 0 and 3.
   final int step;
@@ -44,31 +45,46 @@ class CustomStepper extends StatelessWidget {
   final CounterChangeCallback onChanged;
 
   ///
-  int initialValue;
+  int? initialValue;
 
   /// decimal places required by the counter
   final int decimalPlaces;
 
   ///Currently selected integer value
-  int selectedValue;
+  int? selectedValue;
 
   void _incrementCounter() {
-    if (selectedValue + step <= maxValue) {
-      onChanged(selectedValue + step);
+    if (selectedValue != null) {
+      if (maxValue != null) {
+        if ((selectedValue! + step) <= maxValue!) {
+          onChanged(selectedValue! + step);
+        }
+      } else {
+        onChanged(selectedValue! + step);
+      }
     }
   }
 
   void _decrementCounter() {
-    if (selectedValue - step >= minValue) {
-      onChanged(selectedValue - step);
+    if (selectedValue != null) {
+      if (minValue != null) {
+        if ((selectedValue! - step) >= minValue!) {
+          onChanged(selectedValue! - step);
+        }
+      } else {
+        onChanged(selectedValue! - step);
+      }
     }
   }
 
   ///
-  TextEditingController quantityController = TextEditingController(text: '0');
+  TextEditingController quantityController = TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
-    final text = '${int.parse(selectedValue.toStringAsFixed(decimalPlaces))}';
+    var text = '';
+    if (selectedValue != null) {
+      text = '${int.parse(selectedValue!.toStringAsFixed(decimalPlaces))}';
+    }
     quantityController = TextEditingController()
       ..text = text
       ..selection = TextSelection(
@@ -104,7 +120,7 @@ class CustomStepper extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   final val = int.tryParse(value);
-                  onChanged(val ?? 0);
+                  onChanged(val);
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,

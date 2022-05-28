@@ -2,11 +2,10 @@ import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
-import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/models/stock/stock.dart';
 
 /// Check if number is integer
@@ -65,31 +64,25 @@ final oCcy = NumberFormat.currency(
 );
 
 /// Showing loading dialog
-Future loadDialog<T>(
-  BuildContext context, {
+void loadDialog<T>({
   String loadingText = 'Loading...',
 }) {
-  return showDialog<T>(
-    barrierDismissible: false,
-    context: context,
-    builder: (_) {
-      return Dialog(
-        backgroundColor: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(loadingText),
-            ],
+  Get.defaultDialog<T>(
+    content: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CircularProgressIndicator(),
+          const SizedBox(
+            height: 15,
           ),
-        ),
-      );
-    },
+          Text(loadingText),
+        ],
+      ),
+    ),
+    barrierDismissible: false,
+    radius: 50,
   );
 }
 
@@ -143,6 +136,14 @@ Transform outIcon() {
 Icon inIcon() {
   return const Icon(
     Icons.input,
+    color: Colors.blue,
+  );
+}
+
+/// Audit Icon
+Icon auditIcon() {
+  return const Icon(
+    Icons.swap_vert_outlined,
     color: Colors.teal,
   );
 }

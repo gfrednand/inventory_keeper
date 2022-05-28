@@ -2,21 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 
 ///
 class ProductTypesSelector extends StatelessWidget {
   ///
-  const ProductTypesSelector({
-    Key? key,
-  }) : super(key: key);
+  const ProductTypesSelector({Key? key, this.allProducts}) : super(key: key);
+
+  ///
+
+  ///
+  final List<Product>? allProducts;
 
   ///
 
   @override
   Widget build(BuildContext context) {
     final productTypeController = Get.find<ProductTypeController>();
+    // ignore: cascade_invocations
+    productTypeController.getProductTypes(allProducts ?? []);
     return Column(
       children: [
         SizedBox(
@@ -70,13 +76,14 @@ class ProductTypesSelector extends StatelessWidget {
               child: SizedBox(
                 height: 30,
                 child: ListView.separated(
-                  itemCount: productTypeController.productTypes.length,
+                  itemCount: productTypeController.filteredproductTypes.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (ctx, index) {
-                    final type = productTypeController.productTypes[index];
+                    final type =
+                        productTypeController.filteredproductTypes[index];
                     return FilterChip(
                       label: Text(
-                        productTypeController.productTypes[index].name,
+                        productTypeController.filteredproductTypes[index].name,
                       ),
                       onSelected: (value) {
                         productTypeController.changeType(type);

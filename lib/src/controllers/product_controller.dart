@@ -4,6 +4,7 @@ import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 
 ///
 enum SelectedQuantityEnum {
@@ -90,8 +91,8 @@ class ProductController extends BaseController {
   }
 
   /// Add a product to a current products state
-  Future<bool> addProduct(Product product) async {
-    busy = true;
+  Future<void> addProduct(Product product) async {
+    loadDialog<void>(loadingText: 'Adding Product ....');
     final productMap = product.toJson();
     productMap['createdAt'] = DateTime.now();
     if (currentStockQuantity != null) {
@@ -105,11 +106,23 @@ class ProductController extends BaseController {
       productMap['safetyStock'] = safetyQuantity ?? 0;
     }
     final success = await _api.addOne(productMap);
+    Get.back<void>();
     if (success) {
+      Get.back<void>();
+      // ignore: cascade_invocations
+      Get.snackbar(
+        'Item',
+        'Added Successful',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       resetValues(success: success);
+    } else {
+      Get.snackbar(
+        'Item',
+        'Failed to add',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
-
-    return success;
   }
 
   ///
@@ -132,7 +145,10 @@ class ProductController extends BaseController {
   }
 
   /// Update a product to a current products state
-  Future<bool> updateProductSafetyStock(Product prod, int safetStock) async {
+  Future<void> updateProductSafetyStock(Product prod, int safetStock) async {
+    loadDialog<dynamic>(
+      loadingText: 'Updating Safety ...',
+    );
     final productToUpdate = Product(
       id: prod.id,
       name: prod.name,
@@ -140,11 +156,26 @@ class ProductController extends BaseController {
       updatedAt: DateTime.now(),
     );
 
-    return _api.updateOne(productToUpdate.toJson());
+    final success = await _api.updateOne(productToUpdate.toJson());
+    Get.back<void>();
+
+    if (success) {
+      Get.snackbar(
+        'Safety Stock',
+        'Successful Updated',
+      );
+    } else {
+      Get.snackbar(
+        'Safety Stock',
+        'Failed to Updated',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 
   /// Update a product to a current products state
-  Future<bool> updateProduct(Product product) async {
+  Future<void> updateProduct(Product product) async {
+    loadDialog<void>(loadingText: 'Updating Product...');
     final productMap = product.toJson();
     if (currentStockQuantity != null) {
       productMap[' currentStock'] = currentStockQuantity ?? 0;
@@ -157,17 +188,30 @@ class ProductController extends BaseController {
     }
     productMap['updatedAt'] = DateTime.now();
 
-    print(productMap);
     final success = await _api.updateOne(productMap);
+    Get.back<void>();
     if (success) {
-      resetValues(success: success);
+      Get.back<void>();
+
+      // ignore: cascade_invocations
+      Get.snackbar('Product', 'Updated Successful');
     }
-    return success;
   }
 
   /// Remove product from a current products state
-  Future<bool> removeProduct() async {
-    return _api.removeOne(product!.toJson());
+  Future<void> removeProduct() async {
+    loadDialog<void>(loadingText: 'Deleting Product ....');
+    final success = await _api.removeOne(product!.toJson());
+    Get.back<void>();
+    if (success) {
+      Get.back<void>();
+      // ignore: cascade_invocations
+      Get.snackbar('Product', 'Deleted Successful');
+    } else {
+      Get.back<void>();
+      // ignore: cascade_invocations
+      Get.snackbar('Product', 'Failed to Delete');
+    }
   }
 
   /// Fetching stream of data

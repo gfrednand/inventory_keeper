@@ -80,7 +80,17 @@ class TransactionController extends BaseController {
     var allTotalAmount = 0.0;
     var allTotalQuantity = 0;
     final productsSummary = <ProductSummary>[];
+    transactions?.sort((a, b) {
+      //sorting in ascending order
+      return a.transactionDate.compareTo(b.transactionDate);
+    });
+    productTransactions.sort((a, b) {
+      //sorting in ascending order
+      return a.transactionDate.compareTo(b.transactionDate);
+    });
     for (final tr in transactions ?? productTransactions) {
+      final prodSummary = [...tr.productsSummary];
+
       final summaryDate = tr.transactionDate;
       final today = dateToMillSeconds(filterDate ?? DateTime.now());
       allTotalAmount = allTotalAmount + tr.totalAmount;
@@ -94,7 +104,11 @@ class TransactionController extends BaseController {
         totalOut = totalOut + tr.totalQuantity;
         totalSale = totalSale + (tr.totalAmount);
       }
-      for (final prodSummary in tr.productsSummary) {
+      prodSummary.sort((a, b) {
+        return (a.summaryDate ?? DateTime.now())
+            .compareTo(b.summaryDate ?? DateTime.now());
+      });
+      for (final prodSummary in prodSummary) {
         final index = productsSummary
             .indexWhere((summary) => summary.id == prodSummary.id);
         if (index == -1) {
@@ -103,9 +117,12 @@ class TransactionController extends BaseController {
           productsSummary[index] = productsSummary[index].copyWith(
             amount: (productsSummary[index].amount ?? 0) +
                 (prodSummary.amount ?? 0),
-            quantity: productsSummary[index].quantity + prodSummary.quantity,
-            currentStock:
-                productsSummary[index].currentStock + prodSummary.quantity,
+            quantity: tr.transactionType == TransactionType.audit
+                ? prodSummary.quantity
+                : productsSummary[index].quantity + prodSummary.quantity,
+            currentStock: tr.transactionType == TransactionType.audit
+                ? prodSummary.quantity
+                : productsSummary[index].currentStock + prodSummary.quantity,
           );
         }
       }
@@ -127,10 +144,10 @@ class TransactionController extends BaseController {
     required CartController cartController,
     required TransactionType transactionType,
   }) async {
+    loadDialog<void>(loadingText: 'Updating stock...');
     final prodTnx = ProductTransaction(
       transactionDate: dateToMillSeconds(DateTime.now()),
       transactionType: transactionType,
-      totalSelectedQuantity: 0,
       productsSummary: [],
       totalQuantity: cartController.totalQuantity,
       totalAmount: cartController.totalAmount,
@@ -138,18 +155,11 @@ class TransactionController extends BaseController {
 
     final map = prodTnx.toJson();
     map['productsSummary'] = prodSummaryMap(cartController.items);
-    print(map);
     final success = await _api.addOne(map);
     Get.back<void>();
-
     if (success) {
       cartController.clear();
-
-      Get.snackbar(
-        'Transaction',
-        'Successful',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.back<void>();
     } else {
       Get.snackbar(
         'Transaction',

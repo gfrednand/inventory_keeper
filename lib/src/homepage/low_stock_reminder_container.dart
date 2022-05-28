@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 
-// /// Stock in / out container class
+// /// Items In / out container class
 // class LowStockReminderContainer extends StatelessWidget {
 //   ///
 //   const LowStockReminderContainer({

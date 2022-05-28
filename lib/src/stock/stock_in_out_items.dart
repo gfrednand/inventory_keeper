@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
@@ -37,10 +36,10 @@ class StockInOutItems extends StatelessWidget {
     Color? color;
 
     if (transactionType == TransactionType.inStock) {
-      titleLabel = 'Stock In Items';
+      titleLabel = 'In Items';
       color = Colors.teal;
     } else if (transactionType == TransactionType.outStock) {
-      titleLabel = 'Stock Out Items';
+      titleLabel = 'Out Items';
       color = Colors.red;
     } else if (transactionType == TransactionType.audit) {
       titleLabel = 'Audit Items';
@@ -84,9 +83,9 @@ class StockInOutItems extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: ProductTypesSelector(),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ProductTypesSelector(allProducts: products),
                 ),
                 Expanded(
                   child: GetBuilder<ProductTypeController>(
@@ -100,14 +99,6 @@ class StockInOutItems extends StatelessWidget {
                                   productTypeController.type?.name,
                             )
                             .toList();
-                        if (data.isEmpty) {
-                          return Center(
-                            child: Text(
-                              'Category *${productTypeController.type!.name}*\n Has No Products',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          );
-                        }
                       }
 
                       if (data.isNotEmpty) {
@@ -162,10 +153,10 @@ class StockInOutItems extends StatelessWidget {
                                     var title = '';
                                     if (transactionType ==
                                         TransactionType.inStock) {
-                                      title = 'Stock In quantity';
+                                      title = 'Items In quantity';
                                     } else if (transactionType ==
                                         TransactionType.outStock) {
-                                      title = 'Stock Out quantity';
+                                      title = 'Items Out quantity';
                                     } else if (transactionType ==
                                         TransactionType.audit) {
                                       title = 'Audit quantity';
@@ -175,10 +166,7 @@ class StockInOutItems extends StatelessWidget {
                                       StockQuantityField(
                                         currentStock: item.currentStock,
                                         productName: item.name,
-                                        isIncrement: transactionType ==
-                                                TransactionType.inStock ||
-                                            transactionType ==
-                                                TransactionType.audit,
+                                        transactionType: transactionType,
                                         title: title,
                                         counter: selectedQuantity ?? 0,
                                         initialCounter: item.currentStock +
@@ -187,6 +175,7 @@ class StockInOutItems extends StatelessWidget {
                                     ).then((value) {
                                       if (value != null) {
                                         var currentStock = 0;
+                                        var quantity = value;
                                         if (transactionType ==
                                             TransactionType.inStock) {
                                           currentStock =
@@ -195,6 +184,7 @@ class StockInOutItems extends StatelessWidget {
                                             TransactionType.outStock) {
                                           currentStock =
                                               item.currentStock - value;
+                                          quantity = -1 * value;
                                         } else if (transactionType ==
                                             TransactionType.audit) {
                                           currentStock = value;
@@ -209,7 +199,7 @@ class StockInOutItems extends StatelessWidget {
                                                   : 0,
                                           id: item.id ?? '',
                                           name: item.name,
-                                          quantity: value,
+                                          quantity: quantity,
                                           currentStock: currentStock,
                                         );
                                       }

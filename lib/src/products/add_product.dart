@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
@@ -85,19 +86,12 @@ class AddProduct extends StatelessWidget {
                     buyPrice: double.tryParse(buyPriceController.text) ?? 0,
                   );
                   if (newProduct.id != null) {
-                    loadDialog<dynamic>(context, loadingText: 'Updating item');
-                    controller.updateProduct(newProduct).then((product) {
-                      Get.back<void>();
-                      // ignore: cascade_invocations
-                      Get.back<void>();
-                      // ignore: cascade_invocations
-                      Get.snackbar('Product', 'Updated Successful');
-                      // ignore: cascade_invocations
-                    });
+                    controller.updateProduct(newProduct);
                   } else {
                     displayDialog<int>(
                       context,
                       StockQuantityField(
+                        transactionType: TransactionType.all,
                         currentStock: product?.currentStock ?? 0,
                         productName: product?.name,
                         title: 'Input stock quantity',
@@ -106,14 +100,7 @@ class AddProduct extends StatelessWidget {
                       if (value != null && value > 0) {
                         controller.currentStockQuantity = value;
                       }
-                      loadDialog<dynamic>(context, loadingText: 'Saving item');
-                      controller.addProduct(newProduct).then((value) {
-                        Get.back<void>();
-                        // ignore: cascade_invocations
-                        Get.back<void>();
-                        // ignore: cascade_invocations
-                        Get.snackbar('Product', 'Added Successful');
-                      });
+                      controller.addProduct(newProduct);
                     });
                   }
                 }

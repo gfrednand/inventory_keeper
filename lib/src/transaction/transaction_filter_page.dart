@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
@@ -47,11 +46,22 @@ class TransactionFilterPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getFilterTitle('Stock'),
+            getFilterTitle('Stock', transactionController),
             getChipFilter(transactionController),
-            getFilterTitle('Date', showSwitch: true),
+            const Divider(thickness: 0.3),
+            getFilterTitle('Date', transactionController, showSwitch: true),
             getDateRangePicker(context, transactionController),
-            getFilterTitle('Item', showSwitch: true),
+            const Divider(thickness: 0.3),
+            getFilterTitle('Item', transactionController, showSwitch: true),
+            const ListTile(
+              title: Text('All'),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+              ),
+            ),
+            const Divider(thickness: 0.3),
+            getFilterTitle('Partner', transactionController, showSwitch: true),
             const ListTile(
               title: Text('All'),
               trailing: Icon(
@@ -70,7 +80,7 @@ class TransactionFilterPage extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   child: const Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(10),
                     child: Text(
                       'Apply',
                       style: TextStyle(fontSize: 20),
@@ -95,6 +105,7 @@ class TransactionFilterPage extends StatelessWidget {
             selected: transactionController.transactionFilterType ==
                 TransactionType.all,
             selectedColor: AppColors.blue200,
+            checkmarkColor: AppColors.blue600,
             onSelected: (value) {
               transactionController.transactionFilterType = TransactionType.all;
             },
@@ -104,6 +115,7 @@ class TransactionFilterPage extends StatelessWidget {
             selected: transactionController.transactionFilterType ==
                 TransactionType.inStock,
             selectedColor: AppColors.blue200,
+            checkmarkColor: AppColors.blue600,
             onSelected: (value) {
               transactionController.transactionFilterType =
                   TransactionType.inStock;
@@ -114,6 +126,7 @@ class TransactionFilterPage extends StatelessWidget {
             selected: transactionController.transactionFilterType ==
                 TransactionType.outStock,
             selectedColor: AppColors.blue200,
+            checkmarkColor: AppColors.blue600,
             onSelected: (value) {
               transactionController.transactionFilterType =
                   TransactionType.outStock;
@@ -124,6 +137,7 @@ class TransactionFilterPage extends StatelessWidget {
             selected: transactionController.transactionFilterType ==
                 TransactionType.audit,
             selectedColor: AppColors.blue200,
+            checkmarkColor: AppColors.blue600,
             onSelected: (value) {
               transactionController.transactionFilterType =
                   TransactionType.audit;
@@ -131,12 +145,13 @@ class TransactionFilterPage extends StatelessWidget {
           )
         ];
 
-        return Wrap(
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             for (final chip in chips)
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                 child: chip,
               )
           ],
@@ -146,27 +161,33 @@ class TransactionFilterPage extends StatelessWidget {
   }
 
   ///Filter title
-  Widget getFilterTitle(String title, {bool showSwitch = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-          ),
-          if (showSwitch)
-            Switch(
-              activeColor: AppColors.blue200,
-              value: true,
-              onChanged: (value) {},
-            )
-          else
-            Container(),
-        ],
-      ),
-    );
+  Widget getFilterTitle(
+    String title,
+    TransactionController transactionController, {
+    bool showSwitch = false,
+  }) {
+    return GetBuilder<TransactionController>(builder: (cont) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20, left: 10, right: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+            ),
+            if (showSwitch)
+              Switch(
+                activeColor: AppColors.blue200,
+                value: false,
+                onChanged: (value) {},
+              )
+            else
+              Container(),
+          ],
+        ),
+      );
+    });
   }
 
   /// Date range picker
