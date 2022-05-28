@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
+import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
-import 'package:inventory_keeper/src/models/stock/stock.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -28,7 +28,6 @@ class ProductListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final products = Get.find<ProductController>().products;
-    final stocks = Get.find<StockController>().stocks;
     final productTypeController = Get.find<ProductTypeController>();
     return Scaffold(
       body: CustomScrollView(
@@ -88,10 +87,13 @@ class ProductListView extends StatelessWidget {
                   );
                 }
               }
+
+              final stock =
+                  Get.find<TransactionController>().getTransactionSummary();
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    // data[index] = productWithLatestInfo(data[index], stocks);
+                    data[index] = productWithLatestInfo(data[index], stock);
                     return ProductItem(
                       item: data[index],
                       trailing: CurrentStockQuantity(

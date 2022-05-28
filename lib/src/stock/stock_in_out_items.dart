@@ -32,8 +32,7 @@ class StockInOutItems extends StatelessWidget {
     // final cartController = Get.put(CartController());
     final cartController = Get.find<CartController>();
     final productTypeController = Get.find<ProductTypeController>();
-    final currentStock =
-        Get.find<TransactionController>().getCurrentStockSummary();
+    final transactionController = Get.find<TransactionController>();
     String? titleLabel;
     Color? color;
 
@@ -48,10 +47,9 @@ class StockInOutItems extends StatelessWidget {
       color = Colors.orange;
     }
     final unProcesedProducts = Get.find<ProductController>().products;
-    final stocks = Get.find<StockController>().stocks;
     var products = <Product>[];
-
-    if (stocks.isNotEmpty) {
+    final currentStock = transactionController.getTransactionSummary();
+    if (currentStock.productsSummary.isNotEmpty) {
       final productsSummary = currentStock.productsSummary;
       for (final item in unProcesedProducts) {
         var p = item;

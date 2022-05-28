@@ -52,8 +52,21 @@ class FireBaseRepository
   }
 
   @override
-  Future<List<Map<String, dynamic>>> allItems() async {
-    final snapshot = await ref!.get();
+  Future<List<Map<String, dynamic>>> allItems({
+    Map<String, dynamic>? queryMap,
+  }) async {
+    QuerySnapshot<Object?> snapshot;
+    if (queryMap != null) {
+      snapshot = await ref!
+          .where(
+            '${queryMap['parameter']}',
+            isLessThanOrEqualTo: queryMap['value'],
+          )
+          .get();
+    } else {
+      snapshot = await ref!.get();
+    }
+
     final objs = <Map<String, dynamic>>[];
     for (final doc in snapshot.docs) {
       if (doc.data() != null) {

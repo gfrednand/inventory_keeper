@@ -37,8 +37,8 @@ class StockInOutContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
-    final currentStock =
-        Get.find<TransactionController>().getCurrentStockSummary();
+    // final transactionController = Get.find<TransactionController>();
+    // final currentStock = transactionController.getTransactionSummary();
 
     return HomeItemContainer(
       label: label ?? 'Stock In/Out',

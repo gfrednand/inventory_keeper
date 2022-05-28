@@ -18,7 +18,7 @@ DateTime? parseTime(dynamic date) {
   return date == null ? null : (date as Timestamp).toDate();
 }
 
-/// GEt today date without time in millseconds
+/// Get today date without time in millseconds
 int dateToMillSeconds(DateTime? date) {
   if (date != null) {
     return DateTime(date.year, date.month, date.day).millisecondsSinceEpoch;
@@ -27,11 +27,26 @@ int dateToMillSeconds(DateTime? date) {
   }
 }
 
+///Format datetime from epoch milliseconds
+String formatedDateSinceEpoch(int date) {
+  return DateFormat('MMM d, yyyy')
+      .format(DateTime.fromMillisecondsSinceEpoch(date));
+}
+
+///Formating date
+
+String dateFormat(DateTime? date, {String format = 'dd/MM/yyy'}) {
+  if (date != null) {
+    return DateFormat(format).format(date);
+  }
+  return 'Select';
+}
+
 /// Get product with current stock
 
-Product productWithLatestInfo(Product product, ProductTransaction transaction) {
+Product productWithLatestInfo(Product product, Stock stock) {
   ProductSummary? prod;
-  prod = transaction.productsSummary.firstWhereOrNull(
+  prod = stock.productsSummary.firstWhereOrNull(
     (item) => item.id == product.id,
   );
 
@@ -99,12 +114,17 @@ Future<T?> displayDialog<T>(
     );
 
 /// Date picker
-Future<DateTime?> selectDate(BuildContext context, {DateTime? currentDate}) {
+Future<DateTime?> selectDate(
+  BuildContext context, {
+  DateTime? firstDate,
+  DateTime? lastDate,
+  DateTime? currentDate,
+}) {
   return showDatePicker(
     context: context,
     initialDate: currentDate ?? DateTime.now(),
-    firstDate: DateTime(2015),
-    lastDate: DateTime(2050),
+    firstDate: firstDate ?? DateTime(2015),
+    lastDate: lastDate ?? DateTime(2050),
   );
 }
 

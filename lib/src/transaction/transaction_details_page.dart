@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
+import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
@@ -25,22 +24,20 @@ class TransactionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<StockController>();
-
     final totalItems = transaction.productsSummary.length;
 
-    Widget? icon;
     var titleLabel = 'Audit';
     Color? color;
     if (transaction.transactionType == TransactionType.inStock) {
       titleLabel = 'Stock In';
-      icon = inIcon();
       color = Colors.teal;
     } else if (transaction.transactionType == TransactionType.outStock) {
       titleLabel = 'Stock Out';
-      icon = outIcon();
       color = Colors.red;
     }
+
+    final summaryDate = transaction.productsSummary[0].summaryDate ??
+        DateTime(transaction.transactionDate);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,14 +56,14 @@ class TransactionDetailsPage extends StatelessWidget {
           IconButton(
             onPressed: () {
               AppDeleteMenu().show(context, () {
-                controller.removeStock().then((success) {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                });
+                // transactionController.removeStock().then((success) {
+                //   Navigator.pop(context);
+                //   Navigator.pop(context);
+                // });
               });
             },
             icon: const Icon(Icons.more_horiz_rounded),
-          ),
+          )
         ],
       ),
       body: Padding(
@@ -79,7 +76,7 @@ class TransactionDetailsPage extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                '${transaction.transactionDate}',
+                DateFormat('MMM d, yyyy - kk:mm').format(summaryDate),
                 style:
                     const TextStyle(color: AppColors.greyLabel, fontSize: 16),
               ),

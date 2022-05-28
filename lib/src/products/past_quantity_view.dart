@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
+import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
@@ -20,7 +21,7 @@ class PastQuantityView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stockController = Get.find<StockController>();
+    final transactionController = Get.find<TransactionController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -36,10 +37,8 @@ class PastQuantityView extends StatelessWidget {
         ),
         title: const Text('Past Quantity'),
       ),
-      body: GetBuilder<StockController>(builder: (cont) {
-        final closingStock = stockController.closingStock;
-
-        if (stockController.busy) {
+      body: GetBuilder<TransactionController>(builder: (cont) {
+        if (transactionController.busy) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -55,11 +54,11 @@ class PastQuantityView extends StatelessWidget {
                 onTap: () {
                   selectDate(context).then((value) {
                     if (value != null) {
-                      stockController.getStockByDate(value);
+                      transactionController.pastTransactionSummary(value);
                     }
                   });
                 },
-                title: Text(stockController.closingStockDate ?? 'Select Date'),
+                title: Text(transactionController.summaryDate ?? 'Select Date'),
                 trailing: const Icon(
                   Icons.arrow_downward_outlined,
                   size: 16,
@@ -67,7 +66,7 @@ class PastQuantityView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            if (closingStock == null)
+            if (transactionController.stockSummary == null)
               const Expanded(
                 child: Center(
                   child: Text('No Data'),
@@ -77,23 +76,25 @@ class PastQuantityView extends StatelessWidget {
               ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  final productSummary = closingStock.productsSummary[index];
+                  final productSummary = transactionController
+                      .stockSummary?.productsSummary[index];
                   return ListTile(
                     title: Text(
-                      productSummary.name,
+                      productSummary?.name ?? '',
                       style: const TextStyle(fontSize: 15),
                     ),
                     subtitle: Text(
-                      productSummary.amount != null
-                          ? oCcy.format(productSummary.amount)
+                      productSummary?.amount != null
+                          ? oCcy.format(productSummary?.amount ?? 0)
                           : '',
                     ),
                     trailing: Text(
-                      '${productSummary.currentStock}',
+                      '${productSummary?.currentStock}',
                     ),
                   );
                 },
-                itemCount: closingStock.productsSummary.length,
+                itemCount:
+                    transactionController.stockSummary?.productsSummary.length,
               )
           ],
         );

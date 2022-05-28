@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
@@ -11,7 +10,6 @@ import 'package:inventory_keeper/src/products/past_quantity_view.dart';
 import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
-import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
 
 ///Home page
@@ -20,8 +18,7 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final currentStock =
-        Get.find<TransactionController>().getCurrentStockSummary();
+    final transactionController = Get.find<TransactionController>();
 
     return CustomScrollView(
       slivers: [
@@ -40,8 +37,11 @@ class HomePage extends StatelessWidget {
             child: SizedBox(
               child: Column(
                 children: [
-                  GetBuilder<TransactionController>(
-                    builder: (cont) {
+                  Obx(
+                    () {
+                      final currentStock =
+                          transactionController.getTransactionSummary();
+
                       return HomeItemContainer(
                         withGradient: true,
                         label: 'Today',

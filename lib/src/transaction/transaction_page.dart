@@ -9,6 +9,7 @@ import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/transaction/transaction_details_page.dart';
+import 'package:inventory_keeper/src/transaction/transaction_filter_page.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/custom_appbar.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
@@ -44,6 +45,15 @@ class TransactionPage extends StatelessWidget {
                   );
                 },
                 icon: const Icon(Icons.add, color: Colors.black),
+              ),
+              IconButton(
+                onPressed: () {
+                  Get.to<void>(
+                    () => const TransactionFilterPage(),
+                    transition: Transition.fadeIn,
+                  );
+                },
+                icon: const Icon(Icons.filter_list, color: Colors.black),
               )
             ],
           ),
@@ -54,9 +64,8 @@ class TransactionPage extends StatelessWidget {
               return SliverFillRemaining(
                 child: GroupedListView<ProductTransaction, String>(
                   elements: transactions,
-                  groupBy: (transaction) => DateFormat('MMM d, yyyy').format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                          transaction.transactionDate)),
+                  groupBy: (transaction) =>
+                      formatedDateSinceEpoch(transaction.transactionDate),
                   groupComparator: (value1, value2) => value1.compareTo(value2),
                   itemComparator: (item1, item2) =>
                       item1.transactionDate.compareTo(item2.transactionDate),
@@ -67,9 +76,10 @@ class TransactionPage extends StatelessWidget {
                     child: Text(
                       value,
                       style: TextStyle(
-                          color: Colors.grey[400],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                        color: Colors.grey[400],
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                   itemBuilder: (c, item) {
@@ -87,6 +97,10 @@ class TransactionPage extends StatelessWidget {
                       title = const Text('Stock Out');
                       icon = outIcon();
                       color = Colors.red;
+                    } else if (item.transactionType == TransactionType.audit) {
+                      title = const Text('Audit');
+                      // icon = outIcon();
+                      color = Colors.orange;
                     }
                     return Column(
                       mainAxisSize: MainAxisSize.min,
@@ -106,9 +120,11 @@ class TransactionPage extends StatelessWidget {
                             '$total Item${total > 1 ? 's' : ''}',
                           ),
                           trailing: Text(
-                            '${item.totalSelectedQuantity}',
+                            '${item.totalQuantity}',
                             style: TextStyle(
-                                fontWeight: FontWeight.w600, color: color),
+                              fontWeight: FontWeight.w600,
+                              color: color,
+                            ),
                           ),
                         ),
                         const SizedBox(

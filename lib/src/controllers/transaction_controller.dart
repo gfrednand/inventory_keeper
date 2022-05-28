@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
@@ -32,40 +33,88 @@ class TransactionController extends BaseController {
   }
 
   ///
+
+  String? _summaryDate;
+
+  ///
+  String? get summaryDate => _summaryDate;
+
+  Stock? _stockSummary;
+
+  /// Transaction Summary by Given Date
+  Stock? get stockSummary => _stockSummary;
+
+  ///
   ProductTransaction? _transaction;
 
   /// Get all transactions
   ProductTransaction? get transaction => _transaction;
 
+  ///For filtering transactions
+  TransactionType _transactionFilterType = TransactionType.all;
+
+  ///For filtering transactions
+  TransactionType get transactionFilterType => _transactionFilterType;
+
+  ///For filtering transactions
+  DateTime? _transactionFilterStartDate;
+
+  ///For filtering transactions
+  DateTime? get transactionFilterStartDate => _transactionFilterStartDate;
+
+  ///For filtering transactions
+  DateTime? _transactionFilterEndDate;
+
+  ///For filtering transactions
+  DateTime? get transactionFilterEndDate => _transactionFilterEndDate;
+
   /// Current Summary Of Stock
-  Stock getCurrentStockSummary() {
+  Stock getTransactionSummary({
+    DateTime? filterDate,
+    List<ProductTransaction>? transactions,
+  }) {
     var totalIn = 0;
     var totalOut = 0;
     var totalSale = 0.0;
     var totalBuy = 0.0;
-    final productTransaction = productTransactions.firstWhereOrNull(
-      (transaction) =>
-          dateToMillSeconds(DateTime.now()) > transaction.transactionDate,
-    );
-    if (productTransaction?.productsSummary != null) {
-      for (final p in productTransaction!.productsSummary) {
-        final summaryDate = dateToMillSeconds(p.summaryDate);
-        final today = dateToMillSeconds(DateTime.now());
-        if (summaryDate == today &&
-            productTransaction.transactionType == TransactionType.inStock) {
-          totalIn = totalIn + p.quantity;
-          totalBuy = totalBuy + (p.amount ?? 0);
-        } else if (summaryDate == today &&
-            productTransaction.transactionType == TransactionType.outStock) {
-          totalOut = totalOut + p.quantity;
-          totalSale = totalSale + (p.amount ?? 0);
+    var allTotalAmount = 0.0;
+    var allTotalQuantity = 0;
+    final productsSummary = <ProductSummary>[];
+    for (final tr in transactions ?? productTransactions) {
+      final summaryDate = tr.transactionDate;
+      final today = dateToMillSeconds(filterDate ?? DateTime.now());
+      allTotalAmount = allTotalAmount + tr.totalAmount;
+      allTotalQuantity = allTotalQuantity + tr.totalQuantity;
+      if (summaryDate == today &&
+          tr.transactionType == TransactionType.inStock) {
+        totalIn = totalIn + tr.totalQuantity;
+        totalBuy = totalBuy + (tr.totalAmount);
+      } else if (summaryDate == today &&
+          tr.transactionType == TransactionType.outStock) {
+        totalOut = totalOut + tr.totalQuantity;
+        totalSale = totalSale + (tr.totalAmount);
+      }
+      for (final prodSummary in tr.productsSummary) {
+        final index = productsSummary
+            .indexWhere((summary) => summary.id == prodSummary.id);
+        if (index == -1) {
+          productsSummary.add(prodSummary);
+        } else {
+          productsSummary[index] = productsSummary[index].copyWith(
+            amount: (productsSummary[index].amount ?? 0) +
+                (prodSummary.amount ?? 0),
+            quantity: productsSummary[index].quantity + prodSummary.quantity,
+            currentStock:
+                productsSummary[index].currentStock + prodSummary.quantity,
+          );
         }
       }
     }
+
     return Stock(
-      productsSummary: productTransaction?.productsSummary ?? [],
-      totalAmount: productTransaction?.totalAmount ?? 0,
-      totalQuantity: productTransaction?.totalQuantity ?? 0,
+      productsSummary: productsSummary,
+      totalAmount: allTotalAmount,
+      totalQuantity: allTotalQuantity,
       totalIn: totalIn,
       totalOut: totalOut,
       totalSale: totalSale,
@@ -89,6 +138,7 @@ class TransactionController extends BaseController {
 
     final map = prodTnx.toJson();
     map['productsSummary'] = prodSummaryMap(cartController.items);
+    print(map);
     final success = await _api.addOne(map);
     Get.back<void>();
 
@@ -100,10 +150,6 @@ class TransactionController extends BaseController {
         'Successful',
         snackPosition: SnackPosition.BOTTOM,
       );
-      // ignore: cascade_invocations
-      Get.back<void>();
-      // ignore: cascade_invocations
-      Get.back<void>();
     } else {
       Get.snackbar(
         'Transaction',
@@ -113,6 +159,27 @@ class TransactionController extends BaseController {
     }
 
     update();
+  }
+
+  /// Get Past Transaction Summary By Date
+  Future<void> pastTransactionSummary(DateTime? date) async {
+    final tnx = <ProductTransaction>[];
+    busy = true;
+    if (date != null) {
+      _summaryDate = DateFormat.yMMMEd().format(date);
+      final queryMap = <String, dynamic>{
+        'parameter': 'transactionDate',
+        'value': dateToMillSeconds(date)
+      };
+      final objs = await _api.allItems(queryMap: queryMap);
+
+      busy = false;
+      for (final item in objs) {
+        tnx.add(ProductTransaction.fromJson(item));
+      }
+    }
+    _stockSummary = getTransactionSummary(filterDate: date, transactions: tnx);
+    busy = false;
   }
 
   /// Fetching stream of data
@@ -135,9 +202,40 @@ class TransactionController extends BaseController {
           'name': e.name,
           'summaryDate': e.summaryDate,
           'currentStock': e.currentStock,
-          'selectedQuantity': e.quantity,
+          'quantity': e.quantity,
         };
       },
     ).toList();
+  }
+
+  /// Setting filter type
+  set transactionFilterType(TransactionType type) {
+    _transactionFilterType = type;
+    update();
+  }
+
+  /// Setting filter start date
+  set transactionFilterStartDate(DateTime? type) {
+    _transactionFilterStartDate = type;
+    update();
+  }
+
+  /// Setting filter end date
+  set transactionFilterEndDate(DateTime? type) {
+    _transactionFilterEndDate = type;
+    update();
+  }
+
+  ///Clearing all filters
+  void clearAllFilters() {
+    _transactionFilterType = TransactionType.all;
+    clearDateFilter();
+  }
+
+  /// Clear date filters
+  void clearDateFilter() {
+    _transactionFilterStartDate = null;
+    _transactionFilterEndDate = null;
+    update();
   }
 }
