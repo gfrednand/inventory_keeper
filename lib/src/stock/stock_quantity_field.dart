@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_stepper.dart';
@@ -49,7 +50,7 @@ class StockQuantityField extends StatefulWidget {
 class _StockQuantityFieldState extends State<StockQuantityField> {
   int? _counter;
   int _initialCounter = 0;
-  int _valDisplay = 0;
+  int _auditedQuantity = 0;
 
   @override
   void initState() {
@@ -88,15 +89,25 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
               setState(() {
                 final val = value ?? widget.initialCounter ?? 0;
                 if (widget.transactionType == TransactionType.inStock) {
-                  _counter = val > -1 ? val : 0;
-                  _initialCounter = (widget.currentStock ?? 0) + _counter!;
+                  _counter = value == null
+                      ? value
+                      : val > -1
+                          ? val
+                          : 0;
+                  _initialCounter =
+                      (widget.currentStock ?? 0) + (_counter ?? 0);
                 } else if (widget.transactionType == TransactionType.outStock) {
-                  _counter = val > -1 ? val : 0;
-                  _initialCounter = (widget.currentStock ?? 0) - _counter!;
+                  _counter = value == null
+                      ? value
+                      : val > -1
+                          ? val
+                          : 0;
+                  _initialCounter =
+                      (widget.currentStock ?? 0) - (_counter ?? 0);
                 } else if (widget.transactionType == TransactionType.audit) {
-                  _counter = val;
+                  _counter = value;
                   _initialCounter = val;
-                  _valDisplay = val - (widget.currentStock ?? 0);
+                  _auditedQuantity = val - (widget.currentStock ?? 0);
                 } else if (widget.transactionType == TransactionType.all) {
                   _counter = val;
                   _initialCounter = val;
@@ -135,9 +146,10 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                   ),
                   Text(
                     '$_initialCounter',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
+                      color: _initialCounter > 0 ? Colors.teal : Colors.red,
                     ),
                   )
                 ],
@@ -147,13 +159,13 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
             width: 20,
           ),
           if (widget.transactionType == TransactionType.audit &&
-              _valDisplay != 0)
+              _auditedQuantity != 0)
             Text(
-              '(${_valDisplay > 0 ? ' +' : ''}$_valDisplay)',
+              '(${_auditedQuantity > 0 ? ' +' : ''}$_auditedQuantity)',
               style: TextStyle(
                 fontWeight: FontWeight.w300,
                 fontSize: 20,
-                color: _valDisplay > 0 ? Colors.blue : Colors.red,
+                color: _auditedQuantity > 0 ? Colors.blue : Colors.red,
               ),
             ),
           const SizedBox(
@@ -193,7 +205,12 @@ class _StockQuantityFieldState extends State<StockQuantityField> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pop(context, _counter);
+                      Get.back<Map<String, int?>>(
+                        result: {
+                          'quantity': _counter ?? 0,
+                          'auditedQuantity': _auditedQuantity,
+                        },
+                      );
                     },
                     child: const Text(
                       'Apply',

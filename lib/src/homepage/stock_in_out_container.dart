@@ -117,7 +117,7 @@ class StockInOutContainer extends StatelessWidget {
         ),
       );
     } else {
-      displayDialog<int>(
+      displayDialog<Map<String, int?>>(
         context,
         StockQuantityField(
           productName: modifiedProduct!.name,
@@ -132,18 +132,20 @@ class StockInOutContainer extends StatelessWidget {
           initialCounter: modifiedProduct!.currentStock,
           transactionType: transactionType,
         ),
-      ).then((value) {
-        if (value != null) {
+      ).then((map) {
+        if (map != null) {
           var currentStock = 0;
-          var quantity = value;
+          var quantity = map['quantity'];
+          final auditedQuantity = map['auditedQuantity'];
 
           if (transactionType != TransactionType.inStock) {
-            currentStock = (modifiedProduct?.currentStock ?? 0) + value;
+            currentStock =
+                (modifiedProduct?.currentStock ?? 0) + (quantity ?? 0);
           } else if (transactionType != TransactionType.outStock) {
-            quantity = -1 * value;
-            currentStock = (modifiedProduct?.currentStock ?? 0) - value;
+            quantity = -1 * (quantity ?? 0);
+            currentStock = (modifiedProduct?.currentStock ?? 0) - quantity;
           } else if (transactionType != TransactionType.audit) {
-            currentStock = value;
+            currentStock = quantity ?? 0;
           }
           cartController.addItem(
             amount: transactionType == TransactionType.inStock
@@ -154,6 +156,7 @@ class StockInOutContainer extends StatelessWidget {
             id: modifiedProduct!.id ?? '',
             name: modifiedProduct!.name,
             quantity: quantity,
+            auditedQuantity: auditedQuantity,
             currentStock: currentStock,
           );
 

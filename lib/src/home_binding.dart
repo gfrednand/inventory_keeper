@@ -3,7 +3,6 @@
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 
 ///

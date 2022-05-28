@@ -11,10 +11,7 @@ import 'package:inventory_keeper/src/routes/slide_top_route.dart';
 import 'package:inventory_keeper/src/settings/settings_view.dart';
 import 'package:inventory_keeper/src/stock/add_item_safety_quntity.dart';
 import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
-import 'package:inventory_keeper/src/stock/stock_in_out_form.dart';
-import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
 import 'package:inventory_keeper/src/stock/stock_list_view.dart';
-import 'package:inventory_keeper/src/transaction/transaction_details_page.dart';
 
 ///
 class AppRouter {

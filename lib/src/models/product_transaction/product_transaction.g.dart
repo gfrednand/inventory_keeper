@@ -13,6 +13,7 @@ _$_ProductTransaction _$$_ProductTransactionFromJson(
           $enumDecode(_$TransactionTypeEnumMap, json['transactionType']),
       totalAmount: (json['totalAmount'] as num).toDouble(),
       totalQuantity: json['totalQuantity'] as int,
+      totalAuditedQuantity: json['totalAuditedQuantity'] as int,
       transactionDate: json['transactionDate'] as int,
       productsSummary: (json['productsSummary'] as List<dynamic>)
           .map(
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$_ProductTransactionToJson(
       'transactionType': _$TransactionTypeEnumMap[instance.transactionType],
       'totalAmount': instance.totalAmount,
       'totalQuantity': instance.totalQuantity,
+      'totalAuditedQuantity': instance.totalAuditedQuantity,
       'transactionDate': instance.transactionDate,
       'productsSummary': instance.productsSummary,
     };

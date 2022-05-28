@@ -74,64 +74,66 @@ class LowStockReminderView extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ),
-          GetBuilder<ProductTypeController>(builder: (cont) {
-            var data = products;
+          GetBuilder<ProductTypeController>(
+            builder: (cont) {
+              var data = products;
 
-            if (productTypeController.type != null) {
-              data = data
-                  .where(
-                    (p) => p.type?.name == productTypeController.type?.name,
-                  )
-                  .toList();
-              if (data.isEmpty) {
-                return Center(
-                  child: Text(
-                    'Category *${productTypeController.type!.name}*\n Has No Products',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                );
+              if (productTypeController.type != null) {
+                data = data
+                    .where(
+                      (p) => p.type?.name == productTypeController.type?.name,
+                    )
+                    .toList();
+                if (data.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'Category *${productTypeController.type!.name}*\n Has No Products',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  );
+                }
               }
-            }
-            return ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return ProductItem(
-                  item: data[index],
-                  trailing: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CurrentStockQuantity(
-                        backGroundColor: Colors.green,
-                        currentStock: data[index].safetyStock,
-                        withBackground: true,
-                        fontSize: 16,
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      CurrentStockQuantity(
-                        checkCurrentStock: false,
-                        backGroundColor: const Color(0xFFBDBDBD),
-                        currentStock: data[index].currentStock,
-                        fontSize: 16,
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    // Navigate to the details page. If the user leaves and
-                    // returns to the app after it has been killed while running
-                    // in the background, the navigation stack is restored.
+              return ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return ProductItem(
+                    item: data[index],
+                    trailing: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CurrentStockQuantity(
+                          backGroundColor: Colors.green,
+                          currentStock: data[index].safetyStock,
+                          withBackground: true,
+                          fontSize: 16,
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        CurrentStockQuantity(
+                          checkCurrentStock: false,
+                          backGroundColor: const Color(0xFFBDBDBD),
+                          currentStock: data[index].currentStock,
+                          fontSize: 16,
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      // Navigate to the details page. If the user leaves and
+                      // returns to the app after it has been killed while running
+                      // in the background, the navigation stack is restored.
 
-                    Get.to<void>(
-                      () => const ProductDetails(),
-                      arguments: data[index],
-                    );
-                  },
-                );
-              },
-              itemCount: data.length,
-            );
-          }),
+                      Get.to<void>(
+                        () => const ProductDetails(),
+                        arguments: data[index],
+                      );
+                    },
+                  );
+                },
+                itemCount: data.length,
+              );
+            },
+          ),
         ],
       ),
     );

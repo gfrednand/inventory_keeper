@@ -8,7 +8,6 @@ import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
@@ -200,10 +199,11 @@ class StockInOutForm extends StatelessWidget {
   }
 
   ///
-  Future<bool?> _onBackPressed(BuildContext context,
-      CartController cartController, String transactionType) {
-    var title = '';
-
+  Future<bool?> _onBackPressed(
+    BuildContext context,
+    CartController cartController,
+    String transactionType,
+  ) {
     if (cartController.items.isEmpty) {
       return Future.value(true);
     } else {

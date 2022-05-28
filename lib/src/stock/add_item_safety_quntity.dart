@@ -7,7 +7,6 @@ import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:inventory_keeper/src/widgets/app_snackbar.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///

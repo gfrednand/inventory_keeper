@@ -92,7 +92,6 @@ class ProductTypeController extends BaseController {
   void getProductTypes(List<Product> allProducts) {
     if (allProducts.isNotEmpty) {
       final types = <ProductType>[];
-      print(allProducts.length);
       for (final product in allProducts) {
         final type = productTypes
             .firstWhereOrNull((type) => type.name == product.type?.name);

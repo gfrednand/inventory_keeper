@@ -166,28 +166,31 @@ class TransactionFilterPage extends StatelessWidget {
     TransactionController transactionController, {
     bool showSwitch = false,
   }) {
-    return GetBuilder<TransactionController>(builder: (cont) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 20, left: 10, right: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-            ),
-            if (showSwitch)
-              Switch(
-                activeColor: AppColors.blue200,
-                value: false,
-                onChanged: (value) {},
-              )
-            else
-              Container(),
-          ],
-        ),
-      );
-    });
+    return GetBuilder<TransactionController>(
+      builder: (cont) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 20, left: 10, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style:
+                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+              ),
+              if (showSwitch)
+                Switch(
+                  activeColor: AppColors.blue200,
+                  value: false,
+                  onChanged: (value) {},
+                )
+              else
+                Container(),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   /// Date range picker

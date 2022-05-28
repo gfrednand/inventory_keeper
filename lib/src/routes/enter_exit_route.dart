@@ -21,7 +21,7 @@ class EnterExitRoute extends PageRouteBuilder<void> {
             children: <Widget>[
               SlideTransition(
                 position: Tween<Offset>(
-                  begin: Offset(0, 0),
+                  begin: Offset.zero,
                   end: const Offset(-1, 0),
                 ).animate(animation),
                 child: exitPage,

@@ -15,6 +15,7 @@ abstract class ProductSummary with _$ProductSummary {
     required String id,
     required String name,
     required int quantity,
+    required int auditedQuantity,
     required int currentStock,
     double? amount,
     @ServerTimestampConverter() DateTime? summaryDate,

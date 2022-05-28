@@ -24,6 +24,7 @@ mixin _$ProductSummary {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
+  int get auditedQuantity => throw _privateConstructorUsedError;
   int get currentStock => throw _privateConstructorUsedError;
   double? get amount => throw _privateConstructorUsedError;
   @ServerTimestampConverter()
@@ -45,6 +46,7 @@ abstract class $ProductSummaryCopyWith<$Res> {
       String id,
       String name,
       int quantity,
+      int auditedQuantity,
       int currentStock,
       double? amount,
       @ServerTimestampConverter() DateTime? summaryDate});
@@ -65,6 +67,7 @@ class _$ProductSummaryCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? quantity = freezed,
+    Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
     Object? amount = freezed,
     Object? summaryDate = freezed,
@@ -85,6 +88,10 @@ class _$ProductSummaryCopyWithImpl<$Res>
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      auditedQuantity: auditedQuantity == freezed
+          ? _value.auditedQuantity
+          : auditedQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       currentStock: currentStock == freezed
           ? _value.currentStock
@@ -114,6 +121,7 @@ abstract class _$$_ProductSummaryCopyWith<$Res>
       String id,
       String name,
       int quantity,
+      int auditedQuantity,
       int currentStock,
       double? amount,
       @ServerTimestampConverter() DateTime? summaryDate});
@@ -136,6 +144,7 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? quantity = freezed,
+    Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
     Object? amount = freezed,
     Object? summaryDate = freezed,
@@ -156,6 +165,10 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      auditedQuantity: auditedQuantity == freezed
+          ? _value.auditedQuantity
+          : auditedQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       currentStock: currentStock == freezed
           ? _value.currentStock
@@ -183,6 +196,7 @@ class _$_ProductSummary
       required this.id,
       required this.name,
       required this.quantity,
+      required this.auditedQuantity,
       required this.currentStock,
       this.amount,
       @ServerTimestampConverter() this.summaryDate});
@@ -199,6 +213,8 @@ class _$_ProductSummary
   @override
   final int quantity;
   @override
+  final int auditedQuantity;
+  @override
   final int currentStock;
   @override
   final double? amount;
@@ -208,7 +224,7 @@ class _$_ProductSummary
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductSummary(active: $active, id: $id, name: $name, quantity: $quantity, currentStock: $currentStock, amount: $amount, summaryDate: $summaryDate)';
+    return 'ProductSummary(active: $active, id: $id, name: $name, quantity: $quantity, auditedQuantity: $auditedQuantity, currentStock: $currentStock, amount: $amount, summaryDate: $summaryDate)';
   }
 
   @override
@@ -220,6 +236,7 @@ class _$_ProductSummary
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('quantity', quantity))
+      ..add(DiagnosticsProperty('auditedQuantity', auditedQuantity))
       ..add(DiagnosticsProperty('currentStock', currentStock))
       ..add(DiagnosticsProperty('amount', amount))
       ..add(DiagnosticsProperty('summaryDate', summaryDate));
@@ -235,6 +252,8 @@ class _$_ProductSummary
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality()
+                .equals(other.auditedQuantity, auditedQuantity) &&
+            const DeepCollectionEquality()
                 .equals(other.currentStock, currentStock) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
             const DeepCollectionEquality()
@@ -249,6 +268,7 @@ class _$_ProductSummary
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(quantity),
+      const DeepCollectionEquality().hash(auditedQuantity),
       const DeepCollectionEquality().hash(currentStock),
       const DeepCollectionEquality().hash(amount),
       const DeepCollectionEquality().hash(summaryDate));
@@ -270,6 +290,7 @@ abstract class _ProductSummary implements ProductSummary {
           required final String id,
           required final String name,
           required final int quantity,
+          required final int auditedQuantity,
           required final int currentStock,
           final double? amount,
           @ServerTimestampConverter() final DateTime? summaryDate}) =
@@ -286,6 +307,8 @@ abstract class _ProductSummary implements ProductSummary {
   String get name => throw _privateConstructorUsedError;
   @override
   int get quantity => throw _privateConstructorUsedError;
+  @override
+  int get auditedQuantity => throw _privateConstructorUsedError;
   @override
   int get currentStock => throw _privateConstructorUsedError;
   @override

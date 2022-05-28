@@ -12,6 +12,7 @@ _$_ProductSummary _$$_ProductSummaryFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: json['name'] as String,
       quantity: json['quantity'] as int,
+      auditedQuantity: json['auditedQuantity'] as int,
       currentStock: json['currentStock'] as int,
       amount: (json['amount'] as num?)?.toDouble(),
       summaryDate:
@@ -24,6 +25,7 @@ Map<String, dynamic> _$$_ProductSummaryToJson(_$_ProductSummary instance) =>
       'id': instance.id,
       'name': instance.name,
       'quantity': instance.quantity,
+      'auditedQuantity': instance.auditedQuantity,
       'currentStock': instance.currentStock,
       'amount': instance.amount,
       'summaryDate':

@@ -20,9 +20,9 @@ class CustomStepper extends StatelessWidget {
     this.initialValue,
   })  :
         // assert(maxValue > minValue, 'Max Value is less than min value'),
-        //       assert(
-        //         initialValue >= minValue && initialValue <= maxValue,
-        //         'Initial Value is less than min value or greater than Max value',
+        //      assert(
+        //   initialValue >= minValue && initialValue <= maxValue,
+        //  'Initial Value is less than min value or greater than Max value',
         //       ),
         //       assert(step > 0, 'Step is less than 0'),
         // selectedValue = initialValue?.abs(),
@@ -62,6 +62,8 @@ class CustomStepper extends StatelessWidget {
       } else {
         onChanged(selectedValue! + step);
       }
+    } else {
+      onChanged(0);
     }
   }
 
@@ -74,6 +76,8 @@ class CustomStepper extends StatelessWidget {
       } else {
         onChanged(selectedValue! - step);
       }
+    } else {
+      onChanged(0);
     }
   }
 

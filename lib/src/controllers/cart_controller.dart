@@ -1,6 +1,5 @@
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
-import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 
 /// Cart controller
 class CartController extends BaseController {
@@ -24,6 +23,12 @@ class CartController extends BaseController {
   int get totalQuantity => _totalQuantity;
 
   ///
+  int _totalAuditedQuantity = 0;
+
+  ///
+  int get totalAuditedQuantity => _totalAuditedQuantity;
+
+  ///
   double _totalAmount = 0;
 
   ///
@@ -32,12 +37,15 @@ class CartController extends BaseController {
   ///
   void calculateTotalQuantity() {
     var quantity = 0;
+    var auditedQuantity = 0;
     var total = 0.0;
     _items.forEach((key, cartItem) {
       quantity += cartItem.quantity;
+      auditedQuantity += cartItem.auditedQuantity;
       total += (cartItem.amount ?? 0) * (cartItem.quantity);
     });
     _totalQuantity = quantity;
+    _totalAuditedQuantity = auditedQuantity;
     _totalAmount = total;
     update();
   }
@@ -47,6 +55,7 @@ class CartController extends BaseController {
     required String id,
     required String name,
     int? quantity,
+    int? auditedQuantity,
     int? currentStock,
     double? amount,
     bool? active,
@@ -61,6 +70,7 @@ class CartController extends BaseController {
           summaryDate: existingCartItem.summaryDate,
           currentStock: currentStock ?? existingCartItem.currentStock,
           quantity: quantity ?? existingCartItem.quantity,
+          auditedQuantity: auditedQuantity ?? existingCartItem.auditedQuantity,
           amount: amount ?? existingCartItem.amount,
           active: existingCartItem.active,
         ),
@@ -74,6 +84,7 @@ class CartController extends BaseController {
           summaryDate: summaryDate ?? DateTime.now(),
           currentStock: currentStock ?? 0,
           quantity: quantity ?? 0,
+          auditedQuantity: auditedQuantity ?? 0,
           amount: amount ?? 0,
           active: active ?? true,
         ),

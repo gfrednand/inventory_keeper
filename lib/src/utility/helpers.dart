@@ -10,7 +10,7 @@ import 'package:inventory_keeper/src/models/stock/stock.dart';
 
 /// Check if number is integer
 
-bool isInteger(int value) => value is int || value == value.roundToDouble();
+bool isInteger(num value) => value is int || value == value.roundToDouble();
 
 /// Convert timestamp to datetime
 DateTime? parseTime(dynamic date) {

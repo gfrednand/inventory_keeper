@@ -28,6 +28,7 @@ abstract class ProductTransaction with _$ProductTransaction {
     required TransactionType transactionType,
     required double totalAmount,
     required int totalQuantity,
+    required int totalAuditedQuantity,
     required int transactionDate,
     required List<ProductSummary> productsSummary,
   }) = _ProductTransaction;

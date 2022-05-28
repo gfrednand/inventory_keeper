@@ -161,7 +161,7 @@ class StockInOutItems extends StatelessWidget {
                                         TransactionType.audit) {
                                       title = 'Audit quantity';
                                     }
-                                    displayDialog<int>(
+                                    displayDialog<Map<String, int?>>(
                                       context,
                                       StockQuantityField(
                                         currentStock: item.currentStock,
@@ -172,22 +172,24 @@ class StockInOutItems extends StatelessWidget {
                                         initialCounter: item.currentStock +
                                             (selectedQuantity ?? 0),
                                       ),
-                                    ).then((value) {
-                                      if (value != null) {
+                                    ).then((map) {
+                                      if (map != null) {
                                         var currentStock = 0;
-                                        var quantity = value;
+                                        var quantity = map['quantity'];
+                                        final auditedQuantity =
+                                            map['auditedQuantity'];
                                         if (transactionType ==
                                             TransactionType.inStock) {
-                                          currentStock =
-                                              item.currentStock + value;
+                                          currentStock = item.currentStock +
+                                              (quantity ?? 0);
                                         } else if (transactionType ==
                                             TransactionType.outStock) {
-                                          currentStock =
-                                              item.currentStock - value;
-                                          quantity = -1 * value;
+                                          currentStock = item.currentStock -
+                                              (quantity ?? 0);
+                                          quantity = -1 * (quantity ?? 0);
                                         } else if (transactionType ==
                                             TransactionType.audit) {
-                                          currentStock = value;
+                                          currentStock = quantity ?? 0;
                                         }
                                         cartController.addItem(
                                           amount: transactionType ==
@@ -200,6 +202,7 @@ class StockInOutItems extends StatelessWidget {
                                           id: item.id ?? '',
                                           name: item.name,
                                           quantity: quantity,
+                                          auditedQuantity: auditedQuantity,
                                           currentStock: currentStock,
                                         );
                                       }

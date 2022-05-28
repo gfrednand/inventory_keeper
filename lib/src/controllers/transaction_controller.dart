@@ -80,21 +80,22 @@ class TransactionController extends BaseController {
     var allTotalAmount = 0.0;
     var allTotalQuantity = 0;
     final productsSummary = <ProductSummary>[];
-    transactions?.sort((a, b) {
-      //sorting in ascending order
-      return a.transactionDate.compareTo(b.transactionDate);
-    });
-    productTransactions.sort((a, b) {
-      //sorting in ascending order
-      return a.transactionDate.compareTo(b.transactionDate);
-    });
+    transactions?.sort(
+      (a, b) => (a.productsSummary[0].summaryDate ?? DateTime.now())
+          .compareTo(b.productsSummary[0].summaryDate ?? DateTime.now()),
+    );
+    productTransactions.sort(
+      (a, b) => (a.productsSummary[0].summaryDate ?? DateTime.now())
+          .compareTo(b.productsSummary[0].summaryDate ?? DateTime.now()),
+    );
     for (final tr in transactions ?? productTransactions) {
       final prodSummary = [...tr.productsSummary];
 
       final summaryDate = tr.transactionDate;
       final today = dateToMillSeconds(filterDate ?? DateTime.now());
       allTotalAmount = allTotalAmount + tr.totalAmount;
-      allTotalQuantity = allTotalQuantity + tr.totalQuantity;
+      allTotalQuantity =
+          allTotalQuantity + tr.totalQuantity + tr.totalAuditedQuantity;
       if (summaryDate == today &&
           tr.transactionType == TransactionType.inStock) {
         totalIn = totalIn + tr.totalQuantity;
@@ -149,6 +150,7 @@ class TransactionController extends BaseController {
       transactionDate: dateToMillSeconds(DateTime.now()),
       transactionType: transactionType,
       productsSummary: [],
+      totalAuditedQuantity: cartController.totalAuditedQuantity,
       totalQuantity: cartController.totalQuantity,
       totalAmount: cartController.totalAmount,
     );
@@ -212,6 +214,7 @@ class TransactionController extends BaseController {
           'name': e.name,
           'summaryDate': e.summaryDate,
           'currentStock': e.currentStock,
+          'auditedQuantity': e.auditedQuantity,
           'quantity': e.quantity,
         };
       },
