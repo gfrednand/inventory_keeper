@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/models/product/product.dart';
+import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
 
 ///Delete menu class
 class AppDeleteMenu {
   /// Show delete menu
-  void show(BuildContext context, void Function()? onPressed) {
+  void show(
+    BuildContext context,
+    ProductController productController,
+  ) {
     CustomModalSheet.show(
       isExpanded: false,
       context: context,
@@ -19,10 +26,30 @@ class AppDeleteMenu {
           children: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                _delete(context, onPressed);
+                Get.back<void>();
+                // ignore: cascade_invocations
+                Get.to<void>(
+                  () => AddProduct(
+                    addProductEnum: AddProductEnum.add,
+                    product: productController.product,
+                  ),
+                );
               },
-              child: const Text('Delete'),
+              child: const Text(
+                'Copy',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            const Divider(),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _delete(context, productController.removeProduct);
+              },
+              child: const Text(
+                'Delete',
+                style: TextStyle(fontSize: 18),
+              ),
             )
           ],
         ),

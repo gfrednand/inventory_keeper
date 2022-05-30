@@ -47,15 +47,17 @@ class ProductDetails extends StatelessWidget {
           IconButton(
             onPressed: () {
               Get.to<void>(
-                () => const AddProduct(),
-                arguments: product,
+                () => AddProduct(
+                  addProductEnum: AddProductEnum.edit,
+                  product: product,
+                ),
               );
             },
             icon: const Icon(Icons.edit_note_outlined),
           ),
           IconButton(
             onPressed: () {
-              AppDeleteMenu().show(context, productController.removeProduct);
+              AppDeleteMenu().show(context, productController);
             },
             icon: const Icon(Icons.more_horiz_rounded),
           ),

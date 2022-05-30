@@ -62,12 +62,7 @@ class TransactionDetailsPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              AppDeleteMenu().show(context, () {
-                // transactionController.removeStock().then((success) {
-                //   Navigator.pop(context);
-                //   Navigator.pop(context);
-                // });
-              });
+              // AppDeleteMenu().show(context, );
             },
             icon: const Icon(Icons.more_horiz_rounded),
           )

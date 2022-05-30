@@ -79,7 +79,9 @@ class ProductListView extends StatelessWidget {
         elevation: 16,
         onPressed: () {
           Get.to<void>(
-            () => const AddProduct(),
+            () => const AddProduct(
+              addProductEnum: AddProductEnum.add,
+            ),
           );
         },
         child: const Icon(Icons.add, color: Colors.white),

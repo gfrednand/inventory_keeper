@@ -8,13 +8,29 @@ import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
+///
+enum AddProductEnum {
+  ///
+  edit,
+
+  ///
+  add,
+}
+
 /// Add Product Page
 class AddProduct extends StatelessWidget {
   ///
-  const AddProduct({Key? key}) : super(key: key);
+  const AddProduct({Key? key, required this.addProductEnum, this.product})
+      : super(key: key);
 
   /// Add Product route name
   static const routeName = '/addProduct';
+
+  /// Add Product Enum
+  final AddProductEnum addProductEnum;
+
+  /// Product Definition
+  final Product? product;
 
   ///Form Controller
   static TextEditingController nameController = TextEditingController(),
@@ -24,8 +40,6 @@ class AddProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Get.arguments as Product?;
-
     final _formKey = GlobalKey<FormState>();
 
     final controller = Get.find<ProductController>();
@@ -85,7 +99,7 @@ class AddProduct extends StatelessWidget {
                     salePrice: double.tryParse(salePriceController.text) ?? 0,
                     buyPrice: double.tryParse(buyPriceController.text) ?? 0,
                   );
-                  if (newProduct.id != null) {
+                  if (addProductEnum == AddProductEnum.edit) {
                     controller.updateProduct(newProduct);
                   } else {
                     displayDialog<Map<String, int?>>(
@@ -106,7 +120,8 @@ class AddProduct extends StatelessWidget {
                   }
                 }
               },
-              child: Text(product?.id == null ? 'Save' : 'Update'),
+              child: Text(
+                  addProductEnum == AddProductEnum.edit ? 'Save' : 'Update'),
             ),
           ),
         ],

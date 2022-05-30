@@ -144,7 +144,9 @@ class HomePage extends StatelessWidget {
                     child: ListTile(
                       onTap: () {
                         Get.to<void>(
-                          () => const AddProduct(),
+                          () => const AddProduct(
+                            addProductEnum: AddProductEnum.add,
+                          ),
                           transition: Transition.leftToRight,
                         );
                       },

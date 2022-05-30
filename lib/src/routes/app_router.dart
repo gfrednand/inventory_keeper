@@ -25,13 +25,13 @@ class AppRouter {
         return FadeRoute(page: const StockListView());
       case ProductTypeListView.routeName:
         return FadeRoute(page: const ProductTypeListView());
-      case AddProduct.routeName:
-        return CupertinoPageRoute<void>(
-          settings: routeSettings,
-          builder: (BuildContext context) {
-            return const AddProduct();
-          },
-        );
+      // case AddProduct.routeName:
+      //   return CupertinoPageRoute<void>(
+      //     settings: routeSettings,
+      //     builder: (BuildContext context) {
+      //       return const AddProduct();
+      //     },
+      //   );
       case ProductDetails.routeName:
         return FadeRoute(page: const ProductDetails());
       // case ProductDetails.routeName:

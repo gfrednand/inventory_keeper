@@ -27,7 +27,7 @@ class CustomModalSheet {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: const BoxDecoration(
-            color: Colors.white,
+            // color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: ConstrainedBox(
@@ -43,7 +43,9 @@ class CustomModalSheet {
                   )
                 else
                   child,
-                const SectionDivider(),
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
