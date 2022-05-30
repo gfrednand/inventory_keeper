@@ -21,6 +21,7 @@ class TransactionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         slivers: [
           CustomAppBar(
             flexibleSpace: const FlexibleSpaceBar(
@@ -84,21 +85,21 @@ class TransactionPage extends StatelessWidget {
                     final total = item.productsSummary.length;
 
                     Widget? icon;
-                    Widget? title;
+                    String? titleLabel;
                     Color? color;
                     if (item.transactionType == TransactionType.inStock) {
-                      title = const Text('Items In');
-                      icon = inIcon();
-                      color = Colors.blue;
+                      titleLabel = 'Items In';
+                      icon = inIcon(size: 20);
+                      color = Colors.teal;
                     } else if (item.transactionType ==
                         TransactionType.outStock) {
-                      title = const Text('Items Out');
-                      icon = outIcon();
+                      titleLabel = 'Items Out';
+                      icon = outIcon(size: 20);
                       color = Colors.red;
                     } else if (item.transactionType == TransactionType.audit) {
-                      title = const Text('Audit');
-                      icon = auditIcon();
-                      color = Colors.teal;
+                      titleLabel = 'Audit';
+                      icon = auditIcon(size: 20);
+                      color = Colors.blue;
                     }
                     return Column(
                       mainAxisSize: MainAxisSize.min,
@@ -112,8 +113,14 @@ class TransactionPage extends StatelessWidget {
                               ),
                             );
                           },
+                          // contentPadding:const EdgeInsets.symmetric(horizontal:8),
+                          horizontalTitleGap: 0,
                           leading: icon,
-                          title: title,
+                          title: Text(
+                            '$titleLabel',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16),
+                          ),
                           subtitle: Text(
                             '$total Item${total > 1 ? 's' : ''}',
                           ),

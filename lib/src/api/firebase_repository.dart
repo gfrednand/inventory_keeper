@@ -117,7 +117,7 @@ class FireBaseRepository
     if (p['id'] != null) {
       return ref!
           .doc(p['id'] as String)
-          .update(p)
+          .set(p, SetOptions(merge: true))
           .then((value) => true)
           .catchError((dynamic error) {
         print('Failed to update user: $error');
@@ -156,15 +156,20 @@ class FireBaseRepository
   /// Fetching stream of data
   Stream<List<Map<String, dynamic>>> streamDataCollection({
     Map<String, dynamic>? queryMap,
+    String? condition = '<=',
   }) {
     if (queryMap != null) {
-      return ref!
-          .where(
-            '${queryMap['parameter']}',
-            isLessThanOrEqualTo: queryMap['value'],
-          )
-          .snapshots()
-          .map(mapFunction);
+      switch (condition) {
+        case '<=':
+          return ref!
+              .where(
+                '${queryMap['parameter']}',
+                isLessThanOrEqualTo: queryMap['value'],
+              )
+              .snapshots()
+              .map(mapFunction);
+        default:
+      }
     }
 
     final snapshots = ref!.snapshots();

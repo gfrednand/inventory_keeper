@@ -39,6 +39,12 @@ class TransactionController extends BaseController {
   ///
   String? get summaryDate => _summaryDate;
 
+  ///Past transaction date
+  DateTime? _pastTransactionDate;
+
+  ///
+  DateTime? get pastTransactionDate => _pastTransactionDate;
+
   Stock? _stockSummary;
 
   /// Transaction Summary by Given Date
@@ -141,13 +147,13 @@ class TransactionController extends BaseController {
   }
 
   /// Add transaction
-  Future<void> addTransaction({
-    required CartController cartController,
-    required TransactionType transactionType,
-  }) async {
+  Future<void> addTransaction(
+      {required CartController cartController,
+      required TransactionType transactionType,
+      DateTime? transactionDate}) async {
     loadDialog<void>(loadingText: 'Updating stock...');
     final prodTnx = ProductTransaction(
-      transactionDate: dateToMillSeconds(DateTime.now()),
+      transactionDate: dateToMillSeconds(transactionDate ?? DateTime.now()),
       transactionType: transactionType,
       productsSummary: [],
       totalAuditedQuantity: cartController.totalAuditedQuantity,
@@ -236,6 +242,12 @@ class TransactionController extends BaseController {
   /// Setting filter end date
   set transactionFilterEndDate(DateTime? type) {
     _transactionFilterEndDate = type;
+    update();
+  }
+
+  /// Setting filter end date
+  set pastTransactionDate(DateTime? type) {
+    _pastTransactionDate = type;
     update();
   }
 

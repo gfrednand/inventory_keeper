@@ -29,7 +29,6 @@ class StockInOutContainer extends StatelessWidget {
   final bool? removeCurrentRoute;
 
   ///
-  static Product? modifiedProduct;
 
   /// Context
   final BuildContext ctx;
@@ -110,7 +109,7 @@ class StockInOutContainer extends StatelessWidget {
     bool removeCurrentRoute,
   ) {
     if (removeCurrentRoute) Navigator.pop(context);
-    if (modifiedProduct == null) {
+    if (product == null) {
       Get.to<void>(
         () => StockInOutForm(
           transactionType: transactionType,
@@ -120,16 +119,16 @@ class StockInOutContainer extends StatelessWidget {
       displayDialog<Map<String, int?>>(
         context,
         StockQuantityField(
-          productName: modifiedProduct!.name,
+          productName: product!.name,
           title: transactionType == TransactionType.outStock
-              ? 'Items Out quantity'
-              : transactionType != TransactionType.inStock
-                  ? 'Items In quantity'
+              ? 'Items out quantity'
+              : transactionType == TransactionType.inStock
+                  ? 'Items in quantity'
                   : transactionType == TransactionType.audit
-                      ? 'Audit Quantity'
+                      ? 'Audit quantity'
                       : '',
-          currentStock: modifiedProduct!.currentStock,
-          initialCounter: modifiedProduct!.currentStock,
+          currentStock: product!.currentStock,
+          initialCounter: product!.currentStock,
           transactionType: transactionType,
         ),
       ).then((map) {
@@ -138,23 +137,23 @@ class StockInOutContainer extends StatelessWidget {
           var quantity = map['quantity'];
           final auditedQuantity = map['auditedQuantity'];
 
-          if (transactionType != TransactionType.inStock) {
-            currentStock =
-                (modifiedProduct?.currentStock ?? 0) + (quantity ?? 0);
-          } else if (transactionType != TransactionType.outStock) {
+          if (transactionType == TransactionType.inStock) {
+            currentStock = (product?.currentStock ?? 0) + (quantity ?? 0);
+          } else if (transactionType == TransactionType.outStock) {
+            currentStock = (product?.currentStock ?? 0) - (quantity ?? 0);
+
             quantity = -1 * (quantity ?? 0);
-            currentStock = (modifiedProduct?.currentStock ?? 0) - quantity;
-          } else if (transactionType != TransactionType.audit) {
+          } else if (transactionType == TransactionType.audit) {
             currentStock = quantity ?? 0;
           }
           cartController.addItem(
             amount: transactionType == TransactionType.inStock
-                ? modifiedProduct?.buyPrice
+                ? product?.buyPrice
                 : transactionType == TransactionType.outStock
-                    ? modifiedProduct?.salePrice
+                    ? product?.salePrice
                     : 0,
-            id: modifiedProduct!.id ?? '',
-            name: modifiedProduct!.name,
+            id: product!.id ?? '',
+            name: product!.name,
             quantity: quantity,
             auditedQuantity: auditedQuantity,
             currentStock: currentStock,

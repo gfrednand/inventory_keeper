@@ -7,12 +7,18 @@ import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 ///
-enum SelectedQuantityEnum {
-  ///
-  updateStock,
+enum ProductSortEnum {
+  /// Sort A to Z
+  a2z,
 
-  ///
-  updateSafetyStock
+  /// Sort Z to A
+  z2a,
+
+  /// Sort By Larget No of Stock
+  largeStock,
+
+  /// Sort By Lowest No of Stock
+  loweStock
 }
 
 /// Product Controller
@@ -31,16 +37,41 @@ class ProductController extends BaseController {
 
   /// Product
   Product? get product => _product;
-  // set product(Product? newproduct) {
-  //   _product = newproduct;
-  //   safetyQuantity = newproduct?.safetyStock;
-  //   nameController.text = newproduct?.name ?? '';
-  //   salePriceController.text = (newproduct?.salePrice ?? '').toString();
-  //   buyPriceController.text = (newproduct?.buyPrice ?? '').toString();
-  //   unitController.text = newproduct?.unit ?? '';
-  //   currentStockQuantity = newproduct?.currentStock;
-  //   update();
-  // }
+  set product(Product? newproduct) {
+    _product = newproduct;
+    update();
+  }
+
+  List<Product> _filteredProducts = [];
+
+  /// Product
+  List<Product> get filteredProducts => _filteredProducts;
+
+  ///Filtering list of products by category or name
+  void filteredProductsByNameAndCategory(
+      {List<Product>? allProducts, String? query}) {
+    _filteredProducts = allProducts ?? products;
+    if (query != null) {
+      final newproducts = <Product>[];
+      for (final product in _filteredProducts) {
+        if ((product.type != null &&
+                product.type!.name
+                    .toLowerCase()
+                    .contains(query.toLowerCase())) ||
+            product.name.toLowerCase().contains(query.toLowerCase())) {
+          newproducts.add(product);
+        }
+      }
+      _filteredProducts = newproducts;
+    }
+    update();
+  }
+
+  ///
+  ProductSortEnum _sortEnum = ProductSortEnum.a2z;
+
+  ///
+  ProductSortEnum get sortEnum => _sortEnum;
 
   ///
   int? _safetyQuantity;
@@ -123,25 +154,6 @@ class ProductController extends BaseController {
         snackPosition: SnackPosition.BOTTOM,
       );
     }
-  }
-
-  ///
-  Future<bool> updateProducts(List<Product> prods) async {
-    final prodMap = prods.where((p) => p.isIncomingStock != null).map((p) {
-      if (p.id == product?.id) {
-        currentStockQuantity = p.currentStock;
-      }
-      p = p.copyWith(
-        updatedAt: DateTime.now(),
-      );
-      return p.toJson();
-    }).toList();
-    final success = await _api.updateMany(prodMap);
-    // if (success) {
-    //   _navigationService
-    //       .goBackUntil(ModalRoute.withName(ProductDetails.routeName));
-    // }
-    return success;
   }
 
   /// Update a product to a current products state
@@ -240,6 +252,33 @@ class ProductController extends BaseController {
         'Failed',
         snackPosition: SnackPosition.BOTTOM,
       );
+    }
+    update();
+  }
+
+  ///
+  void sortProducts(ProductSortEnum sortEnum) {
+    _sortEnum = sortEnum;
+    switch (sortEnum) {
+      case ProductSortEnum.a2z:
+        filteredProducts.sort(
+          (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+        );
+        break;
+      case ProductSortEnum.z2a:
+        filteredProducts.sort(
+          (a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()),
+        );
+        break;
+      case ProductSortEnum.largeStock:
+        filteredProducts.sort(
+          (a, b) => b.currentStock.compareTo(a.currentStock),
+        );
+        break;
+      case ProductSortEnum.loweStock:
+        filteredProducts.sort(
+          (a, b) => a.currentStock.compareTo(b.currentStock),
+        );
     }
     update();
   }

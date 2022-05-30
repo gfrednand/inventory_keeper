@@ -122,28 +122,31 @@ Future<DateTime?> selectDate(
 }
 
 /// Out Icon
-Transform outIcon() {
+Transform outIcon({double? size}) {
   return Transform.rotate(
     angle: 180 * math.pi / 180,
-    child: const Icon(
+    child: Icon(
       Icons.output,
+      size: size,
       color: Colors.red,
     ),
   );
 }
 
 /// In Icon
-Icon inIcon() {
-  return const Icon(
+Icon inIcon({double? size}) {
+  return Icon(
     Icons.input,
-    color: Colors.blue,
+    size: size,
+    color: Colors.teal,
   );
 }
 
 /// Audit Icon
-Icon auditIcon() {
-  return const Icon(
+Icon auditIcon({double? size}) {
+  return Icon(
     Icons.swap_vert_outlined,
-    color: Colors.teal,
+    size: size,
+    color: Colors.blue,
   );
 }

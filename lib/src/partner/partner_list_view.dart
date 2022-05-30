@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
+import 'package:inventory_keeper/src/controllers/partner_controller.dart';
+import 'package:inventory_keeper/src/models/partner/partner.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 
-///
-class ProductTypeListView extends StatelessWidget {
+/// Partner (Supplier and Vendors)
+class PartnerListView extends StatelessWidget {
   ///
-  const ProductTypeListView({Key? key}) : super(key: key);
+  const PartnerListView({Key? key, required this.type}) : super(key: key);
 
-  /// Product details route name
-  static const routeName = '/productTypeListView';
+  /// Partner Type
+  final PartnerType type;
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductTypeController>();
+    final partnerController = Get.put(PartnerController());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).canvasColor,
         titleTextStyle: const TextStyle(
           color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
+          fontSize: 16,
         ),
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text('Categories'),
+        title: Text('Select ${type.name}'),
       ),
       body: Column(
         children: [
@@ -33,20 +33,20 @@ class ProductTypeListView extends StatelessWidget {
               children: [
                 Expanded(
                   child: Hero(
-                    tag: 'hero-category-title',
+                    tag: 'hero-parterner-title',
                     child: Material(
                       child: CustomFormField(
                         keyboardType: TextInputType.text,
-                        controller: controller.nameController,
-                        label: 'Product Type',
+                        controller: partnerController.nameController,
+                        label: type.name,
                         validator: (value) {
                           if (value == null) {
-                            return 'Please provide product type';
+                            return 'Please provide ${type.name} name';
                           }
                           return null;
                         },
                         inputAction: TextInputAction.done,
-                        focusNode: controller.nameFocusNode,
+                        focusNode: partnerController.nameFocusNode,
                       ),
                     ),
                   ),
@@ -56,7 +56,7 @@ class ProductTypeListView extends StatelessWidget {
                 ),
                 // we need add button at last friends row
                 ElevatedButton(
-                  onPressed: controller.addProductType,
+                  onPressed: () => partnerController.addPartner(type),
                   child: const Text('Add'),
                 ),
               ],
@@ -65,7 +65,9 @@ class ProductTypeListView extends StatelessWidget {
           Expanded(
             child: Obx(
               () {
-                final data = controller.productTypeList.value;
+                final data = partnerController.partnerList.value
+                    .where((p) => p.type.name == type.name)
+                    .toList();
                 if (data.isEmpty) {
                   return const Center(
                     child: Text('Nothing here'),
@@ -79,7 +81,7 @@ class ProductTypeListView extends StatelessWidget {
                     return ListTile(
                       title: Text(item.name),
                       trailing: TextButton(
-                        onPressed: () => controller.removeProductType(item),
+                        onPressed: () => partnerController.removePartner(item),
                         child: const Text(
                           'Delete',
                           style: TextStyle(color: Colors.red),
@@ -90,6 +92,8 @@ class ProductTypeListView extends StatelessWidget {
                         //   context,
                         //   ProductDetailsView.routeName,
                         // );
+                        partnerController.changeType(item);
+                        Get.back<void>();
                       },
                     );
                   },

@@ -15,6 +15,9 @@ _$_ProductTransaction _$$_ProductTransactionFromJson(
       totalQuantity: json['totalQuantity'] as int,
       totalAuditedQuantity: json['totalAuditedQuantity'] as int,
       transactionDate: json['transactionDate'] as int,
+      partner: json['partner'] == null
+          ? null
+          : Partner.fromJson(json['partner'] as Map<String, dynamic>),
       productsSummary: (json['productsSummary'] as List<dynamic>)
           .map(
               (dynamic e) => ProductSummary.fromJson(e as Map<String, dynamic>))
@@ -29,6 +32,7 @@ Map<String, dynamic> _$$_ProductTransactionToJson(
       'totalQuantity': instance.totalQuantity,
       'totalAuditedQuantity': instance.totalAuditedQuantity,
       'transactionDate': instance.transactionDate,
+      'partner': instance.partner,
       'productsSummary': instance.productsSummary,
     };
 

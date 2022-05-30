@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
@@ -72,7 +73,7 @@ class CustomDetailItemTile extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (hintText != null) children.removeAt(1);
-                  Navigator.pop(context);
+                  Get.back<void>();
                 },
                 child: const Text('Cancel'),
               )

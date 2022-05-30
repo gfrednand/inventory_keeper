@@ -88,7 +88,7 @@ class AddProduct extends StatelessWidget {
                   if (newProduct.id != null) {
                     controller.updateProduct(newProduct);
                   } else {
-                    displayDialog<int>(
+                    displayDialog<Map<String, int?>>(
                       context,
                       StockQuantityField(
                         transactionType: TransactionType.all,
@@ -96,7 +96,8 @@ class AddProduct extends StatelessWidget {
                         productName: product?.name,
                         title: 'Input stock quantity',
                       ),
-                    ).then((value) {
+                    ).then((map) {
+                      final value = map?['quantity'];
                       if (value != null && value > 0) {
                         controller.currentStockQuantity = value;
                       }

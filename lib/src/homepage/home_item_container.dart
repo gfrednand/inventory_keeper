@@ -8,7 +8,7 @@ class HomeItemContainer extends StatelessWidget {
   const HomeItemContainer({
     Key? key,
     required this.child,
-    required this.label,
+    this.label,
     this.withGradient = false,
     this.moment,
   }) : super(key: key);
@@ -17,7 +17,7 @@ class HomeItemContainer extends StatelessWidget {
   final Widget child;
 
   /// label
-  final String label;
+  final String? label;
 
   ///moment time
   final String? moment;
@@ -35,44 +35,46 @@ class HomeItemContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(
-            height: 16,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: withGradient
-                ? Row(
-                    children: [
-                      Text(
-                        label,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+          if (label != null)
+            const SizedBox(
+              height: 16,
+            ),
+          if (label != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: withGradient
+                  ? Row(
+                      children: [
+                        Text(
+                          label!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        '$moment',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(
+                          width: 10,
                         ),
+                        Text(
+                          '$moment',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      label!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: withGradient ? Colors.white : Colors.black,
                       ),
-                    ],
-                  )
-                : Text(
-                    label,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: withGradient ? Colors.white : Colors.black,
                     ),
-                  ),
-          ),
+            ),
           child,
         ],
       ),

@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
-import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
+import 'package:inventory_keeper/src/widgets/search_item_category_form.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
@@ -28,41 +27,23 @@ class StockInOutItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final cartController = Get.put(CartController());
+    final productController = Get.find<ProductController>();
     final cartController = Get.find<CartController>();
-    final productTypeController = Get.find<ProductTypeController>();
     final transactionController = Get.find<TransactionController>();
     String? titleLabel;
     Color? color;
 
     if (transactionType == TransactionType.inStock) {
-      titleLabel = 'In Items';
+      titleLabel = 'Select In Items';
       color = Colors.teal;
     } else if (transactionType == TransactionType.outStock) {
-      titleLabel = 'Out Items';
+      titleLabel = 'Select Out Items';
       color = Colors.red;
     } else if (transactionType == TransactionType.audit) {
-      titleLabel = 'Audit Items';
-      color = Colors.orange;
+      titleLabel = 'Select Audit Items';
+      color = Colors.blue;
     }
-    final unProcesedProducts = Get.find<ProductController>().products;
-    var products = <Product>[];
-    final currentStock = transactionController.getTransactionSummary();
-    if (currentStock.productsSummary.isNotEmpty) {
-      final productsSummary = currentStock.productsSummary;
-      for (final item in unProcesedProducts) {
-        var p = item;
-        p = p.copyWith(
-          currentStock: productsSummary
-                  .firstWhereOrNull((pSummary) => pSummary.id == item.id)
-                  ?.currentStock ??
-              0,
-        );
-        products.add(p);
-      }
-    } else {
-      products = unProcesedProducts;
-    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -76,30 +57,42 @@ class StockInOutItems extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close),
         ),
-        title: Text(titleLabel ?? ''),
+        title: Text(
+          titleLabel ?? '',
+          style: const TextStyle(fontSize: 18),
+        ),
       ),
       body: Column(
         children: [
           Expanded(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: ProductTypesSelector(allProducts: products),
-                ),
+                const SearchItemCategoryForm(),
                 Expanded(
-                  child: GetBuilder<ProductTypeController>(
+                  child: GetBuilder<ProductController>(
                     builder: (cont) {
-                      var data = products;
-                      if (productTypeController.type != null) {
-                        data = data
-                            .where(
-                              (p) =>
-                                  p.type?.name ==
-                                  productTypeController.type?.name,
-                            )
-                            .toList();
+                      final unProcesedProducts =
+                          productController.filteredProducts;
+                      var products = <Product>[];
+                      final currentStock =
+                          transactionController.getTransactionSummary();
+                      if (currentStock.productsSummary.isNotEmpty) {
+                        final productsSummary = currentStock.productsSummary;
+                        for (final item in unProcesedProducts) {
+                          var p = item;
+                          p = p.copyWith(
+                            currentStock: productsSummary
+                                    .firstWhereOrNull(
+                                        (pSummary) => pSummary.id == item.id)
+                                    ?.currentStock ??
+                                0,
+                          );
+                          products.add(p);
+                        }
+                      } else {
+                        products = unProcesedProducts;
                       }
+                      var data = products;
 
                       if (data.isNotEmpty) {
                         return GetBuilder<CartController>(
@@ -120,7 +113,7 @@ class StockInOutItems extends StatelessWidget {
                                     selectedQuantity = selectedQuantity;
                                   } else if (transactionType ==
                                       TransactionType.outStock) {
-                                    selectedQuantity = selectedQuantity * -1;
+                                    selectedQuantity = selectedQuantity;
                                   }
                                 }
                                 return ProductItem(
@@ -215,10 +208,7 @@ class StockInOutItems extends StatelessWidget {
                         );
                       } else {
                         return const Center(
-                          child: Text(
-                            'No Data',
-                            style: TextStyle(fontSize: 32),
-                          ),
+                          child: Text('Nothing found.'),
                         );
                       }
                     },

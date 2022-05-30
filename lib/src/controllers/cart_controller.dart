@@ -46,7 +46,7 @@ class CartController extends BaseController {
     });
     _totalQuantity = quantity;
     _totalAuditedQuantity = auditedQuantity;
-    _totalAmount = total;
+    _totalAmount = total.abs();
     update();
   }
 

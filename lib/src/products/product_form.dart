@@ -122,7 +122,7 @@ class ProductForm extends StatelessWidget {
               builder: (cont) {
                 return ListTile(
                   onTap: () {
-                    displayDialog<int>(
+                    displayDialog<Map<String, int?>>(
                       context,
                       StockQuantityField(
                         transactionType: TransactionType.all,
@@ -130,7 +130,8 @@ class ProductForm extends StatelessWidget {
                         title: 'Safety Stock',
                         counter: product?.safetyStock ?? 0,
                       ),
-                    ).then((value) {
+                    ).then((map) {
+                      final value = map?['quantity'];
                       if (value != null && value > 0) {
                         productController.safetyQuantity = value;
                       }

@@ -27,10 +27,9 @@ class ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var product = Get.arguments as Product?;
     final productController = Get.find<ProductController>();
     final transactionController = Get.find<TransactionController>();
-
+    var product = productController.product;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 209, 209, 209),
       appBar: AppBar(

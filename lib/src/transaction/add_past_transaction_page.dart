@@ -9,25 +9,25 @@ import 'package:inventory_keeper/src/partner/partner_list_view.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/stock/stock_in_out_items.dart';
-import 'package:inventory_keeper/src/transaction/add_past_transaction_page.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
-class StockInOutForm extends StatelessWidget {
+class AddPastTransaction extends StatelessWidget {
   ///
-  const StockInOutForm({Key? key, required this.transactionType})
+  const AddPastTransaction({Key? key, required this.transactionType})
       : super(key: key);
 
   ///
   final TransactionType transactionType;
 
   ///
-  static const routeName = '/stockInOutForm';
+  static const routeName = '/AddPastTransaction';
   @override
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
+    final transactionController = Get.put(TransactionController());
     final partnerController = Get.put(PartnerController());
 
     var titleLabel = '';
@@ -45,9 +45,6 @@ class StockInOutForm extends StatelessWidget {
       partnerLabel = 'Vendor';
       partnerType = PartnerType.vendor;
       color = Colors.red;
-    } else if (transactionType == TransactionType.audit) {
-      titleLabel = 'Audit';
-      color = Colors.blue;
     }
     return WillPopScope(
       onWillPop: () => _onBackPressed(context, cartController, titleLabel)
@@ -58,7 +55,7 @@ class StockInOutForm extends StatelessWidget {
           backgroundColor: Theme.of(context).canvasColor,
           titleTextStyle: const TextStyle(
             color: Colors.black,
-            fontSize: 20,
+            fontSize: 16,
           ),
           iconTheme: const IconThemeData(color: Colors.black),
           leading: IconButton(
@@ -70,7 +67,7 @@ class StockInOutForm extends StatelessWidget {
             }),
             icon: const Icon(Icons.close),
           ),
-          title: Text(titleLabel),
+          title: const Text('Add Past Transaction'),
         ),
         body: Column(
           children: [
@@ -81,85 +78,79 @@ class StockInOutForm extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              titleLabel,
-                              style: TextStyle(
-                                color: color,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          titleLabel,
+                          style: TextStyle(
+                            color: color,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                           ),
-                          if (partnerLabel != null)
-                            TextButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  AppColors.blue100.withOpacity(0.3),
-                                ),
-                              ),
-                              onPressed: () {
-                                Get.to<void>(
-                                  () => AddPastTransaction(
-                                    transactionType: transactionType,
-                                  ),
-                                  transition: Transition.fadeIn,
-                                );
-                              },
-                              child: const Text(
-                                'Add Past Transaction',
-                                style: TextStyle(
-                                  color: AppColors.blue600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      if (partnerLabel != null)
-                        SectionDivider(
-                          color: color,
                         ),
-                      if (partnerLabel != null)
-                        GetBuilder<PartnerController>(
-                          builder: (context) {
-                            var selectedPartnerLabel = 'Select';
-                            if (partnerController.partner != null) {
-                              selectedPartnerLabel =
-                                  '${partnerController.partner?.name}';
-                            }
-                            return ListTile(
-                              title: Text('$partnerLabel'),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    selectedPartnerLabel,
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
-                                  const Icon(Icons.arrow_forward_ios)
-                                ],
+                      ),
+                      SectionDivider(
+                        color: color,
+                      ),
+                      GetBuilder<TransactionController>(builder: (cont) {
+                        final dateLabel = dateFormat(
+                            transactionController.pastTransactionDate);
+                        return ListTile(
+                          title: const Text('Date'),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(dateLabel),
+                              const SizedBox(
+                                width: 16,
                               ),
-                              onTap: () {
-                                Get.to<void>(
-                                  () => PartnerListView(
-                                    type: partnerType!,
-                                  ),
-                                );
-                              },
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                              )
+                            ],
+                          ),
+                          onTap: () {
+                            selectDate(context).then(
+                              (value) => transactionController
+                                  .pastTransactionDate = value,
                             );
                           },
-                        ),
+                        );
+                      }),
                       const SectionDivider(),
+                      if (partnerLabel != null)
+                        GetBuilder<PartnerController>(builder: (cont) {
+                          var selectedPartnerLabel = 'Select';
+                          if (partnerController.partner != null) {
+                            selectedPartnerLabel =
+                                '${partnerController.partner?.name}';
+                          }
+                          return ListTile(
+                            title: Text(partnerLabel!),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(selectedPartnerLabel),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16,
+                                )
+                              ],
+                            ),
+                            onTap: () {
+                              Get.to<void>(
+                                () => PartnerListView(
+                                  type: partnerType!,
+                                ),
+                              );
+                            },
+                          );
+                        }),
+                      if (partnerLabel != null) const SectionDivider(),
                       ListTile(
                         title: const Text('Item'),
                         trailing: Row(
@@ -169,7 +160,10 @@ class StockInOutForm extends StatelessWidget {
                             const SizedBox(
                               width: 16,
                             ),
-                            const Icon(Icons.arrow_forward_ios)
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                            )
                           ],
                         ),
                         onTap: () {
@@ -223,51 +217,45 @@ class StockInOutForm extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Total Cost: ${oCcy.format(cartController.totalAmount)}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+            Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.blue700,
+                    padding: const EdgeInsets.only(
+                      top: 16,
+                      bottom: 16,
+                      left: 14,
+                      right: 24,
                     ),
                   ),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.blue700,
-                        padding: const EdgeInsets.only(
-                          top: 16,
-                          bottom: 16,
-                          left: 14,
-                          right: 24,
-                        ),
-                      ),
-                      onPressed: () {
-                        if (cartController.items.isEmpty) {
-                          Get.snackbar(
-                            'Heey',
-                            'Add at least one item first',
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
-                        } else {
-                          if (cartController.items.isNotEmpty) {
-                            Get.find<TransactionController>().addTransaction(
-                              cartController: cartController,
-                              transactionType: transactionType,
-                            );
-                          }
-                        }
-                      },
-                      child: const Text('Submit'),
-                    ),
-                  ),
-                ],
-              ),
-            )
+                  onPressed: () {
+                    if (cartController.items.isEmpty) {
+                      Get.snackbar(
+                        'Heey',
+                        'Add at least one item first',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else if (cartController.items.isEmpty) {
+                      Get.snackbar(
+                        'Heey',
+                        'Transaction date is missing',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else {
+                      if (cartController.items.isNotEmpty) {
+                        Get.find<TransactionController>().addTransaction(
+                            cartController: cartController,
+                            transactionType: transactionType,
+                            transactionDate:
+                                transactionController.pastTransactionDate);
+                      }
+                    }
+                  },
+                  child: const Text('Save'),
+                ))
           ],
         ),
       ),

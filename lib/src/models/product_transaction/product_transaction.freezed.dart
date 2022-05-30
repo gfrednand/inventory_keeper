@@ -25,6 +25,7 @@ mixin _$ProductTransaction {
   int get totalQuantity => throw _privateConstructorUsedError;
   int get totalAuditedQuantity => throw _privateConstructorUsedError;
   int get transactionDate => throw _privateConstructorUsedError;
+  Partner? get partner => throw _privateConstructorUsedError;
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;
 
@@ -45,7 +46,10 @@ abstract class $ProductTransactionCopyWith<$Res> {
       int totalQuantity,
       int totalAuditedQuantity,
       int transactionDate,
+      Partner? partner,
       List<ProductSummary> productsSummary});
+
+  $PartnerCopyWith<$Res>? get partner;
 }
 
 /// @nodoc
@@ -64,6 +68,7 @@ class _$ProductTransactionCopyWithImpl<$Res>
     Object? totalQuantity = freezed,
     Object? totalAuditedQuantity = freezed,
     Object? transactionDate = freezed,
+    Object? partner = freezed,
     Object? productsSummary = freezed,
   }) {
     return _then(_value.copyWith(
@@ -87,11 +92,26 @@ class _$ProductTransactionCopyWithImpl<$Res>
           ? _value.transactionDate
           : transactionDate // ignore: cast_nullable_to_non_nullable
               as int,
+      partner: partner == freezed
+          ? _value.partner
+          : partner // ignore: cast_nullable_to_non_nullable
+              as Partner?,
       productsSummary: productsSummary == freezed
           ? _value.productsSummary
           : productsSummary // ignore: cast_nullable_to_non_nullable
               as List<ProductSummary>,
     ));
+  }
+
+  @override
+  $PartnerCopyWith<$Res>? get partner {
+    if (_value.partner == null) {
+      return null;
+    }
+
+    return $PartnerCopyWith<$Res>(_value.partner!, (value) {
+      return _then(_value.copyWith(partner: value));
+    });
   }
 }
 
@@ -108,7 +128,11 @@ abstract class _$$_ProductTransactionCopyWith<$Res>
       int totalQuantity,
       int totalAuditedQuantity,
       int transactionDate,
+      Partner? partner,
       List<ProductSummary> productsSummary});
+
+  @override
+  $PartnerCopyWith<$Res>? get partner;
 }
 
 /// @nodoc
@@ -129,6 +153,7 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
     Object? totalQuantity = freezed,
     Object? totalAuditedQuantity = freezed,
     Object? transactionDate = freezed,
+    Object? partner = freezed,
     Object? productsSummary = freezed,
   }) {
     return _then(_$_ProductTransaction(
@@ -152,6 +177,10 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
           ? _value.transactionDate
           : transactionDate // ignore: cast_nullable_to_non_nullable
               as int,
+      partner: partner == freezed
+          ? _value.partner
+          : partner // ignore: cast_nullable_to_non_nullable
+              as Partner?,
       productsSummary: productsSummary == freezed
           ? _value._productsSummary
           : productsSummary // ignore: cast_nullable_to_non_nullable
@@ -171,6 +200,7 @@ class _$_ProductTransaction
       required this.totalQuantity,
       required this.totalAuditedQuantity,
       required this.transactionDate,
+      this.partner,
       required final List<ProductSummary> productsSummary})
       : _productsSummary = productsSummary;
 
@@ -187,6 +217,8 @@ class _$_ProductTransaction
   final int totalAuditedQuantity;
   @override
   final int transactionDate;
+  @override
+  final Partner? partner;
   final List<ProductSummary> _productsSummary;
   @override
   List<ProductSummary> get productsSummary {
@@ -196,7 +228,7 @@ class _$_ProductTransaction
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductTransaction(transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalAuditedQuantity: $totalAuditedQuantity, transactionDate: $transactionDate, productsSummary: $productsSummary)';
+    return 'ProductTransaction(transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalAuditedQuantity: $totalAuditedQuantity, transactionDate: $transactionDate, partner: $partner, productsSummary: $productsSummary)';
   }
 
   @override
@@ -209,6 +241,7 @@ class _$_ProductTransaction
       ..add(DiagnosticsProperty('totalQuantity', totalQuantity))
       ..add(DiagnosticsProperty('totalAuditedQuantity', totalAuditedQuantity))
       ..add(DiagnosticsProperty('transactionDate', transactionDate))
+      ..add(DiagnosticsProperty('partner', partner))
       ..add(DiagnosticsProperty('productsSummary', productsSummary));
   }
 
@@ -227,6 +260,7 @@ class _$_ProductTransaction
                 .equals(other.totalAuditedQuantity, totalAuditedQuantity) &&
             const DeepCollectionEquality()
                 .equals(other.transactionDate, transactionDate) &&
+            const DeepCollectionEquality().equals(other.partner, partner) &&
             const DeepCollectionEquality()
                 .equals(other._productsSummary, _productsSummary));
   }
@@ -240,6 +274,7 @@ class _$_ProductTransaction
       const DeepCollectionEquality().hash(totalQuantity),
       const DeepCollectionEquality().hash(totalAuditedQuantity),
       const DeepCollectionEquality().hash(transactionDate),
+      const DeepCollectionEquality().hash(partner),
       const DeepCollectionEquality().hash(_productsSummary));
 
   @JsonKey(ignore: true)
@@ -261,6 +296,7 @@ abstract class _ProductTransaction implements ProductTransaction {
           required final int totalQuantity,
           required final int totalAuditedQuantity,
           required final int transactionDate,
+          final Partner? partner,
           required final List<ProductSummary> productsSummary}) =
       _$_ProductTransaction;
 
@@ -277,6 +313,8 @@ abstract class _ProductTransaction implements ProductTransaction {
   int get totalAuditedQuantity => throw _privateConstructorUsedError;
   @override
   int get transactionDate => throw _privateConstructorUsedError;
+  @override
+  Partner? get partner => throw _privateConstructorUsedError;
   @override
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;

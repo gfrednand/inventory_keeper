@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
+import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 
 ///

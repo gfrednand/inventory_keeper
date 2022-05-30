@@ -30,13 +30,13 @@ class TransactionDetailsPage extends StatelessWidget {
     Color? color;
     if (transaction.transactionType == TransactionType.inStock) {
       titleLabel = 'Items In';
-      color = Colors.blue;
+      color = Colors.teal;
     } else if (transaction.transactionType == TransactionType.outStock) {
       titleLabel = 'Items Out';
       color = Colors.red;
     } else if (transaction.transactionType == TransactionType.audit) {
       titleLabel = 'Audit';
-      color = Colors.teal;
+      color = Colors.blue;
     }
 
     final summaryDate = transaction.productsSummary[0].summaryDate ??
