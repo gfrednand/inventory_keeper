@@ -121,7 +121,8 @@ class AddProduct extends StatelessWidget {
                 }
               },
               child: Text(
-                  addProductEnum == AddProductEnum.edit ? 'Save' : 'Update'),
+                addProductEnum == AddProductEnum.add ? 'Save' : 'Update',
+              ),
             ),
           ),
         ],

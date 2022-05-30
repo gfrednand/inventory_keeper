@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
@@ -231,7 +232,7 @@ class AddPastTransaction extends StatelessWidget {
                       right: 24,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (cartController.items.isEmpty) {
                       Get.snackbar(
                         'Heey',
@@ -246,7 +247,7 @@ class AddPastTransaction extends StatelessWidget {
                       );
                     } else {
                       if (cartController.items.isNotEmpty) {
-                        Get.find<TransactionController>().addTransaction(
+                        await Get.find<TransactionController>().addTransaction(
                             cartController: cartController,
                             transactionType: transactionType,
                             transactionDate:

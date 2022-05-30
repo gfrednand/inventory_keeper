@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
+import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
 import 'package:inventory_keeper/src/product_type/product_types_selector.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -36,6 +38,7 @@ class ProductForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productController = Get.find<ProductController>();
+    final productTypeController = Get.find<ProductTypeController>();
     if (product != null) {
       nameController.text = product!.name;
       salePriceController.text = '${product!.salePrice ?? ''}';
@@ -147,7 +150,37 @@ class ProductForm extends StatelessWidget {
               },
             ),
             const SizedBox(height: 16),
-            const ProductTypesSelector(),
+            GetBuilder<ProductTypeController>(
+              builder: (context) {
+                var selectedCategotyLabel = 'Select';
+                if (productTypeController.type != null) {
+                  selectedCategotyLabel = '${productTypeController.type?.name}';
+                }
+                return ListTile(
+                  title: const Text('Category'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        selectedCategotyLabel,
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                      )
+                    ],
+                  ),
+                  onTap: () {
+                    Get.to<void>(
+                      () => const ProductTypeListView(),
+                    );
+                  },
+                );
+              },
+            ),
             const SizedBox(height: 16),
             // Expanded(child: Container()),
             const SizedBox(

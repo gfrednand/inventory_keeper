@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -48,9 +49,11 @@ class ProductController extends BaseController {
   List<Product> get filteredProducts => _filteredProducts;
 
   ///Filtering list of products by category or name
-  void filteredProductsByNameAndCategory(
-      {List<Product>? allProducts, String? query}) {
-    _filteredProducts = allProducts ?? products;
+  void filteredProductsByNameAndCategory({String? query}) {
+    final stock = Get.find<TransactionController>().getTransactionSummary();
+    final allProducts =
+        products.map((p) => productWithLatestInfo(p, stock)).toList();
+    _filteredProducts = allProducts;
     if (query != null) {
       final newproducts = <Product>[];
       for (final product in _filteredProducts) {

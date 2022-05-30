@@ -12,7 +12,7 @@ class ProductTypeListView extends StatelessWidget {
   static const routeName = '/productTypeListView';
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductTypeController>();
+    final productTypeController = Get.find<ProductTypeController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -37,7 +37,7 @@ class ProductTypeListView extends StatelessWidget {
                     child: Material(
                       child: CustomFormField(
                         keyboardType: TextInputType.text,
-                        controller: controller.nameController,
+                        controller: productTypeController.nameController,
                         label: 'Product Type',
                         validator: (value) {
                           if (value == null) {
@@ -46,7 +46,7 @@ class ProductTypeListView extends StatelessWidget {
                           return null;
                         },
                         inputAction: TextInputAction.done,
-                        focusNode: controller.nameFocusNode,
+                        focusNode: productTypeController.nameFocusNode,
                       ),
                     ),
                   ),
@@ -56,7 +56,7 @@ class ProductTypeListView extends StatelessWidget {
                 ),
                 // we need add button at last friends row
                 ElevatedButton(
-                  onPressed: controller.addProductType,
+                  onPressed: productTypeController.addProductType,
                   child: const Text('Add'),
                 ),
               ],
@@ -65,7 +65,7 @@ class ProductTypeListView extends StatelessWidget {
           Expanded(
             child: Obx(
               () {
-                final data = controller.productTypeList.value;
+                final data = productTypeController.productTypeList.value;
                 if (data.isEmpty) {
                   return const Center(
                     child: Text('Nothing here'),
@@ -79,17 +79,16 @@ class ProductTypeListView extends StatelessWidget {
                     return ListTile(
                       title: Text(item.name),
                       trailing: TextButton(
-                        onPressed: () => controller.removeProductType(item),
+                        onPressed: () =>
+                            productTypeController.removeProductType(item),
                         child: const Text(
                           'Delete',
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
                       onTap: () {
-                        // Navigator.restorablePushNamed(
-                        //   context,
-                        //   ProductDetailsView.routeName,
-                        // );
+                        productTypeController.changeType(item);
+                        Get.back<void>();
                       },
                     );
                   },

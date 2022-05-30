@@ -5,6 +5,7 @@ import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
+import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
@@ -61,6 +62,18 @@ class StockInOutItems extends StatelessWidget {
           titleLabel ?? '',
           style: const TextStyle(fontSize: 18),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.to<void>(
+                  () => const AddProduct(
+                    addProductEnum: AddProductEnum.add,
+                  ),
+                  transition: Transition.fadeIn,
+                );
+              },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body: Column(
         children: [

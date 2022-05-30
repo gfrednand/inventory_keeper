@@ -42,12 +42,6 @@ class ProductsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final productController = Get.find<ProductController>();
 
-    final stock = Get.find<TransactionController>().getTransactionSummary();
-    final allProducts = productController.products
-        .map((p) => productWithLatestInfo(p, stock))
-        .toList();
-    productController.filteredProductsByNameAndCategory(
-        allProducts: allProducts);
     return GetBuilder<ProductController>(
       builder: (cont) {
         final data = productController.filteredProducts;
