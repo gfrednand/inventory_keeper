@@ -35,7 +35,7 @@ class TransactionDetailItemPart extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: quantityColor,
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
         const SizedBox(

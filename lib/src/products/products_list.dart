@@ -71,6 +71,7 @@ class ProductsList extends StatelessWidget {
                           item: item,
                           trailing: showCurrentStock
                               ? CurrentStockQuantity(
+                                  fontSize: 16,
                                   currentStock: item.currentStock,
                                 )
                               : Column(

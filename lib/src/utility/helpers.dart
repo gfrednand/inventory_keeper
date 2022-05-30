@@ -55,6 +55,21 @@ Product productWithLatestInfo(Product product, Stock stock) {
   );
 }
 
+/// Converting product Summary to Product
+Product productSummaryToProduct(ProductSummary productSummary, Stock stock) {
+  ProductSummary? prod;
+  prod = stock.productsSummary.firstWhereOrNull(
+    (item) => item.id == productSummary.id,
+  );
+
+  return Product(
+      name: productSummary.name,
+      currentStock: prod?.currentStock ?? 0,
+      selectedQuantity: prod?.quantity,
+      id: productSummary.id,
+      salePrice: productSummary.amount);
+}
+
 ///
 final oCcy = NumberFormat.currency(
   locale: 'en_TZ',

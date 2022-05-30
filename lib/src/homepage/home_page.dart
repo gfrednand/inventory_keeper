@@ -168,7 +168,7 @@ class HomePage extends StatelessWidget {
                     height: 24,
                   ),
                   HomeItemContainer(
-                    label: 'Low Stock Reminder',
+                    label: 'Low Items Reminder',
                     child: ListTile(
                       leading: const Icon(Icons.speed_outlined),
                       title: const Text('Check stock shortage'),

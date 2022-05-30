@@ -8,6 +8,7 @@ import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/custom_detail_item_tile.dart';
 import 'package:inventory_keeper/src/products/product_detail_bottom_bar.dart';
+import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
 import 'package:inventory_keeper/src/widgets/modal_sheet.dart';
@@ -117,21 +118,20 @@ class ProductDetails extends StatelessWidget {
                                   const SizedBox(
                                     height: 24,
                                   ),
-                                  Row(
+                                  Wrap(
+                                    spacing: 5,
                                     children: [
                                       CurrentStockQuantity(
                                         currentStock:
                                             product?.currentStock ?? 0,
                                         withBackground: true,
                                       ),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
-                                      Text(
+                                      const Text(
                                         'Total Quantity',
                                         style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey[400],
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w300,
+                                          color: AppColors.blue600,
                                         ),
                                       ),
                                     ],

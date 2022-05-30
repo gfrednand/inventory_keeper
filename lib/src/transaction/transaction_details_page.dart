@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
+import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
@@ -25,6 +28,7 @@ class TransactionDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalItems = transaction.productsSummary.length;
+    final stock = Get.find<TransactionController>().getTransactionSummary();
 
     var titleLabel = 'Audit';
     Color? color;
@@ -145,20 +149,14 @@ class TransactionDetailsPage extends StatelessWidget {
                 separatorBuilder: (BuildContext context, int index) =>
                     const SectionDivider(),
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    dense: true,
-                    title: Text(
-                      transaction.productsSummary[index].name,
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                    subtitle: Text(
-                      oCcy.format(transaction.productsSummary[index].amount),
-                    ),
-                    trailing: Text(
-                      '${transaction.productsSummary[index].quantity}',
-                      style: TextStyle(color: color),
-                    ),
-                  );
+                  final item = productSummaryToProduct(
+                      transaction.productsSummary[index], stock);
+                  return ProductItem(
+                      item: item,
+                      trailing: Text(
+                        '${transaction.productsSummary[index].quantity}',
+                        style: TextStyle(color: color),
+                      ));
                 },
               )
             ],

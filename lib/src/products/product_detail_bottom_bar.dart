@@ -23,24 +23,25 @@ class ProductDetailBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                quantityWidget,
-                const SizedBox(
-                  width: 16,
+      margin: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Wrap(
+            children: [
+              quantityWidget,
+              const Text(
+                'Quantity',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.blue600,
                 ),
-                Text(
-                  'Quantity',
-                  style: TextStyle(fontSize: 13, color: Colors.grey[400]),
-                ),
-              ],
-            ),
-            ElevatedButton(
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: AppColors.blue700,
                 padding: const EdgeInsets.only(
@@ -53,8 +54,8 @@ class ProductDetailBottomBar extends StatelessWidget {
               onPressed: onPressed,
               child: Text(buttonLabel),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
