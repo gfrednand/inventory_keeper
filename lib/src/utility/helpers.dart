@@ -61,7 +61,6 @@ Product productWithLatestInfo(Product product, Stock? stock) {
   prod = usedStock.productsSummary.firstWhereOrNull(
     (item) => item.id == product.id,
   );
-
   return product.copyWith(
     currentStock: prod?.currentStock ?? 0,
     selectedQuantity: prod?.quantity,

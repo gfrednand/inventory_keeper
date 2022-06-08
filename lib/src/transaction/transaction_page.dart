@@ -19,6 +19,11 @@ class TransactionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transactionController = Get.find<TransactionController>();
+
+    if (transactionController.productTransactions.isEmpty) {
+      transactionController.previousTransactionSummary();
+    }
     return Scaffold(
       body: CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -60,6 +65,13 @@ class TransactionPage extends StatelessWidget {
             builder: (context) {
               final productTransaction = Get.find<TransactionController>();
               final transactions = productTransaction.productTransactions;
+              if (transactions.isEmpty) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: Text('No Transactions'),
+                  ),
+                );
+              }
               return SliverFillRemaining(
                 child: GroupedListView<ProductTransaction, String>(
                   elements: transactions,

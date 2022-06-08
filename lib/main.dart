@@ -18,7 +18,7 @@ Future<void> main() async {
 
 /// Connnect to the firebase emulator for Firestore and Authentication
 Future _connectToFirebaseEmulator() async {
-  const localHostString = '192.168.204.247';
+  const localHostString = '192.168.204.196';
 // You should have the Functions Emulator running locally to use it
   // https://firebase.google.com/docs/functions/local-emulator
   FirebaseFunctions.instance.useFunctionsEmulator(localHostString, 5001);

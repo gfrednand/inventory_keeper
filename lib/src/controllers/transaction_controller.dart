@@ -11,7 +11,6 @@ import 'package:inventory_keeper/src/utility/helpers.dart';
 /// Transaction controller
 class TransactionController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('transactions');
-  final FireBaseRepository _summaryApi = FireBaseRepository('summary');
 
   ///
   Rx<List<ProductTransaction>> productTransactionList =
@@ -20,27 +19,6 @@ class TransactionController extends BaseController {
   ///
   List<ProductTransaction> get productTransactions =>
       productTransactionList.value;
-
-  ///
-  final Rx<Stock?> _currentSummary = Rx(
-    initiaStock,
-  );
-
-  ///
-  Stock? get currentSummary => _currentSummary.value;
-
-  @override
-  void onReady() {
-    _currentSummary.bindStream(currentTransactionSummary());
-    // productTransactionList.bindStream(
-    //   fetchStocksAsStream(
-    //     queryMap: <String, dynamic>{
-    //       'parameter': 'transactionDate',
-    //       'value': dateToMillSeconds(DateTime.now())
-    //     },
-    //   ),
-    // );
-  }
 
   ///
 
@@ -190,39 +168,27 @@ class TransactionController extends BaseController {
   }
 
   /// Get Past Transaction Summary By Date
-  Future<void> previousTransactionSummary(
-    DateTime? date, {
+  Future<void> previousTransactionSummary({
+    DateTime? date,
     QueryWhereCondition? condition,
   }) async {
     final tnx = <ProductTransaction>[];
-    busy = true;
-
+    Map<String, dynamic>? queryMap;
     if (date != null) {
       _summaryDate = DateFormat.yMMMEd().format(date);
-      final queryMap = <String, dynamic>{
+      queryMap = <String, dynamic>{
         'parameter': 'transactionDate',
         'value': dateToMillSeconds(date)
       };
+    }
+    final objs = await _api.allItems(queryMap: queryMap, condition: condition);
 
-      final objs =
-          await _api.allItems(queryMap: queryMap, condition: condition);
-
-      busy = false;
-      for (final item in objs) {
-        tnx.add(ProductTransaction.fromJson(item));
-      }
+    busy = false;
+    for (final item in objs) {
+      tnx.add(ProductTransaction.fromJson(item));
     }
 
     productTransactionList.value = tnx;
-    _stockSummary = getTransactionSummary(filterDate: date, transactions: tnx);
-    busy = false;
-  }
-
-  /// Current Products Summary
-  Stream<Stock?> currentTransactionSummary() {
-    return _summaryApi
-        .streamDataCollectionWhereDoc(docId: 'transaction')
-        .map((mapData) => mapData != null ? Stock.fromJson(mapData) : null);
   }
 
   /// Fetching stream of data

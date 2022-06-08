@@ -28,7 +28,6 @@ class ProductDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productController = Get.find<ProductController>();
-    final transactionController = Get.find<TransactionController>();
     var product = productController.product;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 209, 209, 209),
@@ -62,11 +61,11 @@ class ProductDetails extends StatelessWidget {
           ),
         ],
       ),
-      body: GetBuilder<TransactionController>(builder: (cont) {
+      body: Obx(() {
         if (product != null) {
           product = productWithLatestInfo(
             product!,
-            transactionController.currentSummary,
+            productController.currentStock,
           );
         }
         return Column(

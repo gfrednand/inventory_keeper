@@ -37,27 +37,12 @@ async function updateTransactionSummary() {
     const firestore = admin.firestore();
     const collection = await firestore.collection(`transactions`).get();
     let productsSummaryMap: { [key: string]: any }[] = [];
-
+    const colls = collection.docs.sort((a, b) => a.updateTime.toMillis() - b.updateTime.toMillis());
     // iterate through all the documents
-    for (const doc of collection.docs) {
-        // extract the mood value
-        // note: this code uses *destructuring*
-        // const { transaction } = doc.data();
-
-
-
-        totalAmount = totalAmount + doc.data().totalAmount;
-
+    for (const doc of colls) {
         const tr: any = doc.data();
-
-        var prodSummary = tr.productsSummary.sort((firstEl: any, secondEl: any) => {
-            if (firstEl['summaryDate'] < secondEl['summaryDate']) { return -1; }
-            if (firstEl['summaryDate'] > secondEl['summaryDate']) { return 1; }
-            return 0;
-        });
-
-
-        totalQuantity = totalQuantity + tr.totalQuantity;
+        totalAmount = totalAmount + tr.totalAmount;
+        var prodSummary = tr.productsSummary;
         totalAuditedQuantity = totalAuditedQuantity + tr.totalAuditedQuantity;
         totalQuantity =
             totalQuantity + tr.totalQuantity + tr.totalAuditedQuantity;
@@ -71,7 +56,7 @@ async function updateTransactionSummary() {
         }
 
         for (const summary of prodSummary) {
-            const index =  productsSummary.map(object => object.id).indexOf( summary.id);
+            const index = productsSummary.map(object => object.id).indexOf(summary.id);
             if (index == -1) {
                 productsSummary.push(summary);
             } else {
@@ -84,7 +69,7 @@ async function updateTransactionSummary() {
                         : productsSummary[index].quantity + summary.quantity,
                     currentStock: tr.transactionType == 'audit'
                         ? summary.quantity
-                        : productsSummary[index].currentStock,
+                        : summary.currentStock,
                 }
             }
         }

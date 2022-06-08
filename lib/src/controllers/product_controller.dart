@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -27,8 +26,6 @@ class ProductController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('products');
 
   ///
-
-  ///
   FocusNode unitFocusNode = FocusNode(),
       salePriceFocusNode = FocusNode(),
       buyPriceFocusNode = FocusNode(),
@@ -43,20 +40,18 @@ class ProductController extends BaseController {
     update();
   }
 
-  List<Product> _filteredProducts = [];
+  Rx<List<Product>> _filteredProducts = Rx([]);
 
   /// Product
-  List<Product> get filteredProducts => _filteredProducts;
+  List<Product> get filteredProducts => _filteredProducts.value;
 
   ///Filtering list of products by category or name
   void filteredProductsByNameAndCategory({String? query}) {
-    final stock = Get.find<TransactionController>().currentSummary;
-    final allProducts =
-        products.map((p) => productWithLatestInfo(p, stock)).toList();
-    _filteredProducts = allProducts;
+    _filteredProducts = productList;
+
     if (query != null) {
       final newproducts = <Product>[];
-      for (final product in _filteredProducts) {
+      for (final product in _filteredProducts.value) {
         if ((product.type != null &&
                 product.type!.name
                     .toLowerCase()
@@ -65,7 +60,7 @@ class ProductController extends BaseController {
           newproducts.add(product);
         }
       }
-      _filteredProducts = newproducts;
+      _filteredProducts(newproducts);
     }
     update();
   }
@@ -143,7 +138,7 @@ class ProductController extends BaseController {
     Get.back<void>();
     if (success) {
       Get.back<void>();
-      // ignore: cascade_invocations
+      filteredProductsByNameAndCategory();
       Get.snackbar(
         'Item',
         'Added Successful',
@@ -244,17 +239,6 @@ class ProductController extends BaseController {
       safetyQuantity = null;
       currentStockQuantity = null;
       productType = null;
-      Get.snackbar(
-        'Product',
-        'Successful',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } else {
-      Get.snackbar(
-        'Product',
-        'Failed',
-        snackPosition: SnackPosition.BOTTOM,
-      );
     }
     update();
   }

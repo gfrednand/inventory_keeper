@@ -55,7 +55,8 @@ class PastQuantityView extends StatelessWidget {
                 onTap: () {
                   selectDate(context).then((value) {
                     if (value != null) {
-                      transactionController.previousTransactionSummary(value,
+                      transactionController.previousTransactionSummary(
+                          date: value,
                           condition: QueryWhereCondition.isLessThanOrEqualTo);
                     }
                   });

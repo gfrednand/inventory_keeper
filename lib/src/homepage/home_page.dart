@@ -23,7 +23,6 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final transactionController = Get.find<TransactionController>();
     final productController = Get.find<ProductController>();
     final productTypeController = Get.find<ProductTypeController>();
 
@@ -46,7 +45,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   Obx(
                     () {
-                      final currentStock = transactionController.currentSummary;
+                      final currentStock = productController.currentStock;
 
                       return HomeItemContainer(
                         withGradient: true,
