@@ -4,6 +4,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventory_keeper/src/api/api.dart';
 
 ///
+enum QueryWhereCondition {
+  ///
+  isEqualTo,
+
+  ///
+  isNotEqualTo,
+
+  ///
+  isLessThan,
+
+  ///
+  isLessThanOrEqualTo,
+
+  ///
+  isGreaterThan,
+
+  ///
+  isGreaterThanOrEqualTo,
+
+  ///
+  arrayContains,
+
+  ///
+  arrayContainsAny,
+
+  ///
+  whereIn,
+
+  ///
+  whereNotIn,
+
+  ///
+  isNull,
+}
+
+///
 class FireBaseRepository
     implements
         Api<Future<bool>, Map<String, dynamic>,
@@ -53,20 +89,12 @@ class FireBaseRepository
 
   @override
   Future<List<Map<String, dynamic>>> allItems({
+    QueryWhereCondition? condition,
     Map<String, dynamic>? queryMap,
   }) async {
-    QuerySnapshot<Object?> snapshot;
-    if (queryMap != null) {
-      snapshot = await ref!
-          .where(
-            '${queryMap['parameter']}',
-            isLessThanOrEqualTo: queryMap['value'],
-          )
-          .get();
-    } else {
-      snapshot = await ref!.get();
-    }
-
+    QuerySnapshot<Object?>? snapshot;
+    final snapRef = checkCondition(queryMap: queryMap, condition: condition);
+    snapshot = await snapRef.get();
     final objs = <Map<String, dynamic>>[];
     for (final doc in snapshot.docs) {
       if (doc.data() != null) {
@@ -155,25 +183,24 @@ class FireBaseRepository
 
   /// Fetching stream of data
   Stream<List<Map<String, dynamic>>> streamDataCollection({
+    QueryWhereCondition? condition,
     Map<String, dynamic>? queryMap,
-    String? condition = '<=',
   }) {
-    if (queryMap != null) {
-      switch (condition) {
-        case '<=':
-          return ref!
-              .where(
-                '${queryMap['parameter']}',
-                isLessThanOrEqualTo: queryMap['value'],
-              )
-              .snapshots()
-              .map(mapFunction);
-        default:
-      }
-    }
+    final snapRef = checkCondition(queryMap: queryMap, condition: condition);
+    return snapRef.snapshots().map(mapFunction);
+  }
 
-    final snapshots = ref!.snapshots();
-    return snapshots.map(mapFunction);
+  /// Fetching stream of data by document id
+  Stream<Map<String, dynamic>?> streamDataCollectionWhereDoc({
+    required String docId,
+  }) {
+    final snapRef = checkCondition(
+      queryMap: <String, dynamic>{'parameter': docId},
+      condition: QueryWhereCondition.isEqualTo,
+    );
+    return snapRef.snapshots().map((snapshot) => snapshot.docs.isNotEmpty
+        ? (snapshot.docs.first.data() as Map<String, dynamic>?)
+        : null);
   }
 
   ///
@@ -188,5 +215,85 @@ class FireBaseRepository
       }
     }
     return objs;
+  }
+
+  ///Checking condition for query
+  Query<Object?> checkCondition({
+    Map<String, dynamic>? queryMap,
+    QueryWhereCondition? condition,
+  }) {
+    final usedRef = ref!;
+
+    if (queryMap != null && condition != null) {
+      switch (condition) {
+        case QueryWhereCondition.isEqualTo:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            isEqualTo: queryMap['value'],
+          );
+
+        case QueryWhereCondition.isNotEqualTo:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            isNotEqualTo: queryMap['value'],
+          );
+
+        case QueryWhereCondition.isLessThan:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            isLessThan: queryMap['value'],
+          );
+
+        case QueryWhereCondition.isLessThanOrEqualTo:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            isLessThanOrEqualTo: queryMap['value'],
+          );
+
+        case QueryWhereCondition.isGreaterThan:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            isGreaterThan: queryMap['value'],
+          );
+
+        case QueryWhereCondition.isGreaterThanOrEqualTo:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            isGreaterThanOrEqualTo: queryMap['value'],
+          );
+
+        case QueryWhereCondition.arrayContains:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            arrayContains: queryMap['value'],
+          );
+
+        case QueryWhereCondition.arrayContainsAny:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            arrayContainsAny: queryMap['value'] as List<Object?>?,
+          );
+
+        case QueryWhereCondition.whereIn:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            whereIn: queryMap['value'] as List<Object?>?,
+          );
+
+        case QueryWhereCondition.whereNotIn:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            whereNotIn: queryMap['value'] as List<Object?>?,
+          );
+
+        case QueryWhereCondition.isNull:
+          return usedRef.where(
+            '${queryMap['parameter']}',
+            isNull: queryMap['value'] as bool?,
+          );
+      }
+    } else {
+      return usedRef;
+    }
   }
 }

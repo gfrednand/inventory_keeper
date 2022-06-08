@@ -50,7 +50,7 @@ class ProductController extends BaseController {
 
   ///Filtering list of products by category or name
   void filteredProductsByNameAndCategory({String? query}) {
-    final stock = Get.find<TransactionController>().getTransactionSummary();
+    final stock = Get.find<TransactionController>().currentSummary;
     final allProducts =
         products.map((p) => productWithLatestInfo(p, stock)).toList();
     _filteredProducts = allProducts;

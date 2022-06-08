@@ -1,4 +1,3 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
@@ -24,7 +23,7 @@ class AddPastTransaction extends StatelessWidget {
   final TransactionType transactionType;
 
   ///
-  static const routeName = '/AddPastTransaction';
+  static const routeName = '/addPastTransaction';
   @override
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
@@ -112,7 +111,7 @@ class AddPastTransaction extends StatelessWidget {
                             ],
                           ),
                           onTap: () {
-                            selectDate(context).then(
+                            selectDate(context, lastDate: DateTime.now()).then(
                               (value) => transactionController
                                   .pastTransactionDate = value,
                             );

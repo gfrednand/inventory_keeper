@@ -8,6 +8,18 @@ import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
 import 'package:inventory_keeper/src/models/stock/stock.dart';
 
+/// Initial Stck Summary
+///
+Stock initiaStock = const Stock(
+  totalSale: 0,
+  productsSummary: [],
+  totalAmount: 0,
+  totalBuy: 0,
+  totalIn: 0,
+  totalOut: 0,
+  totalQuantity: 0,
+);
+
 /// Check if number is integer
 
 bool isInteger(num value) => value is int || value == value.roundToDouble();
@@ -43,9 +55,10 @@ String dateFormat(DateTime? date, {String format = 'dd/MM/yyy'}) {
 
 /// Get product with current stock
 
-Product productWithLatestInfo(Product product, Stock stock) {
+Product productWithLatestInfo(Product product, Stock? stock) {
   ProductSummary? prod;
-  prod = stock.productsSummary.firstWhereOrNull(
+  final usedStock = stock ?? initiaStock;
+  prod = usedStock.productsSummary.firstWhereOrNull(
     (item) => item.id == product.id,
   );
 

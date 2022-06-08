@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
-import 'package:inventory_keeper/src/utility/colors.dart';
-import 'package:inventory_keeper/src/utility/helpers.dart';
 import 'package:inventory_keeper/src/widgets/search_item_category_form.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
@@ -44,6 +40,9 @@ class ProductsList extends StatelessWidget {
 
     return GetBuilder<ProductController>(
       builder: (cont) {
+        if (productController.filteredProducts.isEmpty) {
+          productController.filteredProductsByNameAndCategory();
+        }
         final data = productController.filteredProducts;
         return Column(
           children: [

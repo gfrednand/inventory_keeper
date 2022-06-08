@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
-import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
 import 'package:inventory_keeper/src/products/custom_detail_item_tile.dart';
@@ -63,11 +62,11 @@ class ProductDetails extends StatelessWidget {
           ),
         ],
       ),
-      body: Obx(() {
+      body: GetBuilder<TransactionController>(builder: (cont) {
         if (product != null) {
           product = productWithLatestInfo(
             product!,
-            transactionController.getTransactionSummary(),
+            transactionController.currentSummary,
           );
         }
         return Column(

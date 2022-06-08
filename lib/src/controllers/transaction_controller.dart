@@ -11,6 +11,7 @@ import 'package:inventory_keeper/src/utility/helpers.dart';
 /// Transaction controller
 class TransactionController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('transactions');
+  final FireBaseRepository _summaryApi = FireBaseRepository('summary');
 
   ///
   Rx<List<ProductTransaction>> productTransactionList =
@@ -20,16 +21,25 @@ class TransactionController extends BaseController {
   List<ProductTransaction> get productTransactions =>
       productTransactionList.value;
 
+  ///
+  final Rx<Stock?> _currentSummary = Rx(
+    initiaStock,
+  );
+
+  ///
+  Stock? get currentSummary => _currentSummary.value;
+
   @override
   void onReady() {
-    productTransactionList.bindStream(
-      fetchStocksAsStream(
-        queryMap: <String, dynamic>{
-          'parameter': 'transactionDate',
-          'value': dateToMillSeconds(DateTime.now())
-        },
-      ),
-    );
+    _currentSummary.bindStream(currentTransactionSummary());
+    // productTransactionList.bindStream(
+    //   fetchStocksAsStream(
+    //     queryMap: <String, dynamic>{
+    //       'parameter': 'transactionDate',
+    //       'value': dateToMillSeconds(DateTime.now())
+    //     },
+    //   ),
+    // );
   }
 
   ///
@@ -115,21 +125,21 @@ class TransactionController extends BaseController {
         return (a.summaryDate ?? DateTime.now())
             .compareTo(b.summaryDate ?? DateTime.now());
       });
-      for (final prodSummary in prodSummary) {
-        final index = productsSummary
-            .indexWhere((summary) => summary.id == prodSummary.id);
+      for (final summary in prodSummary) {
+        final index =
+            productsSummary.indexWhere((summary) => summary.id == summary.id);
         if (index == -1) {
-          productsSummary.add(prodSummary);
+          productsSummary.add(summary);
         } else {
           productsSummary[index] = productsSummary[index].copyWith(
-            amount: (productsSummary[index].amount ?? 0) +
-                (prodSummary.amount ?? 0),
+            amount:
+                (productsSummary[index].amount ?? 0) + (summary.amount ?? 0),
             quantity: tr.transactionType == TransactionType.audit
-                ? prodSummary.quantity
-                : productsSummary[index].quantity + prodSummary.quantity,
+                ? summary.quantity
+                : productsSummary[index].quantity + summary.quantity,
             currentStock: tr.transactionType == TransactionType.audit
-                ? prodSummary.quantity
-                : productsSummary[index].currentStock + prodSummary.quantity,
+                ? summary.quantity
+                : productsSummary[index].currentStock + summary.quantity,
           );
         }
       }
@@ -180,24 +190,39 @@ class TransactionController extends BaseController {
   }
 
   /// Get Past Transaction Summary By Date
-  Future<void> pastTransactionSummary(DateTime? date) async {
+  Future<void> previousTransactionSummary(
+    DateTime? date, {
+    QueryWhereCondition? condition,
+  }) async {
     final tnx = <ProductTransaction>[];
     busy = true;
+
     if (date != null) {
       _summaryDate = DateFormat.yMMMEd().format(date);
       final queryMap = <String, dynamic>{
         'parameter': 'transactionDate',
         'value': dateToMillSeconds(date)
       };
-      final objs = await _api.allItems(queryMap: queryMap);
+
+      final objs =
+          await _api.allItems(queryMap: queryMap, condition: condition);
 
       busy = false;
       for (final item in objs) {
         tnx.add(ProductTransaction.fromJson(item));
       }
     }
+
+    productTransactionList.value = tnx;
     _stockSummary = getTransactionSummary(filterDate: date, transactions: tnx);
     busy = false;
+  }
+
+  /// Current Products Summary
+  Stream<Stock?> currentTransactionSummary() {
+    return _summaryApi
+        .streamDataCollectionWhereDoc(docId: 'transaction')
+        .map((mapData) => mapData != null ? Stock.fromJson(mapData) : null);
   }
 
   /// Fetching stream of data

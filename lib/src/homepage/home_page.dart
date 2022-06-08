@@ -46,8 +46,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   Obx(
                     () {
-                      final currentStock =
-                          transactionController.getTransactionSummary();
+                      final currentStock = transactionController.currentSummary;
 
                       return HomeItemContainer(
                         withGradient: true,
@@ -67,19 +66,21 @@ class HomePage extends StatelessWidget {
                                   children: [
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
-                                      quantity: '${currentStock.totalQuantity}',
+                                      quantity:
+                                          '${currentStock?.totalQuantity ?? 0}',
                                       label: 'Total',
                                     ),
                                     const VerticalDivider(thickness: 2),
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
-                                      quantity: '${currentStock.totalIn}',
+                                      quantity: '${currentStock?.totalIn ?? 0}',
                                       label: 'Items In',
                                     ),
                                     const VerticalDivider(thickness: 2),
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
-                                      quantity: '${currentStock.totalOut}',
+                                      quantity:
+                                          '${currentStock?.totalOut ?? 0}',
                                       label: 'Items Out',
                                     ),
                                   ],

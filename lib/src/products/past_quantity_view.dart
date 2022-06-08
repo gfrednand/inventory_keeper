@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/stock_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
@@ -54,7 +55,8 @@ class PastQuantityView extends StatelessWidget {
                 onTap: () {
                   selectDate(context).then((value) {
                     if (value != null) {
-                      transactionController.pastTransactionSummary(value);
+                      transactionController.previousTransactionSummary(value,
+                          condition: QueryWhereCondition.isLessThanOrEqualTo);
                     }
                   });
                 },
