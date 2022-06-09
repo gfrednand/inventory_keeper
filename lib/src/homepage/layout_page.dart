@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_keeper/src/auth/profile_screen.dart';
 import 'package:inventory_keeper/src/homepage/home_page.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/transaction/transaction_page.dart';
@@ -24,6 +25,7 @@ class _LayoutPageState extends State<LayoutPage> {
     const HomePage(),
     const ProductListView(),
     const TransactionPage(),
+    const ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -135,25 +137,25 @@ class _LayoutPageState extends State<LayoutPage> {
                     size: 25,
                   ),
           ),
-          // IconButton(
-          //   enableFeedback: false,
-          //   onPressed: () {
-          //     setState(() {
-          //       pageIndex = 3;
-          //     });
-          //   },
-          //   icon: pageIndex == 3
-          //       ? const Icon(
-          //           Icons.settings,
-          //           color: Colors.white,
-          //           size: 25,
-          //         )
-          //       : const Icon(
-          //           Icons.settings_outlined,
-          //           color: Colors.white,
-          //           size: 25,
-          //         ),
-          // ),
+          IconButton(
+            enableFeedback: false,
+            onPressed: () {
+              setState(() {
+                pageIndex = 3;
+              });
+            },
+            icon: pageIndex == 3
+                ? const Icon(
+                    Icons.settings,
+                    color: AppColors.blue700,
+                    size: 25,
+                  )
+                : const Icon(
+                    Icons.settings_outlined,
+                    color: AppColors.blue300,
+                    size: 25,
+                  ),
+          ),
         ],
       ),
     );

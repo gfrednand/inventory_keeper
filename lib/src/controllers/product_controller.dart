@@ -6,7 +6,7 @@ import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
-///
+/// Product Sort Enum
 enum ProductSortEnum {
   /// Sort A to Z
   a2z,
@@ -25,7 +25,7 @@ enum ProductSortEnum {
 class ProductController extends BaseController {
   final FireBaseRepository _api = FireBaseRepository('products');
 
-  ///
+  /// Focus node
   FocusNode unitFocusNode = FocusNode(),
       salePriceFocusNode = FocusNode(),
       buyPriceFocusNode = FocusNode(),
@@ -65,13 +65,13 @@ class ProductController extends BaseController {
     update();
   }
 
-  ///
+  /// Sort Enum
   ProductSortEnum _sortEnum = ProductSortEnum.a2z;
 
   ///
   ProductSortEnum get sortEnum => _sortEnum;
 
-  ///
+  ///  Safety Quantity
   int? _safetyQuantity;
 
   ///
@@ -142,14 +142,14 @@ class ProductController extends BaseController {
       Get.snackbar(
         'Item',
         'Added Successful',
-        snackPosition: SnackPosition.BOTTOM,
+        // snackPosition: SnackPosition.BOTTOM,
       );
       resetValues(success: success);
     } else {
       Get.snackbar(
         'Item',
         'Failed to add',
-        snackPosition: SnackPosition.BOTTOM,
+        // snackPosition: SnackPosition.BOTTOM,
       );
     }
   }

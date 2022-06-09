@@ -13,11 +13,14 @@ environment:
 
 dependencies:
   animations: ^2.0.2
+  cached_network_image: ^3.2.0
   cloud_firestore: ^3.1.13
   cloud_functions: ^3.2.16
   cupertino_icons: ^1.0.2
   fake_cloud_firestore: ^1.2.2
+  firebase_auth: ^3.3.19
   firebase_core: ^1.15.0
+  firebase_storage: ^10.2.17
   flutter:
     sdk: flutter
   freezed_annotation: ^2.0.3
@@ -25,6 +28,7 @@ dependencies:
   google_fonts: ^2.3.2
   grouped_list: ^4.2.0
   http: ^0.13.4
+  image_picker: ^0.8.5+3
   intl: ^0.17.0
   json_serializable: ^6.2.0
   uuid: ^3.0.6
