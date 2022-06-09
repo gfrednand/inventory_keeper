@@ -14,6 +14,7 @@ class ProductType with _$ProductType {
   const factory ProductType({
     String? id,
     required String name,
+    required int lastUpdatedAt,
   }) = _ProductType;
 
   ///

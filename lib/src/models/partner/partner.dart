@@ -24,6 +24,7 @@ class Partner with _$Partner {
     String? id,
     required String name,
     required PartnerType type,
+    required int lastUpdatedAt,
   }) = _Partner;
 
   ///

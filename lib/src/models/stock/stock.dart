@@ -22,6 +22,7 @@ abstract class Stock with _$Stock {
     required int totalOut,
     required double totalSale,
     required double totalBuy,
+    required int lastUpdatedAt,
   }) = _Stock;
 
   ///

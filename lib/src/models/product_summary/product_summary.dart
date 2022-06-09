@@ -18,6 +18,7 @@ abstract class ProductSummary with _$ProductSummary {
     required int auditedQuantity,
     required int currentStock,
     double? amount,
+    required int lastUpdatedAt,
     @ServerTimestampConverter() DateTime? summaryDate,
   }) = _ProductSummary;
 

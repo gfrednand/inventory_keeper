@@ -32,6 +32,7 @@ abstract class ProductTransaction with _$ProductTransaction {
     required int totalAuditedQuantity,
     required int transactionDate,
     Partner? partner,
+    required int lastUpdatedAt,
     required List<ProductSummary> productsSummary,
   }) = _ProductTransaction;
 

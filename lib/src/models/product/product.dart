@@ -34,6 +34,7 @@ class Product with _$Product {
     @ServerTimestampConverter() DateTime? createdAt,
     @ServerTimestampConverter() DateTime? updatedAt,
     @ServerTimestampConverter() DateTime? expireDate,
+    required int lastUpdatedAt,
   }) = _Product;
 
   ///
