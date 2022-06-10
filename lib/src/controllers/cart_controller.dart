@@ -1,5 +1,7 @@
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Cart controller
 class CartController extends BaseController {
@@ -65,9 +67,10 @@ class CartController extends BaseController {
       _items.update(
         id,
         (existingCartItem) => ProductSummary(
+          userId: existingCartItem.userId,
           id: existingCartItem.id,
           name: existingCartItem.name,
-          summaryDate: existingCartItem.summaryDate,
+          lastUpdatedAt: dateToMillSeconds(DateTime.now()),
           currentStock: currentStock ?? existingCartItem.currentStock,
           quantity: quantity ?? existingCartItem.quantity,
           auditedQuantity: auditedQuantity ?? existingCartItem.auditedQuantity,
@@ -80,8 +83,9 @@ class CartController extends BaseController {
         id,
         () => ProductSummary(
           id: id,
+          userId: firebaseAuth.currentUser!.uid,
           name: name,
-          summaryDate: summaryDate ?? DateTime.now(),
+          lastUpdatedAt: dateToMillSeconds(DateTime.now()),
           currentStock: currentStock ?? 0,
           quantity: quantity ?? 0,
           auditedQuantity: auditedQuantity ?? 0,

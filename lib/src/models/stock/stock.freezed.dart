@@ -28,6 +28,8 @@ mixin _$Stock {
   int get totalOut => throw _privateConstructorUsedError;
   double get totalSale => throw _privateConstructorUsedError;
   double get totalBuy => throw _privateConstructorUsedError;
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +47,9 @@ abstract class $StockCopyWith<$Res> {
       int totalIn,
       int totalOut,
       double totalSale,
-      double totalBuy});
+      double totalBuy,
+      int lastUpdatedAt,
+      String userId});
 }
 
 /// @nodoc
@@ -65,6 +69,8 @@ class _$StockCopyWithImpl<$Res> implements $StockCopyWith<$Res> {
     Object? totalOut = freezed,
     Object? totalSale = freezed,
     Object? totalBuy = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       productsSummary: productsSummary == freezed
@@ -95,6 +101,14 @@ class _$StockCopyWithImpl<$Res> implements $StockCopyWith<$Res> {
           ? _value.totalBuy
           : totalBuy // ignore: cast_nullable_to_non_nullable
               as double,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -111,7 +125,9 @@ abstract class _$$_StockCopyWith<$Res> implements $StockCopyWith<$Res> {
       int totalIn,
       int totalOut,
       double totalSale,
-      double totalBuy});
+      double totalBuy,
+      int lastUpdatedAt,
+      String userId});
 }
 
 /// @nodoc
@@ -132,6 +148,8 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res>
     Object? totalOut = freezed,
     Object? totalSale = freezed,
     Object? totalBuy = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_$_Stock(
       productsSummary: productsSummary == freezed
@@ -162,6 +180,14 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res>
           ? _value.totalBuy
           : totalBuy // ignore: cast_nullable_to_non_nullable
               as double,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -176,7 +202,9 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
       required this.totalIn,
       required this.totalOut,
       required this.totalSale,
-      required this.totalBuy})
+      required this.totalBuy,
+      required this.lastUpdatedAt,
+      required this.userId})
       : _productsSummary = productsSummary;
 
   factory _$_Stock.fromJson(Map<String, dynamic> json) =>
@@ -201,10 +229,14 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
   final double totalSale;
   @override
   final double totalBuy;
+  @override
+  final int lastUpdatedAt;
+  @override
+  final String userId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Stock(productsSummary: $productsSummary, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalIn: $totalIn, totalOut: $totalOut, totalSale: $totalSale, totalBuy: $totalBuy)';
+    return 'Stock(productsSummary: $productsSummary, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalIn: $totalIn, totalOut: $totalOut, totalSale: $totalSale, totalBuy: $totalBuy, lastUpdatedAt: $lastUpdatedAt, userId: $userId)';
   }
 
   @override
@@ -218,7 +250,9 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
       ..add(DiagnosticsProperty('totalIn', totalIn))
       ..add(DiagnosticsProperty('totalOut', totalOut))
       ..add(DiagnosticsProperty('totalSale', totalSale))
-      ..add(DiagnosticsProperty('totalBuy', totalBuy));
+      ..add(DiagnosticsProperty('totalBuy', totalBuy))
+      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
@@ -235,7 +269,10 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
             const DeepCollectionEquality().equals(other.totalIn, totalIn) &&
             const DeepCollectionEquality().equals(other.totalOut, totalOut) &&
             const DeepCollectionEquality().equals(other.totalSale, totalSale) &&
-            const DeepCollectionEquality().equals(other.totalBuy, totalBuy));
+            const DeepCollectionEquality().equals(other.totalBuy, totalBuy) &&
+            const DeepCollectionEquality()
+                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @JsonKey(ignore: true)
@@ -248,7 +285,9 @@ class _$_Stock with DiagnosticableTreeMixin implements _Stock {
       const DeepCollectionEquality().hash(totalIn),
       const DeepCollectionEquality().hash(totalOut),
       const DeepCollectionEquality().hash(totalSale),
-      const DeepCollectionEquality().hash(totalBuy));
+      const DeepCollectionEquality().hash(totalBuy),
+      const DeepCollectionEquality().hash(lastUpdatedAt),
+      const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
   @override
@@ -269,7 +308,9 @@ abstract class _Stock implements Stock {
       required final int totalIn,
       required final int totalOut,
       required final double totalSale,
-      required final double totalBuy}) = _$_Stock;
+      required final double totalBuy,
+      required final int lastUpdatedAt,
+      required final String userId}) = _$_Stock;
 
   factory _Stock.fromJson(Map<String, dynamic> json) = _$_Stock.fromJson;
 
@@ -288,6 +329,10 @@ abstract class _Stock implements Stock {
   double get totalSale => throw _privateConstructorUsedError;
   @override
   double get totalBuy => throw _privateConstructorUsedError;
+  @override
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_StockCopyWith<_$_Stock> get copyWith =>

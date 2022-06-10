@@ -1,23 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_type.dart';
+part of 'team.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ProductType _$$_ProductTypeFromJson(Map<String, dynamic> json) =>
-    _$_ProductType(
+_$_Team _$$_TeamFromJson(Map<String, dynamic> json) => _$_Team(
       id: json['id'] as String?,
       name: json['name'] as String,
-      lastUpdatedAt: json['lastUpdatedAt'] as int,
       userId: json['userId'] as String,
+      lastUpdatedAt: json['lastUpdatedAt'] as int,
     );
 
-Map<String, dynamic> _$$_ProductTypeToJson(_$_ProductType instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$_TeamToJson(_$_Team instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'lastUpdatedAt': instance.lastUpdatedAt,
       'userId': instance.userId,
+      'lastUpdatedAt': instance.lastUpdatedAt,
     };

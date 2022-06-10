@@ -11,11 +11,12 @@ Future<void> main() async {
   await Firebase.initializeApp();
   test('test 1', () {
     // The model should be able to receive the following data:
-    var product = const Product(
+    var product = Product(
+      userId: '',
       id: 'ABC',
       name: 'Pepsi',
       buyPrice: 500,
-      // createdAt: DateTime.now(),
+      lastUpdatedAt: DateTime.now().millisecondsSinceEpoch,
       currentStock: 3,
       salePrice: 800,
     );

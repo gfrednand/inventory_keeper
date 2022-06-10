@@ -27,8 +27,8 @@ mixin _$ProductSummary {
   int get auditedQuantity => throw _privateConstructorUsedError;
   int get currentStock => throw _privateConstructorUsedError;
   double? get amount => throw _privateConstructorUsedError;
-  @ServerTimestampConverter()
-  DateTime? get summaryDate => throw _privateConstructorUsedError;
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +49,8 @@ abstract class $ProductSummaryCopyWith<$Res> {
       int auditedQuantity,
       int currentStock,
       double? amount,
-      @ServerTimestampConverter() DateTime? summaryDate});
+      int lastUpdatedAt,
+      String userId});
 }
 
 /// @nodoc
@@ -70,7 +71,8 @@ class _$ProductSummaryCopyWithImpl<$Res>
     Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
     Object? amount = freezed,
-    Object? summaryDate = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       active: active == freezed
@@ -101,10 +103,14 @@ class _$ProductSummaryCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double?,
-      summaryDate: summaryDate == freezed
-          ? _value.summaryDate
-          : summaryDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -124,7 +130,8 @@ abstract class _$$_ProductSummaryCopyWith<$Res>
       int auditedQuantity,
       int currentStock,
       double? amount,
-      @ServerTimestampConverter() DateTime? summaryDate});
+      int lastUpdatedAt,
+      String userId});
 }
 
 /// @nodoc
@@ -147,7 +154,8 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
     Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
     Object? amount = freezed,
-    Object? summaryDate = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_$_ProductSummary(
       active: active == freezed
@@ -178,10 +186,14 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double?,
-      summaryDate: summaryDate == freezed
-          ? _value.summaryDate
-          : summaryDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -199,7 +211,8 @@ class _$_ProductSummary
       required this.auditedQuantity,
       required this.currentStock,
       this.amount,
-      @ServerTimestampConverter() this.summaryDate});
+      required this.lastUpdatedAt,
+      required this.userId});
 
   factory _$_ProductSummary.fromJson(Map<String, dynamic> json) =>
       _$$_ProductSummaryFromJson(json);
@@ -219,12 +232,13 @@ class _$_ProductSummary
   @override
   final double? amount;
   @override
-  @ServerTimestampConverter()
-  final DateTime? summaryDate;
+  final int lastUpdatedAt;
+  @override
+  final String userId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductSummary(active: $active, id: $id, name: $name, quantity: $quantity, auditedQuantity: $auditedQuantity, currentStock: $currentStock, amount: $amount, summaryDate: $summaryDate)';
+    return 'ProductSummary(active: $active, id: $id, name: $name, quantity: $quantity, auditedQuantity: $auditedQuantity, currentStock: $currentStock, amount: $amount, lastUpdatedAt: $lastUpdatedAt, userId: $userId)';
   }
 
   @override
@@ -239,7 +253,8 @@ class _$_ProductSummary
       ..add(DiagnosticsProperty('auditedQuantity', auditedQuantity))
       ..add(DiagnosticsProperty('currentStock', currentStock))
       ..add(DiagnosticsProperty('amount', amount))
-      ..add(DiagnosticsProperty('summaryDate', summaryDate));
+      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
@@ -257,7 +272,8 @@ class _$_ProductSummary
                 .equals(other.currentStock, currentStock) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
             const DeepCollectionEquality()
-                .equals(other.summaryDate, summaryDate));
+                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @JsonKey(ignore: true)
@@ -271,7 +287,8 @@ class _$_ProductSummary
       const DeepCollectionEquality().hash(auditedQuantity),
       const DeepCollectionEquality().hash(currentStock),
       const DeepCollectionEquality().hash(amount),
-      const DeepCollectionEquality().hash(summaryDate));
+      const DeepCollectionEquality().hash(lastUpdatedAt),
+      const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
   @override
@@ -286,15 +303,15 @@ class _$_ProductSummary
 
 abstract class _ProductSummary implements ProductSummary {
   const factory _ProductSummary(
-          {final bool? active,
-          required final String id,
-          required final String name,
-          required final int quantity,
-          required final int auditedQuantity,
-          required final int currentStock,
-          final double? amount,
-          @ServerTimestampConverter() final DateTime? summaryDate}) =
-      _$_ProductSummary;
+      {final bool? active,
+      required final String id,
+      required final String name,
+      required final int quantity,
+      required final int auditedQuantity,
+      required final int currentStock,
+      final double? amount,
+      required final int lastUpdatedAt,
+      required final String userId}) = _$_ProductSummary;
 
   factory _ProductSummary.fromJson(Map<String, dynamic> json) =
       _$_ProductSummary.fromJson;
@@ -314,8 +331,9 @@ abstract class _ProductSummary implements ProductSummary {
   @override
   double? get amount => throw _privateConstructorUsedError;
   @override
-  @ServerTimestampConverter()
-  DateTime? get summaryDate => throw _privateConstructorUsedError;
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProductSummaryCopyWith<_$_ProductSummary> get copyWith =>

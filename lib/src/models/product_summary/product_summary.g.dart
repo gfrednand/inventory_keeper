@@ -15,8 +15,8 @@ _$_ProductSummary _$$_ProductSummaryFromJson(Map<String, dynamic> json) =>
       auditedQuantity: json['auditedQuantity'] as int,
       currentStock: json['currentStock'] as int,
       amount: (json['amount'] as num?)?.toDouble(),
-      summaryDate:
-          const ServerTimestampConverter().fromJson(json['summaryDate']),
+      lastUpdatedAt: json['lastUpdatedAt'] as int,
+      userId: json['userId'] as String,
     );
 
 Map<String, dynamic> _$$_ProductSummaryToJson(_$_ProductSummary instance) =>
@@ -28,6 +28,6 @@ Map<String, dynamic> _$$_ProductSummaryToJson(_$_ProductSummary instance) =>
       'auditedQuantity': instance.auditedQuantity,
       'currentStock': instance.currentStock,
       'amount': instance.amount,
-      'summaryDate':
-          const ServerTimestampConverter().toJson(instance.summaryDate),
+      'lastUpdatedAt': instance.lastUpdatedAt,
+      'userId': instance.userId,
     };

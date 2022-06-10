@@ -8,10 +8,11 @@ class User {
     required this.email,
     required this.uid,
     required this.profilePhoto,
-    required int lastUpdatedAt,
+    required this.lastUpdatedAt,
   });
 
   ///
+  int lastUpdatedAt;
 
   ///
   String name;
@@ -42,6 +43,7 @@ class User {
         profilePhoto: snapshot['profilePhoto'] as String,
         uid: snapshot['uid'] as String,
         name: snapshot['name'] as String,
+        lastUpdatedAt: snapshot['lastUpdatedAt'] as int,
       );
     }
 

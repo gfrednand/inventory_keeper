@@ -43,8 +43,7 @@ class TransactionDetailsPage extends StatelessWidget {
       color = Colors.blue;
     }
 
-    final summaryDate = transaction.productsSummary[0].summaryDate ??
-        DateTime(transaction.transactionDate);
+    final lastUpdatedAt = transaction.productsSummary[0].lastUpdatedAt;
 
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +77,8 @@ class TransactionDetailsPage extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                DateFormat('MMM d, yyyy - kk:mm').format(summaryDate),
+                DateFormat('MMM d, yyyy - kk:mm')
+                    .format(DateTime.fromMillisecondsSinceEpoch(lastUpdatedAt)),
                 style:
                     const TextStyle(color: AppColors.greyLabel, fontSize: 16),
               ),

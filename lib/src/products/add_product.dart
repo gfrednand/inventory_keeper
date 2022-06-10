@@ -5,6 +5,7 @@ import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
@@ -93,7 +94,9 @@ class AddProduct extends StatelessWidget {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   final newProduct = Product(
+                    userId: firebaseAuth.currentUser!.uid,
                     id: product?.id,
+                    lastUpdatedAt: DateTime.now().millisecondsSinceEpoch,
                     name: nameController.text,
                     unit: unitController.text,
                     salePrice: double.tryParse(salePriceController.text) ?? 0,

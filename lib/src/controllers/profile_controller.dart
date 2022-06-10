@@ -16,7 +16,6 @@ class ProfileController extends GetxController {
   void updateUserId({String? uid}) {
     var userUid = firebaseAuth.currentUser!.uid;
 
-    print(userUid);
     if (uid != null) {
       userUid = uid;
     }

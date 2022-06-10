@@ -4,6 +4,7 @@ import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_type/product_type.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Product Sort Enum
@@ -160,11 +161,11 @@ class ProductController extends BaseController {
       loadingText: 'Updating Safety ...',
     );
     final productToUpdate = Product(
-      id: prod.id,
-      name: prod.name,
-      safetyStock: safetStock,
-      updatedAt: DateTime.now(),
-    );
+        id: prod.id,
+        userId: firebaseAuth.currentUser!.uid,
+        name: prod.name,
+        safetyStock: safetStock,
+        lastUpdatedAt: dateToMillSeconds(DateTime.now()));
 
     final success = await _api.updateOne(productToUpdate.toJson());
     Get.back<void>();

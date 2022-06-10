@@ -22,6 +22,8 @@ ProductType _$ProductTypeFromJson(Map<String, dynamic> json) {
 mixin _$ProductType {
   String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,7 @@ abstract class $ProductTypeCopyWith<$Res> {
   factory $ProductTypeCopyWith(
           ProductType value, $Res Function(ProductType) then) =
       _$ProductTypeCopyWithImpl<$Res>;
-  $Res call({String? id, String name});
+  $Res call({String? id, String name, int lastUpdatedAt, String userId});
 }
 
 /// @nodoc
@@ -49,6 +51,8 @@ class _$ProductTypeCopyWithImpl<$Res> implements $ProductTypeCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -58,6 +62,14 @@ class _$ProductTypeCopyWithImpl<$Res> implements $ProductTypeCopyWith<$Res> {
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -70,7 +82,7 @@ abstract class _$$_ProductTypeCopyWith<$Res>
           _$_ProductType value, $Res Function(_$_ProductType) then) =
       __$$_ProductTypeCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String name});
+  $Res call({String? id, String name, int lastUpdatedAt, String userId});
 }
 
 /// @nodoc
@@ -87,6 +99,8 @@ class __$$_ProductTypeCopyWithImpl<$Res> extends _$ProductTypeCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_$_ProductType(
       id: id == freezed
@@ -97,6 +111,14 @@ class __$$_ProductTypeCopyWithImpl<$Res> extends _$ProductTypeCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -104,7 +126,11 @@ class __$$_ProductTypeCopyWithImpl<$Res> extends _$ProductTypeCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ProductType with DiagnosticableTreeMixin implements _ProductType {
-  const _$_ProductType({this.id, required this.name});
+  const _$_ProductType(
+      {this.id,
+      required this.name,
+      required this.lastUpdatedAt,
+      required this.userId});
 
   factory _$_ProductType.fromJson(Map<String, dynamic> json) =>
       _$$_ProductTypeFromJson(json);
@@ -113,10 +139,14 @@ class _$_ProductType with DiagnosticableTreeMixin implements _ProductType {
   final String? id;
   @override
   final String name;
+  @override
+  final int lastUpdatedAt;
+  @override
+  final String userId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductType(id: $id, name: $name)';
+    return 'ProductType(id: $id, name: $name, lastUpdatedAt: $lastUpdatedAt, userId: $userId)';
   }
 
   @override
@@ -125,7 +155,9 @@ class _$_ProductType with DiagnosticableTreeMixin implements _ProductType {
     properties
       ..add(DiagnosticsProperty('type', 'ProductType'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('name', name));
+      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
@@ -134,7 +166,10 @@ class _$_ProductType with DiagnosticableTreeMixin implements _ProductType {
         (other.runtimeType == runtimeType &&
             other is _$_ProductType &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name));
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @JsonKey(ignore: true)
@@ -142,7 +177,9 @@ class _$_ProductType with DiagnosticableTreeMixin implements _ProductType {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(name));
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(lastUpdatedAt),
+      const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
   @override
@@ -156,8 +193,11 @@ class _$_ProductType with DiagnosticableTreeMixin implements _ProductType {
 }
 
 abstract class _ProductType implements ProductType {
-  const factory _ProductType({final String? id, required final String name}) =
-      _$_ProductType;
+  const factory _ProductType(
+      {final String? id,
+      required final String name,
+      required final int lastUpdatedAt,
+      required final String userId}) = _$_ProductType;
 
   factory _ProductType.fromJson(Map<String, dynamic> json) =
       _$_ProductType.fromJson;
@@ -166,6 +206,10 @@ abstract class _ProductType implements ProductType {
   String? get id => throw _privateConstructorUsedError;
   @override
   String get name => throw _privateConstructorUsedError;
+  @override
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProductTypeCopyWith<_$_ProductType> get copyWith =>

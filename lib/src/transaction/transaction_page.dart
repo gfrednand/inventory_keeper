@@ -76,10 +76,10 @@ class TransactionPage extends StatelessWidget {
                 child: GroupedListView<ProductTransaction, String>(
                   elements: transactions,
                   groupBy: (transaction) =>
-                      formatedDateSinceEpoch(transaction.transactionDate),
+                      formatedDateSinceEpoch(transaction.lastUpdatedAt),
                   groupComparator: (value1, value2) => value1.compareTo(value2),
                   itemComparator: (item1, item2) =>
-                      item1.transactionDate.compareTo(item2.transactionDate),
+                      item1.lastUpdatedAt.compareTo(item2.lastUpdatedAt),
                   // order: GroupedListOrder.ASC,
                   useStickyGroupSeparators: true,
                   groupSeparatorBuilder: (String value) => Padding(

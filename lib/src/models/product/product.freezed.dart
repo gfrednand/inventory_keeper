@@ -39,9 +39,9 @@ mixin _$Product {
   @ServerTimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @ServerTimestampConverter()
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
-  @ServerTimestampConverter()
   DateTime? get expireDate => throw _privateConstructorUsedError;
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -66,8 +66,9 @@ abstract class $ProductCopyWith<$Res> {
       bool? isIncomingStock,
       ProductType? type,
       @ServerTimestampConverter() DateTime? createdAt,
-      @ServerTimestampConverter() DateTime? updatedAt,
-      @ServerTimestampConverter() DateTime? expireDate});
+      @ServerTimestampConverter() DateTime? expireDate,
+      int lastUpdatedAt,
+      String userId});
 
   $ProductTypeCopyWith<$Res>? get type;
 }
@@ -95,8 +96,9 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
     Object? isIncomingStock = freezed,
     Object? type = freezed,
     Object? createdAt = freezed,
-    Object? updatedAt = freezed,
     Object? expireDate = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -151,14 +153,18 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      updatedAt: updatedAt == freezed
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       expireDate: expireDate == freezed
           ? _value.expireDate
           : expireDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 
@@ -194,8 +200,9 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       bool? isIncomingStock,
       ProductType? type,
       @ServerTimestampConverter() DateTime? createdAt,
-      @ServerTimestampConverter() DateTime? updatedAt,
-      @ServerTimestampConverter() DateTime? expireDate});
+      @ServerTimestampConverter() DateTime? expireDate,
+      int lastUpdatedAt,
+      String userId});
 
   @override
   $ProductTypeCopyWith<$Res>? get type;
@@ -225,8 +232,9 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
     Object? isIncomingStock = freezed,
     Object? type = freezed,
     Object? createdAt = freezed,
-    Object? updatedAt = freezed,
     Object? expireDate = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_$_Product(
       id: id == freezed
@@ -281,14 +289,18 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      updatedAt: updatedAt == freezed
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       expireDate: expireDate == freezed
           ? _value.expireDate
           : expireDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -310,8 +322,9 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
       this.isIncomingStock,
       this.type,
       @ServerTimestampConverter() this.createdAt,
-      @ServerTimestampConverter() this.updatedAt,
-      @ServerTimestampConverter() this.expireDate});
+      @ServerTimestampConverter() this.expireDate,
+      required this.lastUpdatedAt,
+      required this.userId});
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
       _$$_ProductFromJson(json);
@@ -351,14 +364,15 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
   final DateTime? createdAt;
   @override
   @ServerTimestampConverter()
-  final DateTime? updatedAt;
-  @override
-  @ServerTimestampConverter()
   final DateTime? expireDate;
+  @override
+  final int lastUpdatedAt;
+  @override
+  final String userId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Product(id: $id, name: $name, currentStock: $currentStock, selectedQuantity: $selectedQuantity, active: $active, description: $description, unit: $unit, salePrice: $salePrice, buyPrice: $buyPrice, safetyStock: $safetyStock, isIncomingStock: $isIncomingStock, type: $type, createdAt: $createdAt, updatedAt: $updatedAt, expireDate: $expireDate)';
+    return 'Product(id: $id, name: $name, currentStock: $currentStock, selectedQuantity: $selectedQuantity, active: $active, description: $description, unit: $unit, salePrice: $salePrice, buyPrice: $buyPrice, safetyStock: $safetyStock, isIncomingStock: $isIncomingStock, type: $type, createdAt: $createdAt, expireDate: $expireDate, lastUpdatedAt: $lastUpdatedAt, userId: $userId)';
   }
 
   @override
@@ -379,8 +393,9 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
       ..add(DiagnosticsProperty('isIncomingStock', isIncomingStock))
       ..add(DiagnosticsProperty('type', type))
       ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt))
-      ..add(DiagnosticsProperty('expireDate', expireDate));
+      ..add(DiagnosticsProperty('expireDate', expireDate))
+      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
@@ -406,9 +421,11 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
                 .equals(other.isIncomingStock, isIncomingStock) &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality()
-                .equals(other.expireDate, expireDate));
+                .equals(other.expireDate, expireDate) &&
+            const DeepCollectionEquality()
+                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @JsonKey(ignore: true)
@@ -428,8 +445,9 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
       const DeepCollectionEquality().hash(isIncomingStock),
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(expireDate));
+      const DeepCollectionEquality().hash(expireDate),
+      const DeepCollectionEquality().hash(lastUpdatedAt),
+      const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
   @override
@@ -457,8 +475,9 @@ abstract class _Product implements Product {
       final bool? isIncomingStock,
       final ProductType? type,
       @ServerTimestampConverter() final DateTime? createdAt,
-      @ServerTimestampConverter() final DateTime? updatedAt,
-      @ServerTimestampConverter() final DateTime? expireDate}) = _$_Product;
+      @ServerTimestampConverter() final DateTime? expireDate,
+      required final int lastUpdatedAt,
+      required final String userId}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
@@ -495,10 +514,11 @@ abstract class _Product implements Product {
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @override
   @ServerTimestampConverter()
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
-  @override
-  @ServerTimestampConverter()
   DateTime? get expireDate => throw _privateConstructorUsedError;
+  @override
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

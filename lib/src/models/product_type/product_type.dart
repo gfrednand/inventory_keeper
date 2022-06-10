@@ -15,6 +15,7 @@ class ProductType with _$ProductType {
     String? id,
     required String name,
     required int lastUpdatedAt,
+    required String userId,
   }) = _ProductType;
 
   ///

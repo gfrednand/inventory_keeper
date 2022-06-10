@@ -22,8 +22,9 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
           ? null
           : ProductType.fromJson(json['type'] as Map<String, dynamic>),
       createdAt: const ServerTimestampConverter().fromJson(json['createdAt']),
-      updatedAt: const ServerTimestampConverter().fromJson(json['updatedAt']),
       expireDate: const ServerTimestampConverter().fromJson(json['expireDate']),
+      lastUpdatedAt: json['lastUpdatedAt'] as int,
+      userId: json['userId'] as String,
     );
 
 Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
@@ -41,7 +42,8 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'isIncomingStock': instance.isIncomingStock,
       'type': instance.type,
       'createdAt': const ServerTimestampConverter().toJson(instance.createdAt),
-      'updatedAt': const ServerTimestampConverter().toJson(instance.updatedAt),
       'expireDate':
           const ServerTimestampConverter().toJson(instance.expireDate),
+      'lastUpdatedAt': instance.lastUpdatedAt,
+      'userId': instance.userId,
     };

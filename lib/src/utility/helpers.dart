@@ -11,14 +11,15 @@ import 'package:inventory_keeper/src/models/stock/stock.dart';
 /// Initial Stck Summary
 ///
 Stock initiaStock = const Stock(
-  totalSale: 0,
-  productsSummary: [],
-  totalAmount: 0,
-  totalBuy: 0,
-  totalIn: 0,
-  totalOut: 0,
-  totalQuantity: 0,
-);
+    userId: '',
+    totalSale: 0,
+    productsSummary: [],
+    totalAmount: 0,
+    totalBuy: 0,
+    totalIn: 0,
+    totalOut: 0,
+    totalQuantity: 0,
+    lastUpdatedAt: 0);
 
 /// Check if number is integer
 
@@ -75,6 +76,8 @@ Product productSummaryToProduct(ProductSummary productSummary, Stock stock) {
   );
 
   return Product(
+      userId: productSummary.userId,
+      lastUpdatedAt: productSummary.lastUpdatedAt,
       name: productSummary.name,
       currentStock: prod?.currentStock ?? 0,
       selectedQuantity: prod?.quantity,

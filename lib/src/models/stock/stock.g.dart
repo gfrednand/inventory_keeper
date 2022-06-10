@@ -17,6 +17,8 @@ _$_Stock _$$_StockFromJson(Map<String, dynamic> json) => _$_Stock(
       totalOut: json['totalOut'] as int,
       totalSale: (json['totalSale'] as num).toDouble(),
       totalBuy: (json['totalBuy'] as num).toDouble(),
+      lastUpdatedAt: json['lastUpdatedAt'] as int,
+      userId: json['userId'] as String,
     );
 
 Map<String, dynamic> _$$_StockToJson(_$_Stock instance) => <String, dynamic>{
@@ -27,4 +29,6 @@ Map<String, dynamic> _$$_StockToJson(_$_Stock instance) => <String, dynamic>{
       'totalOut': instance.totalOut,
       'totalSale': instance.totalSale,
       'totalBuy': instance.totalBuy,
+      'lastUpdatedAt': instance.lastUpdatedAt,
+      'userId': instance.userId,
     };

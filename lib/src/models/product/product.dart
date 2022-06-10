@@ -32,9 +32,9 @@ class Product with _$Product {
     bool? isIncomingStock,
     ProductType? type,
     @ServerTimestampConverter() DateTime? createdAt,
-    @ServerTimestampConverter() DateTime? updatedAt,
     @ServerTimestampConverter() DateTime? expireDate,
     required int lastUpdatedAt,
+    required String userId,
   }) = _Product;
 
   ///

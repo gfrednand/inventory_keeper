@@ -14,10 +14,11 @@ _$_ProductTransaction _$$_ProductTransactionFromJson(
       totalAmount: (json['totalAmount'] as num).toDouble(),
       totalQuantity: json['totalQuantity'] as int,
       totalAuditedQuantity: json['totalAuditedQuantity'] as int,
-      transactionDate: json['transactionDate'] as int,
       partner: json['partner'] == null
           ? null
           : Partner.fromJson(json['partner'] as Map<String, dynamic>),
+      lastUpdatedAt: json['lastUpdatedAt'] as int,
+      userId: json['userId'] as String,
       productsSummary: (json['productsSummary'] as List<dynamic>)
           .map(
               (dynamic e) => ProductSummary.fromJson(e as Map<String, dynamic>))
@@ -31,8 +32,9 @@ Map<String, dynamic> _$$_ProductTransactionToJson(
       'totalAmount': instance.totalAmount,
       'totalQuantity': instance.totalQuantity,
       'totalAuditedQuantity': instance.totalAuditedQuantity,
-      'transactionDate': instance.transactionDate,
       'partner': instance.partner,
+      'lastUpdatedAt': instance.lastUpdatedAt,
+      'userId': instance.userId,
       'productsSummary': instance.productsSummary,
     };
 

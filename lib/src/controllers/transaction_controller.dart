@@ -6,6 +6,7 @@ import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/models/stock/stock.dart';
+import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Transaction controller
@@ -75,17 +76,17 @@ class TransactionController extends BaseController {
     var allTotalQuantity = 0;
     final productsSummary = <ProductSummary>[];
     transactions?.sort(
-      (a, b) => (a.productsSummary[0].summaryDate ?? DateTime.now())
-          .compareTo(b.productsSummary[0].summaryDate ?? DateTime.now()),
+      (a, b) => (a.productsSummary[0].lastUpdatedAt)
+          .compareTo(b.productsSummary[0].lastUpdatedAt),
     );
     productTransactions.sort(
-      (a, b) => (a.productsSummary[0].summaryDate ?? DateTime.now())
-          .compareTo(b.productsSummary[0].summaryDate ?? DateTime.now()),
+      (a, b) => (a.productsSummary[0].lastUpdatedAt)
+          .compareTo(b.productsSummary[0].lastUpdatedAt),
     );
     for (final tr in transactions ?? productTransactions) {
       final prodSummary = [...tr.productsSummary];
 
-      final summaryDate = tr.transactionDate;
+      final summaryDate = tr.lastUpdatedAt;
       final today = dateToMillSeconds(filterDate ?? DateTime.now());
       allTotalAmount = allTotalAmount + tr.totalAmount;
       allTotalQuantity =
@@ -100,8 +101,7 @@ class TransactionController extends BaseController {
         totalSale = totalSale + (tr.totalAmount);
       }
       prodSummary.sort((a, b) {
-        return (a.summaryDate ?? DateTime.now())
-            .compareTo(b.summaryDate ?? DateTime.now());
+        return (a.lastUpdatedAt).compareTo(b.lastUpdatedAt);
       });
       for (final summary in prodSummary) {
         final index =
@@ -124,14 +124,15 @@ class TransactionController extends BaseController {
     }
 
     return Stock(
-      productsSummary: productsSummary,
-      totalAmount: allTotalAmount,
-      totalQuantity: allTotalQuantity,
-      totalIn: totalIn,
-      totalOut: totalOut,
-      totalSale: totalSale,
-      totalBuy: totalBuy,
-    );
+        productsSummary: productsSummary,
+        totalAmount: allTotalAmount,
+        totalQuantity: allTotalQuantity,
+        totalIn: totalIn,
+        totalOut: totalOut,
+        totalSale: totalSale,
+        totalBuy: totalBuy,
+        userId: firebaseAuth.currentUser!.uid,
+        lastUpdatedAt: 0);
   }
 
   /// Add transaction
@@ -141,12 +142,13 @@ class TransactionController extends BaseController {
       DateTime? transactionDate}) async {
     loadDialog<void>(loadingText: 'Updating stock...');
     final prodTnx = ProductTransaction(
-      transactionDate: dateToMillSeconds(transactionDate ?? DateTime.now()),
+      userId: firebaseAuth.currentUser!.uid,
       transactionType: transactionType,
       productsSummary: [],
       totalAuditedQuantity: cartController.totalAuditedQuantity,
       totalQuantity: cartController.totalQuantity,
       totalAmount: cartController.totalAmount,
+      lastUpdatedAt: dateToMillSeconds(transactionDate ?? DateTime.now()),
     );
 
     final map = prodTnx.toJson();
@@ -209,7 +211,8 @@ class TransactionController extends BaseController {
           'amount': e.amount,
           'id': e.id,
           'name': e.name,
-          'summaryDate': e.summaryDate,
+          'userId': e.userId,
+          'lastUpdatedAt': e.lastUpdatedAt,
           'currentStock': e.currentStock,
           'auditedQuantity': e.auditedQuantity,
           'quantity': e.quantity,

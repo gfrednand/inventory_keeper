@@ -8,6 +8,7 @@ import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/models/user.dart' as model;
 import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/utility/helpers.dart';
 
 ///
 class AuthController extends BaseController {
@@ -77,11 +78,11 @@ class AuthController extends BaseController {
         );
         final downloadUrl = await _uploadToStorage(image);
         final user = model.User(
-          name: username,
-          email: email,
-          uid: cred.user!.uid,
-          profilePhoto: downloadUrl,
-        );
+            name: username,
+            email: email,
+            uid: cred.user!.uid,
+            profilePhoto: downloadUrl,
+            lastUpdatedAt: dateToMillSeconds(DateTime.now()));
         await firestore
             .collection('users')
             .doc(cred.user!.uid)
