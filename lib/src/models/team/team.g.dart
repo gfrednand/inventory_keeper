@@ -9,13 +9,11 @@ part of 'team.dart';
 _$_Team _$$_TeamFromJson(Map<String, dynamic> json) => _$_Team(
       id: json['id'] as String?,
       name: json['name'] as String,
-      userId: json['userId'] as String,
       lastUpdatedAt: json['lastUpdatedAt'] as int,
     );
 
 Map<String, dynamic> _$$_TeamToJson(_$_Team instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'userId': instance.userId,
       'lastUpdatedAt': instance.lastUpdatedAt,
     };

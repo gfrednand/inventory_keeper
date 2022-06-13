@@ -1,7 +1,7 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import 'package:inventory_keeper/src/models/server_timestamp_converter.dart';
 
 part 'product_summary.freezed.dart';
 part 'product_summary.g.dart';
@@ -9,20 +9,16 @@ part 'product_summary.g.dart';
 ///
 @freezed
 abstract class ProductSummary with _$ProductSummary {
-  ///
   const factory ProductSummary({
-    bool? active,
-    required String id,
-    required String name,
-    required int quantity,
-    required int auditedQuantity,
-    required int currentStock,
-    double? amount,
+    String? id,
+    required String productId,
+    @Default(0) int quantity,
+    @Default(0) int auditedQuantity,
+    @Default(0) int currentStock,
+    @Default(0) double amount,
     required int lastUpdatedAt,
-    required String userId,
   }) = _ProductSummary;
 
-  ///
   factory ProductSummary.fromJson(Map<String, dynamic> json) =>
       _$ProductSummaryFromJson(json);
 }

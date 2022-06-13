@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/api/firebase_repository.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
-import 'package:inventory_keeper/src/models/product_type/product_type.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/models/product_category/product_category.dart';
+import 'package:inventory_keeper/src/utility/firestore_constant.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Product Sort Enum
@@ -24,7 +24,8 @@ enum ProductSortEnum {
 
 /// Product Controller
 class ProductController extends BaseController {
-  final FireBaseRepository _api = FireBaseRepository('products');
+  ///  Product Controller Instance
+  static ProductController instance = Get.find();
 
   /// Focus node
   FocusNode unitFocusNode = FocusNode(),
@@ -41,27 +42,47 @@ class ProductController extends BaseController {
     update();
   }
 
-  Rx<List<Product>> _filteredProducts = Rx([]);
+  List<Product> _filteredProducts = [];
+  List<Product> _products = [];
 
-  /// Product
-  List<Product> get filteredProducts => _filteredProducts.value;
+  /// All Filtered Product
+  List<Product> get filteredProducts => _filteredProducts;
+
+  /// All products
+  List<Product> get products => _products;
+
+  ///
+  final RxInt _lastUpdatedAt = 0.obs;
+
+  /// Last Updated At
+  int get lastUpdatedAt => _lastUpdatedAt.value;
+
+  /// Set Last Updated At
+  set lastUpdatedAt(int value) {
+    _lastUpdatedAt(value);
+  }
+
+  @override
+  void onReady() {
+    ever(_lastUpdatedAt, fetchData);
+  }
 
   ///Filtering list of products by category or name
   void filteredProductsByNameAndCategory({String? query}) {
-    _filteredProducts = productList;
-
     if (query != null) {
       final newproducts = <Product>[];
-      for (final product in _filteredProducts.value) {
-        if ((product.type != null &&
-                product.type!.name
+      for (final product in _products) {
+        if ((product.category != null &&
+                product.category!.name
                     .toLowerCase()
                     .contains(query.toLowerCase())) ||
             product.name.toLowerCase().contains(query.toLowerCase())) {
           newproducts.add(product);
         }
       }
-      _filteredProducts(newproducts);
+      _filteredProducts = newproducts;
+    } else {
+      _filteredProducts = _products;
     }
     update();
   }
@@ -85,57 +106,71 @@ class ProductController extends BaseController {
   }
 
   ///
-  ProductType? _productType;
+  ProductCategory? _productCategory;
 
   ///
-  ProductType? get productType => _productType;
+  ProductCategory? get productCategory => _productCategory;
 
   ///
-  set productType(ProductType? q) {
-    _productType = q;
+  set productCategory(ProductCategory? q) {
+    _productCategory = q;
     update();
   }
 
   ///
-  int? _currentStockQuantity;
+  int? _currentStock;
 
   ///
-  int? get currentStockQuantity => _currentStockQuantity;
+  int? get currentStock => _currentStock;
 
   ///
-  set currentStockQuantity(int? q) {
-    _currentStockQuantity = q;
+  set currentStock(int? q) {
+    _currentStock = q;
     update();
   }
 
   /// Future Products
-  Future<void> fetchProducts() async {
-    busy = true;
-    final objs = await _api.allItems();
-    busy = false;
-    final ps = <Product>[];
-    for (final item in objs) {
-      ps.add(Product.fromJson(item));
+  Future<void> fetchData(int? lastUpdatedAt) async {
+    final prods = <Product>[];
+    QuerySnapshot<Object?> snapShot;
+    if (lastUpdatedAt != null) {
+      snapShot = await productsCollectionRef
+          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+          .get();
+    } else {
+      snapShot = await productsCollectionRef.get();
     }
-    // products = ps;
+    for (final doc in snapShot.docs) {
+      final json = doc.data()! as Map<String, dynamic>;
+      json['id'] = doc.id;
+      prods.add(Product.fromJson(json));
+    }
+    _products = products;
+    update();
   }
 
   /// Add a product to a current products state
   Future<void> addProduct(Product product) async {
     loadDialog<void>(loadingText: 'Adding Product ....');
     final productMap = product.toJson();
-    productMap['createdAt'] = DateTime.now();
-    if (currentStockQuantity != null) {
-      productMap['currentStock'] = currentStockQuantity ?? 0;
+    if (currentStock != null) {
+      productMap['currentStock'] = currentStock ?? 0;
     }
-    if (productType != null) {
-      productMap['type'] = productType?.toJson();
+    if (productCategory != null) {
+      productMap['category'] = productCategory?.toJson();
     }
 
     if (safetyQuantity != null) {
-      productMap['safetyStock'] = safetyQuantity ?? 0;
+      productMap['safetyQuantity'] = safetyQuantity ?? 0;
     }
-    final success = await _api.addOne(productMap);
+    final success = await productsCollectionRef
+        .add(productMap)
+        .then((value) => true)
+        .catchError((dynamic error) {
+      print('Failed to add data: ${error.toString()}');
+      return false;
+    });
+
     Get.back<void>();
     if (success) {
       Get.back<void>();
@@ -156,7 +191,8 @@ class ProductController extends BaseController {
   }
 
   /// Update a product to a current products state
-  Future<void> updateProductSafetyStock(Product prod, int safetStock) async {
+  Future<void> updateProductSafetyStock(
+      Product prod, int safetyQuantity) async {
     loadDialog<dynamic>(
       loadingText: 'Updating Safety ...',
     );
@@ -164,10 +200,18 @@ class ProductController extends BaseController {
         id: prod.id,
         userId: firebaseAuth.currentUser!.uid,
         name: prod.name,
-        safetyStock: safetStock,
+        safetyQuantity: safetyQuantity,
         lastUpdatedAt: dateToMillSeconds(DateTime.now()));
 
-    final success = await _api.updateOne(productToUpdate.toJson());
+    final success = await productsCollectionRef
+        .doc(prod.id)
+        .set(productToUpdate, SetOptions(merge: true))
+        .then((value) => true)
+        .catchError((dynamic error) {
+      print('Failed to update user: $error');
+      return false;
+    });
+
     Get.back<void>();
 
     if (success) {
@@ -188,18 +232,25 @@ class ProductController extends BaseController {
   Future<void> updateProduct(Product product) async {
     loadDialog<void>(loadingText: 'Updating Product...');
     final productMap = product.toJson();
-    if (currentStockQuantity != null) {
-      productMap[' currentStock'] = currentStockQuantity ?? 0;
+    if (currentStock != null) {
+      productMap[' currentStock'] = currentStock ?? 0;
     }
-    if (productType != null) {
-      productMap['type'] = productType?.toJson();
+    if (productCategory != null) {
+      productMap['category'] = productCategory?.toJson();
     }
     if (safetyQuantity != null) {
-      productMap['safetyStock'] = safetyQuantity ?? 0;
+      productMap['safetyQuantity'] = safetyQuantity ?? 0;
     }
-    productMap['updatedAt'] = DateTime.now();
+    productMap['lastUpdatedAt'] = dateToMillSeconds(DateTime.now());
 
-    final success = await _api.updateOne(productMap);
+    final success = await productsCollectionRef
+        .doc(product.id)
+        .set(productMap, SetOptions(merge: true))
+        .then((value) => true)
+        .catchError((dynamic error) {
+      print('Failed to update user: $error');
+      return false;
+    });
     Get.back<void>();
     if (success) {
       Get.back<void>();
@@ -212,7 +263,14 @@ class ProductController extends BaseController {
   /// Remove product from a current products state
   Future<void> removeProduct() async {
     loadDialog<void>(loadingText: 'Deleting Product ....');
-    final success = await _api.removeOne(product!.toJson());
+    final success = await productsCollectionRef
+        .doc(product?.id)
+        .delete()
+        .then((value) => true)
+        .catchError((dynamic error) {
+      print('Failed to delete user: $error');
+      return false;
+    });
     Get.back<void>();
     if (success) {
       Get.back<void>();
@@ -225,21 +283,12 @@ class ProductController extends BaseController {
     }
   }
 
-  /// Fetching stream of data
-  Stream<List<Product>> fetchProductsAsStream() {
-    return _api.streamDataCollection().map(
-          (maps) => maps.map((item) {
-            return Product.fromJson(item);
-          }).toList(),
-        );
-  }
-
   ///
   void resetValues({required bool success}) {
     if (success) {
       safetyQuantity = null;
-      currentStockQuantity = null;
-      productType = null;
+      currentStock = null;
+      productCategory = null;
     }
     update();
   }

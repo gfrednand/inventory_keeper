@@ -6,12 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/app.dart';
 import 'package:inventory_keeper/src/controllers/auth_controller.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp().then((value) => Get.put(AuthController()));
   const useEmulator = true;
   if (useEmulator) {

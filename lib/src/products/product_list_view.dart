@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_category_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
@@ -24,7 +24,7 @@ class ProductListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productTypeController = Get.find<ProductTypeController>();
+    final productCategoryController = ProductCategoryController.instance;
     final productController = Get.find<ProductController>();
     return Scaffold(
       body: CustomScrollView(
@@ -64,7 +64,7 @@ class ProductListView extends StatelessWidget {
             child: ProductsList(
               showCurrentStock: true,
               onTap: (product) {
-                productTypeController.changeType(null);
+                productCategoryController.changeType(null);
                 productController.product = product;
                 Get.to<void>(() => const ProductDetails());
               },

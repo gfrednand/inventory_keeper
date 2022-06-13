@@ -23,7 +23,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final type = item.type == null ? '' : ('${item.type!.name} | ');
+    final type = item.category == null ? '' : ('${item.category!.name} | ');
     final buyPrice =
         item.buyPrice == null ? '' : ('${oCcy.format(item.buyPrice)} | ');
     final salePrice =

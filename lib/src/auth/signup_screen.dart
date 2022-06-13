@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/auth/login_screen.dart';
+import 'package:inventory_keeper/src/auth/phone_number_field_page.dart';
 import 'package:inventory_keeper/src/controllers/auth_controller.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
@@ -10,9 +11,13 @@ class SignupScreen extends StatelessWidget {
   ///
   SignupScreen({Key? key}) : super(key: key);
 
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+
+  final FocusNode _phoneNumberFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _usernameFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +77,7 @@ class SignupScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: CustomFormField(
                   controller: _usernameController,
-                  focusNode: FocusNode(),
+                  focusNode: _usernameFocusNode,
                   inputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                   label: 'Username',
@@ -85,11 +90,11 @@ class SignupScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: CustomFormField(
-                  controller: _emailController,
-                  focusNode: FocusNode(),
+                  controller: _phoneNumberController,
+                  focusNode: _phoneNumberFocusNode,
                   inputAction: TextInputAction.next,
-                  keyboardType: TextInputType.emailAddress,
-                  label: 'Email',
+                  keyboardType: TextInputType.phone,
+                  label: 'Phone number',
                 ),
               ),
               const SizedBox(
@@ -101,7 +106,7 @@ class SignupScreen extends StatelessWidget {
                 child: CustomFormField(
                   controller: _passwordController,
                   isObscure: true,
-                  focusNode: FocusNode(),
+                  focusNode: _passwordFocusNode,
                   inputAction: TextInputAction.done,
                   keyboardType: TextInputType.visiblePassword,
                   label: 'Password',
@@ -129,7 +134,7 @@ class SignupScreen extends StatelessWidget {
                       : InkWell(
                           onTap: () => authController.registerUser(
                             _usernameController.text,
-                            _emailController.text,
+                            _phoneNumberController.text,
                             _passwordController.text,
                             authController.profilePhoto,
                           ),
@@ -159,7 +164,10 @@ class SignupScreen extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () => Get.to<void>(LoginScreen.new),
+                    onTap: () => Get.to<void>(
+                      PhoneNumberFieldPage.new,
+                      transition: Transition.leftToRight,
+                    ),
                     child: const Text(
                       'Login',
                       style: TextStyle(fontSize: 20, color: AppColors.blue700),

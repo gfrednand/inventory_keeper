@@ -2,40 +2,34 @@
 //
 //     final team = teamFromMap(jsonString);
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: public_member_api_docs
+
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:inventory_keeper/src/models/user/user.dart';
+// import 'package:inventory_keeper/src/models/product/product.dart';
+// import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
+// import 'package:inventory_keeper/src/models/stock_summary/stock_summay.dart';
+// import 'package:inventory_keeper/src/models/team_settings/team_settings.dart';
+// import 'package:flutter/foundation.dart';
+
+// import 'package:inventory_keeper/src/models/updatedAt/updated_at.dart';
+// import 'package:inventory_keeper/src/models/user/user.dart';
 
 part 'team.freezed.dart';
 part 'team.g.dart';
 
-///
 @freezed
-class Team with _$Team {
-  ///
+abstract class Team with _$Team {
   const factory Team({
     String? id,
-
-    /// This is the name of the Team.
-    /// It's required must not be null.
     required String name,
-    required String userId,
     required int lastUpdatedAt,
+    // UpdatedAt? updatedAt,
+    // TeamSettings? teamSettings,
+    // List<Product>? products,
+    // List<StockSummary> stockSummary,
+    // List<ProductTransaction> productTransactions,
   }) = _Team;
 
-  ///
   factory Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
-
-  // /// User from snapshot
-  // Team? fromSnap(DocumentSnapshot snap) {
-  //   if (snap.data() != null) {
-  //     final snapshot = snap.data()! as Map<String, dynamic>;
-  //     return Team(
-  //       userId: snapshot['userId'] as String,
-  //       name: snapshot['name'] as String,
-  //       lastUpdatedAt: snapshot['lastUpdatedAt'] as int,
-  //     );
-  //   }
-
-  //   return null;
-  // }
 }

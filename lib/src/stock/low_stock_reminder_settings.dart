@@ -30,7 +30,7 @@ class LowStockReminderSettings extends StatelessWidget {
           icon: const Icon(Icons.close),
         ),
         title: const Text(
-          'Safety Stock Settings',
+          'Safety Quantity Settings',
           style: TextStyle(fontSize: 18),
         ),
         actions: [
@@ -54,7 +54,7 @@ class LowStockReminderSettings extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Get.find<ProductController>().filteredProductsByNameAndCategory();
+              ProductController.instance.filteredProductsByNameAndCategory();
               Get.to<void>(
                 () => Scaffold(
                   body: ProductsList(
@@ -64,8 +64,8 @@ class LowStockReminderSettings extends StatelessWidget {
                         context,
                         StockQuantityField(
                           productName: item.name,
-                          title: 'Safety Stock',
-                          counter: item.safetyStock,
+                          title: 'Safety Quantity',
+                          counter: item.safetyQuantity,
                           transactionType: TransactionType.all,
                         ),
                       ).then((map) {
@@ -81,7 +81,7 @@ class LowStockReminderSettings extends StatelessWidget {
               );
             },
             title: const Text(
-              'Safey Stock',
+              'Safey Quantity',
               style: TextStyle(fontWeight: FontWeight.w400),
             ),
             trailing: Wrap(

@@ -13,7 +13,7 @@ class PartnerListView extends StatelessWidget {
   final PartnerType type;
   @override
   Widget build(BuildContext context) {
-    final partnerController = Get.put(PartnerController());
+    final partnerController = Get.find<PartnerController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -63,9 +63,9 @@ class PartnerListView extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Obx(
-              () {
-                final data = partnerController.partnerList.value
+            child: GetBuilder<PartnerController>(
+              builder: (cont) {
+                final data = partnerController.partners
                     .where((p) => p.type.name == type.name)
                     .toList();
                 if (data.isEmpty) {

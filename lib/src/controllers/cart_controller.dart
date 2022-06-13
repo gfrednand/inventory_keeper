@@ -1,6 +1,6 @@
+import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Cart controller
@@ -44,7 +44,7 @@ class CartController extends BaseController {
     _items.forEach((key, cartItem) {
       quantity += cartItem.quantity;
       auditedQuantity += cartItem.auditedQuantity;
-      total += (cartItem.amount ?? 0) * (cartItem.quantity);
+      total += cartItem.amount * (cartItem.quantity);
     });
     _totalQuantity = quantity;
     _totalAuditedQuantity = auditedQuantity;
@@ -54,8 +54,7 @@ class CartController extends BaseController {
 
   /// Adding item to cart
   void addItem({
-    required String id,
-    required String name,
+    required String productId,
     int? quantity,
     int? auditedQuantity,
     int? currentStock,
@@ -63,39 +62,34 @@ class CartController extends BaseController {
     bool? active,
     DateTime? summaryDate,
   }) {
-    if (_items.containsKey(id)) {
+    if (_items.containsKey(productId)) {
       _items.update(
-        id,
+        productId,
         (existingCartItem) => ProductSummary(
-          userId: existingCartItem.userId,
           id: existingCartItem.id,
-          name: existingCartItem.name,
+          productId: existingCartItem.productId,
           lastUpdatedAt: dateToMillSeconds(DateTime.now()),
           currentStock: currentStock ?? existingCartItem.currentStock,
           quantity: quantity ?? existingCartItem.quantity,
           auditedQuantity: auditedQuantity ?? existingCartItem.auditedQuantity,
           amount: amount ?? existingCartItem.amount,
-          active: existingCartItem.active,
         ),
       );
     } else {
       _items.putIfAbsent(
-        id,
+        productId,
         () => ProductSummary(
-          id: id,
-          userId: firebaseAuth.currentUser!.uid,
-          name: name,
+          productId: productId,
           lastUpdatedAt: dateToMillSeconds(DateTime.now()),
           currentStock: currentStock ?? 0,
           quantity: quantity ?? 0,
           auditedQuantity: auditedQuantity ?? 0,
           amount: amount ?? 0,
-          active: active ?? true,
         ),
       );
     }
     if (quantity == 0) {
-      removeitem(id);
+      removeitem(productId);
     } else {
       calculateTotalQuantity();
     }

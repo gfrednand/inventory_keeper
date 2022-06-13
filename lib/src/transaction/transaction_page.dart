@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/transaction/transaction_details_page.dart';
@@ -19,11 +19,6 @@ class TransactionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactionController = Get.find<TransactionController>();
-
-    if (transactionController.productTransactions.isEmpty) {
-      transactionController.previousTransactionSummary();
-    }
     return Scaffold(
       body: CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -63,7 +58,7 @@ class TransactionPage extends StatelessWidget {
           ),
           Builder(
             builder: (context) {
-              final productTransaction = Get.find<TransactionController>();
+              final productTransaction = ProductTransactionController.instance;
               final transactions = productTransaction.productTransactions;
               if (transactions.isEmpty) {
                 return const SliverFillRemaining(

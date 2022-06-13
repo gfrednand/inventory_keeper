@@ -20,15 +20,18 @@ ProductTransaction _$ProductTransactionFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProductTransaction {
+  String? get id => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  bool get isPastTransaction => throw _privateConstructorUsedError;
   TransactionType get transactionType => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
   int get totalQuantity => throw _privateConstructorUsedError;
-  int get totalAuditedQuantity => throw _privateConstructorUsedError;
+  int get totalAuditQuantity => throw _privateConstructorUsedError;
   Partner? get partner => throw _privateConstructorUsedError;
-  int get lastUpdatedAt => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  int? get transactionDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,14 +45,17 @@ abstract class $ProductTransactionCopyWith<$Res> {
           ProductTransaction value, $Res Function(ProductTransaction) then) =
       _$ProductTransactionCopyWithImpl<$Res>;
   $Res call(
-      {TransactionType transactionType,
+      {String? id,
+      String userId,
+      bool isPastTransaction,
+      TransactionType transactionType,
       double totalAmount,
       int totalQuantity,
-      int totalAuditedQuantity,
+      int totalAuditQuantity,
       Partner? partner,
+      List<ProductSummary> productsSummary,
       int lastUpdatedAt,
-      String userId,
-      List<ProductSummary> productsSummary});
+      int? transactionDate});
 
   $PartnerCopyWith<$Res>? get partner;
 }
@@ -65,16 +71,31 @@ class _$ProductTransactionCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? userId = freezed,
+    Object? isPastTransaction = freezed,
     Object? transactionType = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
-    Object? totalAuditedQuantity = freezed,
+    Object? totalAuditQuantity = freezed,
     Object? partner = freezed,
-    Object? lastUpdatedAt = freezed,
-    Object? userId = freezed,
     Object? productsSummary = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? transactionDate = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      isPastTransaction: isPastTransaction == freezed
+          ? _value.isPastTransaction
+          : isPastTransaction // ignore: cast_nullable_to_non_nullable
+              as bool,
       transactionType: transactionType == freezed
           ? _value.transactionType
           : transactionType // ignore: cast_nullable_to_non_nullable
@@ -87,26 +108,26 @@ class _$ProductTransactionCopyWithImpl<$Res>
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      totalAuditedQuantity: totalAuditedQuantity == freezed
-          ? _value.totalAuditedQuantity
-          : totalAuditedQuantity // ignore: cast_nullable_to_non_nullable
+      totalAuditQuantity: totalAuditQuantity == freezed
+          ? _value.totalAuditQuantity
+          : totalAuditQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       partner: partner == freezed
           ? _value.partner
           : partner // ignore: cast_nullable_to_non_nullable
               as Partner?,
-      lastUpdatedAt: lastUpdatedAt == freezed
-          ? _value.lastUpdatedAt
-          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
-              as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       productsSummary: productsSummary == freezed
           ? _value.productsSummary
           : productsSummary // ignore: cast_nullable_to_non_nullable
               as List<ProductSummary>,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      transactionDate: transactionDate == freezed
+          ? _value.transactionDate
+          : transactionDate // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -130,14 +151,17 @@ abstract class _$$_ProductTransactionCopyWith<$Res>
       __$$_ProductTransactionCopyWithImpl<$Res>;
   @override
   $Res call(
-      {TransactionType transactionType,
+      {String? id,
+      String userId,
+      bool isPastTransaction,
+      TransactionType transactionType,
       double totalAmount,
       int totalQuantity,
-      int totalAuditedQuantity,
+      int totalAuditQuantity,
       Partner? partner,
+      List<ProductSummary> productsSummary,
       int lastUpdatedAt,
-      String userId,
-      List<ProductSummary> productsSummary});
+      int? transactionDate});
 
   @override
   $PartnerCopyWith<$Res>? get partner;
@@ -156,16 +180,31 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? userId = freezed,
+    Object? isPastTransaction = freezed,
     Object? transactionType = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
-    Object? totalAuditedQuantity = freezed,
+    Object? totalAuditQuantity = freezed,
     Object? partner = freezed,
-    Object? lastUpdatedAt = freezed,
-    Object? userId = freezed,
     Object? productsSummary = freezed,
+    Object? lastUpdatedAt = freezed,
+    Object? transactionDate = freezed,
   }) {
     return _then(_$_ProductTransaction(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      isPastTransaction: isPastTransaction == freezed
+          ? _value.isPastTransaction
+          : isPastTransaction // ignore: cast_nullable_to_non_nullable
+              as bool,
       transactionType: transactionType == freezed
           ? _value.transactionType
           : transactionType // ignore: cast_nullable_to_non_nullable
@@ -178,26 +217,26 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
               as int,
-      totalAuditedQuantity: totalAuditedQuantity == freezed
-          ? _value.totalAuditedQuantity
-          : totalAuditedQuantity // ignore: cast_nullable_to_non_nullable
+      totalAuditQuantity: totalAuditQuantity == freezed
+          ? _value.totalAuditQuantity
+          : totalAuditQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       partner: partner == freezed
           ? _value.partner
           : partner // ignore: cast_nullable_to_non_nullable
               as Partner?,
-      lastUpdatedAt: lastUpdatedAt == freezed
-          ? _value.lastUpdatedAt
-          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
-              as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       productsSummary: productsSummary == freezed
           ? _value._productsSummary
           : productsSummary // ignore: cast_nullable_to_non_nullable
               as List<ProductSummary>,
+      lastUpdatedAt: lastUpdatedAt == freezed
+          ? _value.lastUpdatedAt
+          : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      transactionDate: transactionDate == freezed
+          ? _value.transactionDate
+          : transactionDate // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -208,19 +247,29 @@ class _$_ProductTransaction
     with DiagnosticableTreeMixin
     implements _ProductTransaction {
   const _$_ProductTransaction(
-      {required this.transactionType,
+      {this.id,
+      required this.userId,
+      this.isPastTransaction = false,
+      required this.transactionType,
       required this.totalAmount,
       required this.totalQuantity,
-      required this.totalAuditedQuantity,
+      this.totalAuditQuantity = 0,
       this.partner,
+      required final List<ProductSummary> productsSummary,
       required this.lastUpdatedAt,
-      required this.userId,
-      required final List<ProductSummary> productsSummary})
+      this.transactionDate})
       : _productsSummary = productsSummary;
 
   factory _$_ProductTransaction.fromJson(Map<String, dynamic> json) =>
       _$$_ProductTransactionFromJson(json);
 
+  @override
+  final String? id;
+  @override
+  final String userId;
+  @override
+  @JsonKey()
+  final bool isPastTransaction;
   @override
   final TransactionType transactionType;
   @override
@@ -228,13 +277,10 @@ class _$_ProductTransaction
   @override
   final int totalQuantity;
   @override
-  final int totalAuditedQuantity;
+  @JsonKey()
+  final int totalAuditQuantity;
   @override
   final Partner? partner;
-  @override
-  final int lastUpdatedAt;
-  @override
-  final String userId;
   final List<ProductSummary> _productsSummary;
   @override
   List<ProductSummary> get productsSummary {
@@ -243,8 +289,13 @@ class _$_ProductTransaction
   }
 
   @override
+  final int lastUpdatedAt;
+  @override
+  final int? transactionDate;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductTransaction(transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalAuditedQuantity: $totalAuditedQuantity, partner: $partner, lastUpdatedAt: $lastUpdatedAt, userId: $userId, productsSummary: $productsSummary)';
+    return 'ProductTransaction(id: $id, userId: $userId, isPastTransaction: $isPastTransaction, transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalAuditQuantity: $totalAuditQuantity, partner: $partner, productsSummary: $productsSummary, lastUpdatedAt: $lastUpdatedAt, transactionDate: $transactionDate)';
   }
 
   @override
@@ -252,14 +303,17 @@ class _$_ProductTransaction
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ProductTransaction'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('isPastTransaction', isPastTransaction))
       ..add(DiagnosticsProperty('transactionType', transactionType))
       ..add(DiagnosticsProperty('totalAmount', totalAmount))
       ..add(DiagnosticsProperty('totalQuantity', totalQuantity))
-      ..add(DiagnosticsProperty('totalAuditedQuantity', totalAuditedQuantity))
+      ..add(DiagnosticsProperty('totalAuditQuantity', totalAuditQuantity))
       ..add(DiagnosticsProperty('partner', partner))
+      ..add(DiagnosticsProperty('productsSummary', productsSummary))
       ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
-      ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('productsSummary', productsSummary));
+      ..add(DiagnosticsProperty('transactionDate', transactionDate));
   }
 
   @override
@@ -267,6 +321,10 @@ class _$_ProductTransaction
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProductTransaction &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality()
+                .equals(other.isPastTransaction, isPastTransaction) &&
             const DeepCollectionEquality()
                 .equals(other.transactionType, transactionType) &&
             const DeepCollectionEquality()
@@ -274,27 +332,31 @@ class _$_ProductTransaction
             const DeepCollectionEquality()
                 .equals(other.totalQuantity, totalQuantity) &&
             const DeepCollectionEquality()
-                .equals(other.totalAuditedQuantity, totalAuditedQuantity) &&
+                .equals(other.totalAuditQuantity, totalAuditQuantity) &&
             const DeepCollectionEquality().equals(other.partner, partner) &&
             const DeepCollectionEquality()
-                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
-            const DeepCollectionEquality().equals(other.userId, userId) &&
+                .equals(other._productsSummary, _productsSummary) &&
             const DeepCollectionEquality()
-                .equals(other._productsSummary, _productsSummary));
+                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.transactionDate, transactionDate));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(isPastTransaction),
       const DeepCollectionEquality().hash(transactionType),
       const DeepCollectionEquality().hash(totalAmount),
       const DeepCollectionEquality().hash(totalQuantity),
-      const DeepCollectionEquality().hash(totalAuditedQuantity),
+      const DeepCollectionEquality().hash(totalAuditQuantity),
       const DeepCollectionEquality().hash(partner),
+      const DeepCollectionEquality().hash(_productsSummary),
       const DeepCollectionEquality().hash(lastUpdatedAt),
-      const DeepCollectionEquality().hash(userId),
-      const DeepCollectionEquality().hash(_productsSummary));
+      const DeepCollectionEquality().hash(transactionDate));
 
   @JsonKey(ignore: true)
   @override
@@ -310,19 +372,27 @@ class _$_ProductTransaction
 
 abstract class _ProductTransaction implements ProductTransaction {
   const factory _ProductTransaction(
-          {required final TransactionType transactionType,
-          required final double totalAmount,
-          required final int totalQuantity,
-          required final int totalAuditedQuantity,
-          final Partner? partner,
-          required final int lastUpdatedAt,
-          required final String userId,
-          required final List<ProductSummary> productsSummary}) =
-      _$_ProductTransaction;
+      {final String? id,
+      required final String userId,
+      final bool isPastTransaction,
+      required final TransactionType transactionType,
+      required final double totalAmount,
+      required final int totalQuantity,
+      final int totalAuditQuantity,
+      final Partner? partner,
+      required final List<ProductSummary> productsSummary,
+      required final int lastUpdatedAt,
+      final int? transactionDate}) = _$_ProductTransaction;
 
   factory _ProductTransaction.fromJson(Map<String, dynamic> json) =
       _$_ProductTransaction.fromJson;
 
+  @override
+  String? get id => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
+  @override
+  bool get isPastTransaction => throw _privateConstructorUsedError;
   @override
   TransactionType get transactionType => throw _privateConstructorUsedError;
   @override
@@ -330,16 +400,16 @@ abstract class _ProductTransaction implements ProductTransaction {
   @override
   int get totalQuantity => throw _privateConstructorUsedError;
   @override
-  int get totalAuditedQuantity => throw _privateConstructorUsedError;
+  int get totalAuditQuantity => throw _privateConstructorUsedError;
   @override
   Partner? get partner => throw _privateConstructorUsedError;
   @override
-  int get lastUpdatedAt => throw _privateConstructorUsedError;
-  @override
-  String get userId => throw _privateConstructorUsedError;
-  @override
   List<ProductSummary> get productsSummary =>
       throw _privateConstructorUsedError;
+  @override
+  int get lastUpdatedAt => throw _privateConstructorUsedError;
+  @override
+  int? get transactionDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProductTransactionCopyWith<_$_ProductTransaction> get copyWith =>

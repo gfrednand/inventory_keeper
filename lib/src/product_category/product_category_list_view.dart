@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_category_controller.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 
 ///
-class ProductTypeListView extends StatelessWidget {
+class ProductCategoryListView extends StatelessWidget {
   ///
-  const ProductTypeListView({Key? key}) : super(key: key);
+  const ProductCategoryListView({Key? key}) : super(key: key);
 
   /// Product details route name
-  static const routeName = '/productTypeListView';
+  static const routeName = '/productCategoryListView';
   @override
   Widget build(BuildContext context) {
-    final productTypeController = Get.find<ProductTypeController>();
+    final productCategoryController = Get.find<ProductCategoryController>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -37,7 +37,7 @@ class ProductTypeListView extends StatelessWidget {
                     child: Material(
                       child: CustomFormField(
                         keyboardType: TextInputType.text,
-                        controller: productTypeController.nameController,
+                        controller: productCategoryController.nameController,
                         label: 'Product Type',
                         validator: (value) {
                           if (value == null) {
@@ -46,7 +46,7 @@ class ProductTypeListView extends StatelessWidget {
                           return null;
                         },
                         inputAction: TextInputAction.done,
-                        focusNode: productTypeController.nameFocusNode,
+                        focusNode: productCategoryController.nameFocusNode,
                       ),
                     ),
                   ),
@@ -56,7 +56,7 @@ class ProductTypeListView extends StatelessWidget {
                 ),
                 // we need add button at last friends row
                 ElevatedButton(
-                  onPressed: productTypeController.addProductType,
+                  onPressed: productCategoryController.addProductCategory,
                   child: const Text('Add'),
                 ),
               ],
@@ -65,7 +65,7 @@ class ProductTypeListView extends StatelessWidget {
           Expanded(
             child: Obx(
               () {
-                final data = productTypeController.productTypeList.value;
+                final data = productCategoryController.productCategories;
                 if (data.isEmpty) {
                   return const Center(
                     child: Text('Nothing here'),
@@ -79,15 +79,15 @@ class ProductTypeListView extends StatelessWidget {
                     return ListTile(
                       title: Text(item.name),
                       trailing: TextButton(
-                        onPressed: () =>
-                            productTypeController.removeProductType(item),
+                        onPressed: () => productCategoryController
+                            .removeProductCategory(item),
                         child: const Text(
                           'Delete',
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
                       onTap: () {
-                        productTypeController.changeType(item);
+                        productCategoryController.changeType(item);
                         Get.back<void>();
                       },
                     );

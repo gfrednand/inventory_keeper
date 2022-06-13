@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/partner_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/partner/partner.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
@@ -196,8 +198,8 @@ class StockInOutForm extends StatelessWidget {
                               selectedQuantity = selectedQuantity * -1;
                             }
 
-                            final prod =
-                                cartController.products.firstWhereOrNull(
+                            final prod = ProductController.instance.products
+                                .firstWhereOrNull(
                               (element) => element.id == cartProducts[index].id,
                             );
                             return ProductItem(
@@ -255,7 +257,8 @@ class StockInOutForm extends StatelessWidget {
                           );
                         } else {
                           if (cartController.items.isNotEmpty) {
-                            Get.find<TransactionController>().addTransaction(
+                            ProductTransactionController.instance
+                                .addTransaction(
                               cartController: cartController,
                               transactionType: transactionType,
                             );

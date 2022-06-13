@@ -1,0 +1,115 @@
+{
+    "id": "",
+    "name": "",
+    "updatedAt": {
+        "teamSettings":0,
+        "users": 0,
+        "roles": 0,
+        "permissions": 0,
+        "products": 0,
+        "stockSummary": 0,
+        "productTransactions": 0,
+        "partner": 0,
+        "category":0,
+                "productsSummary":0
+
+    },
+    "teamSettings": {
+        "currency": "",
+        "isSoundOn": false,
+        "appVersion": "",
+             "lastUpdatedAt": 5
+    },
+    "users": [
+        {
+            "id": "",
+            "fullname": "",
+            "phoneNumber": "",
+            "photoUrl": "",
+            "lastUpdatedAt": 5,
+            "roles": [
+                {
+                    "id": "",
+                    "name": "",
+                    "lastUpdatedAt": 9,
+                    "permissions": [
+                        {
+                            "id": "",
+                            "name": "",
+                            "active": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "products": [
+        {
+            "id": "",
+            "userId": "",
+            "name": "",
+            "image": "",
+            "active": true,
+            "description": "",
+            "unit": "",
+            "salePrice": 0.0,
+            "buyPrice": 0.0,
+            "safetyStock": 9,
+            "category": {
+                "id": "",
+                "name": "",
+                "userId": "",
+                "lastUpdatedAt": 9
+            },
+            "expireDate": 8,
+            "lastUpdatedAt": 9
+        }
+    ],
+    "stockSummary": [
+        {
+            "id": "",
+            "totalAmount": 8.8,
+            "totalQuantity": 8,
+            "totalIn": 0,
+            "totalOut": 0,
+            "totalSale": 8.8,
+            "totalBuy": 8.8,
+            "lastUpdatedAt": 9,
+            "productsSummary": [
+                {
+                    "productId": "",
+                    "quantity": 8,
+                    "auditedQuantity": 3,
+                    "currentStock": 8
+                }
+            ]
+        }
+    ],
+    "productTransactions": [
+        {
+            "id": "",
+            "userId": "",
+            "isPastTransaction": true,
+            "transactionType": "IN",
+            "totalAmount": 8.8,
+            "totalQuantity": 8,
+            "totalAuditQuantity": 8,
+            "partner": {
+                "id": "",
+                "name": "",
+                "userId": "",
+                "type": "",
+                "lastUpdatedAt": 5
+            },
+            "productsSummary": [
+                {
+                    "productId": "",
+                    "quantity": 8,
+                    "auditedQuantity": 3,
+                    "currentStock": 8
+                }
+            ],
+            "lastUpdatedAt": 5
+        }
+    ]
+}

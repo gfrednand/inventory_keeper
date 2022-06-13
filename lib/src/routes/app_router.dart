@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
-import 'package:inventory_keeper/src/product_type/product_type_list_view.dart';
+import 'package:inventory_keeper/src/product_category/product_category_list_view.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/past_quantity_view.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
@@ -23,8 +23,8 @@ class AppRouter {
         return FadeRoute(page: const SettingsView());
       case StockListView.routeName:
         return FadeRoute(page: const StockListView());
-      case ProductTypeListView.routeName:
-        return FadeRoute(page: const ProductTypeListView());
+      case ProductCategoryListView.routeName:
+        return FadeRoute(page: const ProductCategoryListView());
       // case AddProduct.routeName:
       //   return CupertinoPageRoute<void>(
       //     settings: routeSettings,

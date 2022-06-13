@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -63,10 +62,7 @@ class ProductDetails extends StatelessWidget {
       ),
       body: Obx(() {
         if (product != null) {
-          product = productWithLatestInfo(
-            product!,
-            productController.currentStock,
-          );
+          product = productWithLatestInfo(product!);
         }
         return Column(
           children: [
@@ -169,13 +165,13 @@ class ProductDetails extends StatelessWidget {
                             const SectionDivider(),
                             CustomDetailItemTile(
                               label: 'Category',
-                              value: product?.type?.name ?? '-',
+                              value: product?.category?.name ?? '-',
                             ),
                             const SectionDivider(),
                             CustomDetailItemTile(
                               hintText: 'Used for notification',
                               label: 'Safety Stock',
-                              value: '${product?.safetyStock ?? 0}',
+                              value: '${product?.safetyQuantity ?? 0}',
                             ),
                             const SectionDivider(),
                             CustomDetailItemTile(

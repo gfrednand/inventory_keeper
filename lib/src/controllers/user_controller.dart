@@ -1,14 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/utility/app_constants.dart';
+import 'package:inventory_keeper/src/auth/login_screen.dart';
+import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/models/user/user.dart';
+import 'package:inventory_keeper/src/utility/firestore_constant.dart';
 
-/// Profile Controlelr
-class ProfileController extends GetxController {
-  final Rx<Map<String, dynamic>> _user =
-      Rx<Map<String, dynamic>>(<String, dynamic>{});
+/// User Controlelr
+class UserController extends BaseController {
+  ///User controller instance
+  static UserController instance = Get.find();
 
   ///
-  Map<String, dynamic> get user => _user.value;
+  final RxInt _lastUpdatedAt = 0.obs;
+
+  /// Last Updated At
+  int get lastUpdatedAt => _lastUpdatedAt.value;
+
+  /// Set Last Updated At
+  set lastUpdatedAt(int value) {
+    _lastUpdatedAt(value);
+  }
+
+  User? _user;
+
+  ///
+  User? get user => _user;
 
   final Rx<String> _uid = ''.obs;
 
@@ -24,31 +40,44 @@ class ProfileController extends GetxController {
   }
 
   ///
+  Future<void> checkByPhoneNumber(String phoneNumber) async {
+    busy = true;
+    User? user;
+    final snapshot = await usersCollectionRef
+        .where('phoneNumber', isEqualTo: phoneNumber)
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      user = User.fromJson(snapshot.docs[0].data()! as Map<String, dynamic>);
+    }
+    if (user == null) {
+      Get.snackbar(
+        'Oops',
+        'Phone number does not exist, please regiser',
+        colorText: Colors.red,
+        // forwardAnimationCurve: Curves.easeOutBack,
+        // snackPosition: SnackPosition.BOTTOM,
+      );
+    } else {
+      await Get.to<void>(LoginScreen(phoneNumber: phoneNumber));
+    }
+    busy = false;
+  }
+
+  ///
   Future<void> getUserData() async {
     // final thumbnails = <String>[];
     // final myVideos = await firestore
     //     .collection('videos')
     //     .where('uid', isEqualTo: _uid.value)
     //     .get();
-
-    final DocumentSnapshot userDoc =
-        await firestore.collection('users').doc(_uid.value).get();
+    busy = true;
+    final userDoc = await usersCollectionRef.doc(_uid.value).get();
     if (userDoc.data() != null) {
       final userData = userDoc.data()! as Map<String, dynamic>;
-      final name = userData['name'] as String;
-      final profilePhoto = userData['profilePhoto'] as String;
 
-      _user.value = <String, dynamic>{
-        // 'followers': followers.toString(),
-        // 'following': following.toString(),
-        // 'isFollowing': isFollowing,
-        // 'likes': likes.toString(),
-        'profilePhoto': profilePhoto,
-        'name': name,
-        // 'thumbnails': thumbnails,
-      };
-      update();
+      _user = User.fromJson(userData);
     }
+    busy = false;
 
     // var likes = 0;
     // var followers = 0;

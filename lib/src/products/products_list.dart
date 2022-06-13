@@ -43,11 +43,9 @@ class ProductsList extends StatelessWidget {
       productController.filteredProductsByNameAndCategory();
     }
 
-    return Obx(() {
-      final stock = productController.currentStock;
-
+    return GetBuilder<ProductController>(builder: (cont) {
       final data = productController.filteredProducts
-          .map((p) => productWithLatestInfo(p, stock))
+          .map(productWithLatestInfo)
           .toList();
 
       return Column(
@@ -77,9 +75,9 @@ class ProductsList extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CurrentStockQuantity(
-                                    currentStock: item.safetyStock,
+                                    currentStock: item.safetyQuantity,
                                     withBackground: true,
-                                    backGroundColor: item.safetyStock == 0
+                                    backGroundColor: item.safetyQuantity == 0
                                         ? const Color(0xFFBDBDBD)
                                         : Colors.green,
                                     fontSize: 16,

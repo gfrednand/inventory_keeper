@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_summary_controller.dart';
 import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
@@ -28,9 +30,9 @@ class StockInOutItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productController = Get.find<ProductController>();
+    final productController = ProductController.instance;
     final cartController = Get.find<CartController>();
-    final transactionController = Get.find<TransactionController>();
+    final stockSummaryController = StockSummaryController.instance;
     String? titleLabel;
     Color? color;
 
@@ -87,9 +89,9 @@ class StockInOutItems extends StatelessWidget {
                       final unProcesedProducts =
                           productController.filteredProducts;
                       var products = <Product>[];
-                      final currentStock =
-                          transactionController.getTransactionSummary();
-                      if (currentStock.productsSummary.isNotEmpty) {
+                      final currentStock = stockSummaryController.stockSummary;
+                      if (currentStock != null &&
+                          currentStock.productsSummary.isNotEmpty) {
                         final productsSummary = currentStock.productsSummary;
                         for (final item in unProcesedProducts) {
                           var p = item;
@@ -205,8 +207,7 @@ class StockInOutItems extends StatelessWidget {
                                                       TransactionType.outStock
                                                   ? item.salePrice
                                                   : 0,
-                                          id: item.id ?? '',
-                                          name: item.name,
+                                          productId: item.id ?? '',
                                           quantity: quantity,
                                           auditedQuantity: auditedQuantity,
                                           currentStock: currentStock,

@@ -1,6 +1,8 @@
 // To parse this JSON data, do
 //
 //     final productType = productTypeFromMap(jsonString);
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -18,8 +20,7 @@ enum PartnerType {
 
 ///
 @freezed
-class Partner with _$Partner {
-  ///
+abstract class Partner with _$Partner {
   const factory Partner({
     String? id,
     required String name,
@@ -28,7 +29,6 @@ class Partner with _$Partner {
     required int lastUpdatedAt,
   }) = _Partner;
 
-  ///
   factory Partner.fromJson(Map<String, dynamic> json) =>
       _$PartnerFromJson(json);
 }

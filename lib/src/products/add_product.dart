@@ -7,6 +7,7 @@ import 'package:inventory_keeper/src/products/product_form.dart';
 import 'package:inventory_keeper/src/stock/stock_quantity_field.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
+import 'package:inventory_keeper/src/utility/firestore_constant.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
 ///
@@ -116,7 +117,7 @@ class AddProduct extends StatelessWidget {
                     ).then((map) {
                       final value = map?['quantity'];
                       if (value != null && value > 0) {
-                        controller.currentStockQuantity = value;
+                        controller.currentStock = value;
                       }
                       controller.addProduct(newProduct);
                     });

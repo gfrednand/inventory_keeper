@@ -1,16 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'stock.dart';
+part of 'stock_summary.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Stock _$$_StockFromJson(Map<String, dynamic> json) => _$_Stock(
-      productsSummary: (json['productsSummary'] as List<dynamic>)
-          .map(
-              (dynamic e) => ProductSummary.fromJson(e as Map<String, dynamic>))
-          .toList(),
+_$_StockSummary _$$_StockSummaryFromJson(Map<String, dynamic> json) =>
+    _$_StockSummary(
+      id: json['id'] as String?,
       totalAmount: (json['totalAmount'] as num).toDouble(),
       totalQuantity: json['totalQuantity'] as int,
       totalIn: json['totalIn'] as int,
@@ -18,11 +16,15 @@ _$_Stock _$$_StockFromJson(Map<String, dynamic> json) => _$_Stock(
       totalSale: (json['totalSale'] as num).toDouble(),
       totalBuy: (json['totalBuy'] as num).toDouble(),
       lastUpdatedAt: json['lastUpdatedAt'] as int,
-      userId: json['userId'] as String,
+      productsSummary: (json['productsSummary'] as List<dynamic>)
+          .map(
+              (dynamic e) => ProductSummary.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$$_StockToJson(_$_Stock instance) => <String, dynamic>{
-      'productsSummary': instance.productsSummary,
+Map<String, dynamic> _$$_StockSummaryToJson(_$_StockSummary instance) =>
+    <String, dynamic>{
+      'id': instance.id,
       'totalAmount': instance.totalAmount,
       'totalQuantity': instance.totalQuantity,
       'totalIn': instance.totalIn,
@@ -30,5 +32,5 @@ Map<String, dynamic> _$$_StockToJson(_$_Stock instance) => <String, dynamic>{
       'totalSale': instance.totalSale,
       'totalBuy': instance.totalBuy,
       'lastUpdatedAt': instance.lastUpdatedAt,
-      'userId': instance.userId,
+      'productsSummary': instance.productsSummary,
     };

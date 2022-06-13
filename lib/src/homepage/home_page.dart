@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_type_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_summary_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
 import 'package:inventory_keeper/src/homepage/stock_in_out_container.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
@@ -24,7 +23,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productController = Get.find<ProductController>();
-    final productTypeController = Get.find<ProductTypeController>();
 
     return CustomScrollView(
       slivers: [
@@ -43,9 +41,10 @@ class HomePage extends StatelessWidget {
             child: SizedBox(
               child: Column(
                 children: [
-                  Obx(
-                    () {
-                      final currentStock = productController.currentStock;
+                  GetBuilder<StockSummaryController>(
+                    builder: (cont) {
+                      final stockSummary =
+                          StockSummaryController.instance.stockSummary;
 
                       return HomeItemContainer(
                         withGradient: true,
@@ -66,20 +65,20 @@ class HomePage extends StatelessWidget {
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
                                       quantity:
-                                          '${currentStock?.totalQuantity ?? 0}',
+                                          '${stockSummary?.totalQuantity ?? 0}',
                                       label: 'Total',
                                     ),
                                     const VerticalDivider(thickness: 2),
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
-                                      quantity: '${currentStock?.totalIn ?? 0}',
+                                      quantity: '${stockSummary?.totalIn ?? 0}',
                                       label: 'Items In',
                                     ),
                                     const VerticalDivider(thickness: 2),
                                     TransactionDetailItemPart(
                                       quantityColor: Colors.white,
                                       quantity:
-                                          '${currentStock?.totalOut ?? 0}',
+                                          '${stockSummary?.totalOut ?? 0}',
                                       label: 'Items Out',
                                     ),
                                   ],
@@ -106,10 +105,8 @@ class HomePage extends StatelessWidget {
                             body: Padding(
                               padding: const EdgeInsets.only(top: 50),
                               child: ProductsList(
-                                showCurrentStock: true,
                                 closeLabel: 'Close',
                                 onTap: (Product item) {
-                                  productTypeController.changeType(null);
                                   productController.product = item;
                                   Get.to<void>(() => const ProductDetails());
                                 },

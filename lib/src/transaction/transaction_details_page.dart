@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
 import 'package:inventory_keeper/src/transaction/transaction_detail_item_part.dart';
 import 'package:inventory_keeper/src/utility/app_constants.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
-import 'package:inventory_keeper/src/widgets/app_delete_menu.dart';
 import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
@@ -28,7 +26,6 @@ class TransactionDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalItems = transaction.productsSummary.length;
-    final stock = Get.find<TransactionController>().getTransactionSummary();
 
     var titleLabel = 'Audit';
     Color? color;
@@ -145,13 +142,17 @@ class TransactionDetailsPage extends StatelessWidget {
                     const SectionDivider(),
                 itemBuilder: (context, index) {
                   final item = productSummaryToProduct(
-                      transaction.productsSummary[index], stock);
-                  return ProductItem(
+                      transaction.productsSummary[index]);
+                  if (item != null) {
+                    return ProductItem(
                       item: item,
                       trailing: Text(
                         '${transaction.productsSummary[index].quantity}',
                         style: TextStyle(color: color),
-                      ));
+                      ),
+                    );
+                  }
+                  return Container();
                 },
               )
             ],

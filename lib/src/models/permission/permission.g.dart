@@ -1,23 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_type.dart';
+part of 'permission.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ProductType _$$_ProductTypeFromJson(Map<String, dynamic> json) =>
-    _$_ProductType(
+_$_Permission _$$_PermissionFromJson(Map<String, dynamic> json) =>
+    _$_Permission(
       id: json['id'] as String?,
       name: json['name'] as String,
-      lastUpdatedAt: json['lastUpdatedAt'] as int,
-      userId: json['userId'] as String,
+      active: json['active'] as bool,
     );
 
-Map<String, dynamic> _$$_ProductTypeToJson(_$_ProductType instance) =>
+Map<String, dynamic> _$$_PermissionToJson(_$_Permission instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'lastUpdatedAt': instance.lastUpdatedAt,
-      'userId': instance.userId,
+      'active': instance.active,
     };

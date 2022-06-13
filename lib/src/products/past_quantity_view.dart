@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/api/firebase_repository.dart';
-import 'package:inventory_keeper/src/controllers/stock_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
@@ -22,7 +21,7 @@ class PastQuantityView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactionController = Get.find<TransactionController>();
+    final transactionController = ProductTransactionController.instance;
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -38,7 +37,7 @@ class PastQuantityView extends StatelessWidget {
         ),
         title: const Text('Past Quantity'),
       ),
-      body: GetBuilder<TransactionController>(builder: (cont) {
+      body: GetBuilder<ProductTransactionController>(builder: (cont) {
         if (transactionController.busy) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -56,8 +55,8 @@ class PastQuantityView extends StatelessWidget {
                   selectDate(context).then((value) {
                     if (value != null) {
                       transactionController.previousTransactionSummary(
-                          date: value,
-                          condition: QueryWhereCondition.isLessThanOrEqualTo);
+                        date: value,
+                      );
                     }
                   });
                 },
@@ -69,7 +68,7 @@ class PastQuantityView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            if (transactionController.stockSummary == null)
+            if (transactionController.previousProductTransaction == null)
               const Expanded(
                 child: Center(
                   child: Text('No Data'),
@@ -80,10 +79,12 @@ class PastQuantityView extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   final productSummary = transactionController
-                      .stockSummary?.productsSummary[index];
+                      .previousProductTransaction?.productsSummary[index];
+
+                  final product = productSummaryToProduct(productSummary);
                   return ListTile(
                     title: Text(
-                      productSummary?.name ?? '',
+                      product?.name ?? '',
                       style: const TextStyle(fontSize: 15),
                     ),
                     subtitle: Text(
@@ -92,12 +93,12 @@ class PastQuantityView extends StatelessWidget {
                           : '',
                     ),
                     trailing: Text(
-                      '${productSummary?.currentStock}',
+                      '${product?.currentStock}',
                     ),
                   );
                 },
-                itemCount:
-                    transactionController.stockSummary?.productsSummary.length,
+                itemCount: transactionController
+                    .previousProductTransaction?.productsSummary.length,
               )
           ],
         );

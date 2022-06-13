@@ -1,21 +1,20 @@
 // To parse this JSON data, do
 //
-//     final stock = stockFromMap(jsonString);
 
+// ignore_for_file: public_member_api_docs
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:convert';
+
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
-import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 
-part 'stock.freezed.dart';
-part 'stock.g.dart';
+part 'stock_summary.freezed.dart';
+part 'stock_summary.g.dart';
 
-///
 @freezed
-abstract class Stock with _$Stock {
-  ///
-  const factory Stock({
-    required List<ProductSummary> productsSummary,
+abstract class StockSummary with _$StockSummary {
+  const factory StockSummary({
+    String? id,
     required double totalAmount,
     required int totalQuantity,
     required int totalIn,
@@ -23,9 +22,9 @@ abstract class Stock with _$Stock {
     required double totalSale,
     required double totalBuy,
     required int lastUpdatedAt,
-    required String userId,
-  }) = _Stock;
+    required List<ProductSummary> productsSummary,
+  }) = _StockSummary;
 
-  ///
-  factory Stock.fromJson(Map<String, dynamic> json) => _$StockFromJson(json);
+  factory StockSummary.fromJson(Map<String, dynamic> json) =>
+      _$StockSummaryFromJson(json);
 }

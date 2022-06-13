@@ -4,14 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_summary_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
-import 'package:inventory_keeper/src/models/stock/stock.dart';
+import 'package:inventory_keeper/src/models/stock_summary/stock_summary.dart';
 
 /// Initial Stck Summary
 ///
-Stock initiaStock = const Stock(
-    userId: '',
+StockSummary initiaStock = const StockSummary(
     totalSale: 0,
     productsSummary: [],
     totalAmount: 0,
@@ -56,33 +57,31 @@ String dateFormat(DateTime? date, {String format = 'dd/MM/yyy'}) {
 
 /// Get product with current stock
 
-Product productWithLatestInfo(Product product, Stock? stock) {
+Product productWithLatestInfo(Product product) {
   ProductSummary? prod;
+  final stock = StockSummaryController.instance.stockSummary;
   final usedStock = stock ?? initiaStock;
   prod = usedStock.productsSummary.firstWhereOrNull(
     (item) => item.id == product.id,
   );
   return product.copyWith(
     currentStock: prod?.currentStock ?? 0,
-    selectedQuantity: prod?.quantity,
   );
 }
 
 /// Converting product Summary to Product
-Product productSummaryToProduct(ProductSummary productSummary, Stock stock) {
-  ProductSummary? prod;
-  prod = stock.productsSummary.firstWhereOrNull(
-    (item) => item.id == productSummary.id,
+Product? productSummaryToProduct(
+  ProductSummary? productSummary,
+) {
+  final products = ProductController.instance.products;
+  Product? prod;
+  prod = products.firstWhereOrNull(
+    (item) => item.id == productSummary?.productId,
   );
 
-  return Product(
-      userId: productSummary.userId,
-      lastUpdatedAt: productSummary.lastUpdatedAt,
-      name: productSummary.name,
-      currentStock: prod?.currentStock ?? 0,
-      selectedQuantity: prod?.quantity,
-      id: productSummary.id,
-      salePrice: productSummary.amount);
+  return prod?.copyWith(
+    currentStock: productSummary?.currentStock ?? 0,
+  );
 }
 
 ///

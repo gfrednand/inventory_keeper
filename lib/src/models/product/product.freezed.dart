@@ -21,27 +21,19 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   String? get id => throw _privateConstructorUsedError;
-
-  /// This is the name of the product.
-  ///
-  /// It's required must not be null.
+  String get userId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  int get currentStock => throw _privateConstructorUsedError;
-  int? get selectedQuantity => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
   bool? get active => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get unit => throw _privateConstructorUsedError;
-  double? get salePrice => throw _privateConstructorUsedError;
-  double? get buyPrice => throw _privateConstructorUsedError;
-  int get safetyStock => throw _privateConstructorUsedError;
-  bool? get isIncomingStock => throw _privateConstructorUsedError;
-  ProductType? get type => throw _privateConstructorUsedError;
-  @ServerTimestampConverter()
-  DateTime? get createdAt => throw _privateConstructorUsedError;
-  @ServerTimestampConverter()
-  DateTime? get expireDate => throw _privateConstructorUsedError;
+  double get salePrice => throw _privateConstructorUsedError;
+  double get buyPrice => throw _privateConstructorUsedError;
+  int get currentStock => throw _privateConstructorUsedError;
+  int get safetyQuantity => throw _privateConstructorUsedError;
+  ProductCategory? get category => throw _privateConstructorUsedError;
+  int? get expireDate => throw _privateConstructorUsedError;
   int get lastUpdatedAt => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -54,23 +46,21 @@ abstract class $ProductCopyWith<$Res> {
       _$ProductCopyWithImpl<$Res>;
   $Res call(
       {String? id,
+      String userId,
       String name,
-      int currentStock,
-      int? selectedQuantity,
+      String? image,
       bool? active,
       String? description,
       String? unit,
-      double? salePrice,
-      double? buyPrice,
-      int safetyStock,
-      bool? isIncomingStock,
-      ProductType? type,
-      @ServerTimestampConverter() DateTime? createdAt,
-      @ServerTimestampConverter() DateTime? expireDate,
-      int lastUpdatedAt,
-      String userId});
+      double salePrice,
+      double buyPrice,
+      int currentStock,
+      int safetyQuantity,
+      ProductCategory? category,
+      int? expireDate,
+      int lastUpdatedAt});
 
-  $ProductTypeCopyWith<$Res>? get type;
+  $ProductCategoryCopyWith<$Res>? get category;
 }
 
 /// @nodoc
@@ -84,39 +74,37 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? userId = freezed,
     Object? name = freezed,
-    Object? currentStock = freezed,
-    Object? selectedQuantity = freezed,
+    Object? image = freezed,
     Object? active = freezed,
     Object? description = freezed,
     Object? unit = freezed,
     Object? salePrice = freezed,
     Object? buyPrice = freezed,
-    Object? safetyStock = freezed,
-    Object? isIncomingStock = freezed,
-    Object? type = freezed,
-    Object? createdAt = freezed,
+    Object? currentStock = freezed,
+    Object? safetyQuantity = freezed,
+    Object? category = freezed,
     Object? expireDate = freezed,
     Object? lastUpdatedAt = freezed,
-    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      currentStock: currentStock == freezed
-          ? _value.currentStock
-          : currentStock // ignore: cast_nullable_to_non_nullable
-              as int,
-      selectedQuantity: selectedQuantity == freezed
-          ? _value.selectedQuantity
-          : selectedQuantity // ignore: cast_nullable_to_non_nullable
-              as int?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
       active: active == freezed
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
@@ -132,50 +120,42 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
       salePrice: salePrice == freezed
           ? _value.salePrice
           : salePrice // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as double,
       buyPrice: buyPrice == freezed
           ? _value.buyPrice
           : buyPrice // ignore: cast_nullable_to_non_nullable
-              as double?,
-      safetyStock: safetyStock == freezed
-          ? _value.safetyStock
-          : safetyStock // ignore: cast_nullable_to_non_nullable
+              as double,
+      currentStock: currentStock == freezed
+          ? _value.currentStock
+          : currentStock // ignore: cast_nullable_to_non_nullable
               as int,
-      isIncomingStock: isIncomingStock == freezed
-          ? _value.isIncomingStock
-          : isIncomingStock // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as ProductType?,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      safetyQuantity: safetyQuantity == freezed
+          ? _value.safetyQuantity
+          : safetyQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      category: category == freezed
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as ProductCategory?,
       expireDate: expireDate == freezed
           ? _value.expireDate
           : expireDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as int?,
       lastUpdatedAt: lastUpdatedAt == freezed
           ? _value.lastUpdatedAt
           : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 
   @override
-  $ProductTypeCopyWith<$Res>? get type {
-    if (_value.type == null) {
+  $ProductCategoryCopyWith<$Res>? get category {
+    if (_value.category == null) {
       return null;
     }
 
-    return $ProductTypeCopyWith<$Res>(_value.type!, (value) {
-      return _then(_value.copyWith(type: value));
+    return $ProductCategoryCopyWith<$Res>(_value.category!, (value) {
+      return _then(_value.copyWith(category: value));
     });
   }
 }
@@ -188,24 +168,22 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @override
   $Res call(
       {String? id,
+      String userId,
       String name,
-      int currentStock,
-      int? selectedQuantity,
+      String? image,
       bool? active,
       String? description,
       String? unit,
-      double? salePrice,
-      double? buyPrice,
-      int safetyStock,
-      bool? isIncomingStock,
-      ProductType? type,
-      @ServerTimestampConverter() DateTime? createdAt,
-      @ServerTimestampConverter() DateTime? expireDate,
-      int lastUpdatedAt,
-      String userId});
+      double salePrice,
+      double buyPrice,
+      int currentStock,
+      int safetyQuantity,
+      ProductCategory? category,
+      int? expireDate,
+      int lastUpdatedAt});
 
   @override
-  $ProductTypeCopyWith<$Res>? get type;
+  $ProductCategoryCopyWith<$Res>? get category;
 }
 
 /// @nodoc
@@ -220,39 +198,37 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? userId = freezed,
     Object? name = freezed,
-    Object? currentStock = freezed,
-    Object? selectedQuantity = freezed,
+    Object? image = freezed,
     Object? active = freezed,
     Object? description = freezed,
     Object? unit = freezed,
     Object? salePrice = freezed,
     Object? buyPrice = freezed,
-    Object? safetyStock = freezed,
-    Object? isIncomingStock = freezed,
-    Object? type = freezed,
-    Object? createdAt = freezed,
+    Object? currentStock = freezed,
+    Object? safetyQuantity = freezed,
+    Object? category = freezed,
     Object? expireDate = freezed,
     Object? lastUpdatedAt = freezed,
-    Object? userId = freezed,
   }) {
     return _then(_$_Product(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      currentStock: currentStock == freezed
-          ? _value.currentStock
-          : currentStock // ignore: cast_nullable_to_non_nullable
-              as int,
-      selectedQuantity: selectedQuantity == freezed
-          ? _value.selectedQuantity
-          : selectedQuantity // ignore: cast_nullable_to_non_nullable
-              as int?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
       active: active == freezed
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
@@ -268,39 +244,31 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
       salePrice: salePrice == freezed
           ? _value.salePrice
           : salePrice // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as double,
       buyPrice: buyPrice == freezed
           ? _value.buyPrice
           : buyPrice // ignore: cast_nullable_to_non_nullable
-              as double?,
-      safetyStock: safetyStock == freezed
-          ? _value.safetyStock
-          : safetyStock // ignore: cast_nullable_to_non_nullable
+              as double,
+      currentStock: currentStock == freezed
+          ? _value.currentStock
+          : currentStock // ignore: cast_nullable_to_non_nullable
               as int,
-      isIncomingStock: isIncomingStock == freezed
-          ? _value.isIncomingStock
-          : isIncomingStock // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as ProductType?,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      safetyQuantity: safetyQuantity == freezed
+          ? _value.safetyQuantity
+          : safetyQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      category: category == freezed
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as ProductCategory?,
       expireDate: expireDate == freezed
           ? _value.expireDate
           : expireDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as int?,
       lastUpdatedAt: lastUpdatedAt == freezed
           ? _value.lastUpdatedAt
           : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -310,38 +278,31 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
 class _$_Product with DiagnosticableTreeMixin implements _Product {
   const _$_Product(
       {this.id,
+      required this.userId,
       required this.name,
-      this.currentStock = 0,
-      this.selectedQuantity,
+      this.image,
       this.active,
       this.description,
       this.unit,
-      this.salePrice,
-      this.buyPrice,
-      this.safetyStock = 0,
-      this.isIncomingStock,
-      this.type,
-      @ServerTimestampConverter() this.createdAt,
-      @ServerTimestampConverter() this.expireDate,
-      required this.lastUpdatedAt,
-      required this.userId});
+      this.salePrice = 0,
+      this.buyPrice = 0,
+      this.currentStock = 0,
+      this.safetyQuantity = 0,
+      this.category,
+      this.expireDate,
+      required this.lastUpdatedAt});
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
       _$$_ProductFromJson(json);
 
   @override
   final String? id;
-
-  /// This is the name of the product.
-  ///
-  /// It's required must not be null.
+  @override
+  final String userId;
   @override
   final String name;
   @override
-  @JsonKey()
-  final int currentStock;
-  @override
-  final int? selectedQuantity;
+  final String? image;
   @override
   final bool? active;
   @override
@@ -349,30 +310,27 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
   @override
   final String? unit;
   @override
-  final double? salePrice;
-  @override
-  final double? buyPrice;
+  @JsonKey()
+  final double salePrice;
   @override
   @JsonKey()
-  final int safetyStock;
+  final double buyPrice;
   @override
-  final bool? isIncomingStock;
+  @JsonKey()
+  final int currentStock;
   @override
-  final ProductType? type;
+  @JsonKey()
+  final int safetyQuantity;
   @override
-  @ServerTimestampConverter()
-  final DateTime? createdAt;
+  final ProductCategory? category;
   @override
-  @ServerTimestampConverter()
-  final DateTime? expireDate;
+  final int? expireDate;
   @override
   final int lastUpdatedAt;
-  @override
-  final String userId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Product(id: $id, name: $name, currentStock: $currentStock, selectedQuantity: $selectedQuantity, active: $active, description: $description, unit: $unit, salePrice: $salePrice, buyPrice: $buyPrice, safetyStock: $safetyStock, isIncomingStock: $isIncomingStock, type: $type, createdAt: $createdAt, expireDate: $expireDate, lastUpdatedAt: $lastUpdatedAt, userId: $userId)';
+    return 'Product(id: $id, userId: $userId, name: $name, image: $image, active: $active, description: $description, unit: $unit, salePrice: $salePrice, buyPrice: $buyPrice, currentStock: $currentStock, safetyQuantity: $safetyQuantity, category: $category, expireDate: $expireDate, lastUpdatedAt: $lastUpdatedAt)';
   }
 
   @override
@@ -381,21 +339,19 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
     properties
       ..add(DiagnosticsProperty('type', 'Product'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('currentStock', currentStock))
-      ..add(DiagnosticsProperty('selectedQuantity', selectedQuantity))
+      ..add(DiagnosticsProperty('image', image))
       ..add(DiagnosticsProperty('active', active))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('unit', unit))
       ..add(DiagnosticsProperty('salePrice', salePrice))
       ..add(DiagnosticsProperty('buyPrice', buyPrice))
-      ..add(DiagnosticsProperty('safetyStock', safetyStock))
-      ..add(DiagnosticsProperty('isIncomingStock', isIncomingStock))
-      ..add(DiagnosticsProperty('type', type))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('currentStock', currentStock))
+      ..add(DiagnosticsProperty('safetyQuantity', safetyQuantity))
+      ..add(DiagnosticsProperty('category', category))
       ..add(DiagnosticsProperty('expireDate', expireDate))
-      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
-      ..add(DiagnosticsProperty('userId', userId));
+      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt));
   }
 
   @override
@@ -404,11 +360,9 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
         (other.runtimeType == runtimeType &&
             other is _$_Product &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.currentStock, currentStock) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedQuantity, selectedQuantity) &&
+            const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.active, active) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
@@ -416,16 +370,14 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
             const DeepCollectionEquality().equals(other.salePrice, salePrice) &&
             const DeepCollectionEquality().equals(other.buyPrice, buyPrice) &&
             const DeepCollectionEquality()
-                .equals(other.safetyStock, safetyStock) &&
+                .equals(other.currentStock, currentStock) &&
             const DeepCollectionEquality()
-                .equals(other.isIncomingStock, isIncomingStock) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+                .equals(other.safetyQuantity, safetyQuantity) &&
+            const DeepCollectionEquality().equals(other.category, category) &&
             const DeepCollectionEquality()
                 .equals(other.expireDate, expireDate) &&
             const DeepCollectionEquality()
-                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
-            const DeepCollectionEquality().equals(other.userId, userId));
+                .equals(other.lastUpdatedAt, lastUpdatedAt));
   }
 
   @JsonKey(ignore: true)
@@ -433,21 +385,19 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(currentStock),
-      const DeepCollectionEquality().hash(selectedQuantity),
+      const DeepCollectionEquality().hash(image),
       const DeepCollectionEquality().hash(active),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(unit),
       const DeepCollectionEquality().hash(salePrice),
       const DeepCollectionEquality().hash(buyPrice),
-      const DeepCollectionEquality().hash(safetyStock),
-      const DeepCollectionEquality().hash(isIncomingStock),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(currentStock),
+      const DeepCollectionEquality().hash(safetyQuantity),
+      const DeepCollectionEquality().hash(category),
       const DeepCollectionEquality().hash(expireDate),
-      const DeepCollectionEquality().hash(lastUpdatedAt),
-      const DeepCollectionEquality().hash(userId));
+      const DeepCollectionEquality().hash(lastUpdatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -463,36 +413,30 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
 abstract class _Product implements Product {
   const factory _Product(
       {final String? id,
+      required final String userId,
       required final String name,
-      final int currentStock,
-      final int? selectedQuantity,
+      final String? image,
       final bool? active,
       final String? description,
       final String? unit,
-      final double? salePrice,
-      final double? buyPrice,
-      final int safetyStock,
-      final bool? isIncomingStock,
-      final ProductType? type,
-      @ServerTimestampConverter() final DateTime? createdAt,
-      @ServerTimestampConverter() final DateTime? expireDate,
-      required final int lastUpdatedAt,
-      required final String userId}) = _$_Product;
+      final double salePrice,
+      final double buyPrice,
+      final int currentStock,
+      final int safetyQuantity,
+      final ProductCategory? category,
+      final int? expireDate,
+      required final int lastUpdatedAt}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
   @override
   String? get id => throw _privateConstructorUsedError;
   @override
-
-  /// This is the name of the product.
-  ///
-  /// It's required must not be null.
+  String get userId => throw _privateConstructorUsedError;
+  @override
   String get name => throw _privateConstructorUsedError;
   @override
-  int get currentStock => throw _privateConstructorUsedError;
-  @override
-  int? get selectedQuantity => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
   @override
   bool? get active => throw _privateConstructorUsedError;
   @override
@@ -500,25 +444,19 @@ abstract class _Product implements Product {
   @override
   String? get unit => throw _privateConstructorUsedError;
   @override
-  double? get salePrice => throw _privateConstructorUsedError;
+  double get salePrice => throw _privateConstructorUsedError;
   @override
-  double? get buyPrice => throw _privateConstructorUsedError;
+  double get buyPrice => throw _privateConstructorUsedError;
   @override
-  int get safetyStock => throw _privateConstructorUsedError;
+  int get currentStock => throw _privateConstructorUsedError;
   @override
-  bool? get isIncomingStock => throw _privateConstructorUsedError;
+  int get safetyQuantity => throw _privateConstructorUsedError;
   @override
-  ProductType? get type => throw _privateConstructorUsedError;
+  ProductCategory? get category => throw _privateConstructorUsedError;
   @override
-  @ServerTimestampConverter()
-  DateTime? get createdAt => throw _privateConstructorUsedError;
-  @override
-  @ServerTimestampConverter()
-  DateTime? get expireDate => throw _privateConstructorUsedError;
+  int? get expireDate => throw _privateConstructorUsedError;
   @override
   int get lastUpdatedAt => throw _privateConstructorUsedError;
-  @override
-  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

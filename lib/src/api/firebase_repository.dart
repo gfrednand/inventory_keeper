@@ -198,9 +198,11 @@ class FireBaseRepository
       queryMap: <String, dynamic>{'parameter': docId},
       condition: QueryWhereCondition.isEqualTo,
     );
-    return snapRef.snapshots().map((snapshot) => snapshot.docs.isNotEmpty
-        ? (snapshot.docs.first.data() as Map<String, dynamic>?)
-        : null);
+    return snapRef.snapshots().map(
+          (snapshot) => snapshot.docs.isNotEmpty
+              ? (snapshot.docs.first.data() as Map<String, dynamic>?)
+              : null,
+        );
   }
 
   ///

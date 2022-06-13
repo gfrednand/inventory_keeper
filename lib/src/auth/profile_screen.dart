@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inventory_keeper/src/controllers/auth_controller.dart';
-import 'package:inventory_keeper/src/controllers/profile_controller.dart';
+import 'package:inventory_keeper/src/controllers/partner_controller.dart';
+import 'package:inventory_keeper/src/controllers/user_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
+import 'package:inventory_keeper/src/models/partner/partner.dart';
+import 'package:inventory_keeper/src/partner/partner_list_view.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/app_logout_menu.dart';
 
@@ -21,8 +25,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final ProfileController profileController = Get.put(ProfileController());
+  final UserController profileController = Get.put(UserController());
   final AuthController authController = Get.find<AuthController>();
+  final PartnerController partnerController = Get.find<PartnerController>();
 
   @override
   void initState() {
@@ -32,14 +37,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProfileController>(
-        init: ProfileController(),
+    return GetBuilder<UserController>(
+        init: UserController(),
         builder: (controller) {
-          if (controller.user.isEmpty) {
+          if (controller.user == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
+
+          final photoUrl = '${controller.user!.photoUrl}';
           return Scaffold(
             appBar: AppBar(
               elevation: 0,
@@ -83,8 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ClipOval(
                                           child: CachedNetworkImage(
                                             fit: BoxFit.cover,
-                                            imageUrl:
-                                                '${controller.user['profilePhoto']}',
+                                            imageUrl: photoUrl,
                                             height: 100,
                                             width: 100,
                                             placeholder: (context, url) =>
@@ -121,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '${controller.user['name']}',
+                                        controller.user!.fullname,
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       const SizedBox(
@@ -266,59 +272,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(
                             height: 16,
                           ),
-                          HomeItemContainer(
-                            label: 'Paterner Settings',
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  onTap: () {
-                                    // Get.find<AuthController>().signOut();
-                                  },
-                                  title: const Text('Supplier'),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Text(
-                                        '0 supplier',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 14,
-                                      )
-                                    ],
+                          GetBuilder<PartnerController>(builder: (cont) {
+                            final suppliersCount = partnerController.partners
+                                .where(
+                                  (p) => p.type == PartnerType.supplier,
+                                )
+                                .length;
+                            final vendorsCount = partnerController.partners
+                                .where(
+                                  (p) => p.type == PartnerType.vendor,
+                                )
+                                .length;
+                            return HomeItemContainer(
+                              label: 'Partner Settings',
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    onTap: () {
+                                      Get.to<void>(
+                                        () => const PartnerListView(
+                                          type: PartnerType.supplier,
+                                        ),
+                                      );
+                                    },
+                                    title: const Text('Supplier'),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '$suppliersCount supplier',
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 14,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                ListTile(
-                                  onTap: () {
-                                    // Get.find<AuthController>().signOut();
-                                  },
-                                  title: const Text('Vendor'),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Text(
-                                        '0 vendor',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 14,
-                                      )
-                                    ],
+                                  ListTile(
+                                    onTap: () {
+                                      Get.to<void>(
+                                        () => const PartnerListView(
+                                          type: PartnerType.vendor,
+                                        ),
+                                      );
+                                    },
+                                    title: const Text('Vendor'),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '$vendorsCount vendor',
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 14,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                ],
+                              ),
+                            );
+                          }),
                           const SizedBox(
                             height: 10,
                           ),

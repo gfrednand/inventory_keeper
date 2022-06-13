@@ -152,8 +152,7 @@ class StockInOutContainer extends StatelessWidget {
                 : transactionType == TransactionType.outStock
                     ? product?.salePrice
                     : 0,
-            id: product!.id ?? '',
-            name: product!.name,
+            productId: product?.id ?? '',
             quantity: quantity,
             auditedQuantity: auditedQuantity,
             currentStock: currentStock,

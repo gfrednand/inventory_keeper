@@ -9,33 +9,39 @@ part of 'product_transaction.dart';
 _$_ProductTransaction _$$_ProductTransactionFromJson(
         Map<String, dynamic> json) =>
     _$_ProductTransaction(
+      id: json['id'] as String?,
+      userId: json['userId'] as String,
+      isPastTransaction: json['isPastTransaction'] as bool? ?? false,
       transactionType:
           $enumDecode(_$TransactionTypeEnumMap, json['transactionType']),
       totalAmount: (json['totalAmount'] as num).toDouble(),
       totalQuantity: json['totalQuantity'] as int,
-      totalAuditedQuantity: json['totalAuditedQuantity'] as int,
+      totalAuditQuantity: json['totalAuditQuantity'] as int? ?? 0,
       partner: json['partner'] == null
           ? null
           : Partner.fromJson(json['partner'] as Map<String, dynamic>),
-      lastUpdatedAt: json['lastUpdatedAt'] as int,
-      userId: json['userId'] as String,
       productsSummary: (json['productsSummary'] as List<dynamic>)
           .map(
               (dynamic e) => ProductSummary.fromJson(e as Map<String, dynamic>))
           .toList(),
+      lastUpdatedAt: json['lastUpdatedAt'] as int,
+      transactionDate: json['transactionDate'] as int?,
     );
 
 Map<String, dynamic> _$$_ProductTransactionToJson(
         _$_ProductTransaction instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'userId': instance.userId,
+      'isPastTransaction': instance.isPastTransaction,
       'transactionType': _$TransactionTypeEnumMap[instance.transactionType],
       'totalAmount': instance.totalAmount,
       'totalQuantity': instance.totalQuantity,
-      'totalAuditedQuantity': instance.totalAuditedQuantity,
+      'totalAuditQuantity': instance.totalAuditQuantity,
       'partner': instance.partner,
-      'lastUpdatedAt': instance.lastUpdatedAt,
-      'userId': instance.userId,
       'productsSummary': instance.productsSummary,
+      'lastUpdatedAt': instance.lastUpdatedAt,
+      'transactionDate': instance.transactionDate,
     };
 
 const _$TransactionTypeEnumMap = {

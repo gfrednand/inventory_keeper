@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/partner_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
 import 'package:inventory_keeper/src/models/partner/partner.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/partner/partner_list_view.dart';
@@ -27,7 +28,7 @@ class AddPastTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
-    final transactionController = Get.put(TransactionController());
+    final transactionController = ProductTransactionController.instance;
     final partnerController = Get.put(PartnerController());
 
     var titleLabel = '';
@@ -92,7 +93,7 @@ class AddPastTransaction extends StatelessWidget {
                       SectionDivider(
                         color: color,
                       ),
-                      GetBuilder<TransactionController>(builder: (cont) {
+                      GetBuilder<ProductTransactionController>(builder: (cont) {
                         final dateLabel = dateFormat(
                             transactionController.pastTransactionDate);
                         return ListTile(
@@ -190,8 +191,8 @@ class AddPastTransaction extends StatelessWidget {
                               selectedQuantity = selectedQuantity * -1;
                             }
 
-                            final prod =
-                                cartController.products.firstWhereOrNull(
+                            final prod = ProductController.instance.products
+                                .firstWhereOrNull(
                               (element) => element.id == cartProducts[index].id,
                             );
                             return ProductItem(
@@ -246,7 +247,7 @@ class AddPastTransaction extends StatelessWidget {
                       );
                     } else {
                       if (cartController.items.isNotEmpty) {
-                        await Get.find<TransactionController>().addTransaction(
+                        await transactionController.addTransaction(
                             cartController: cartController,
                             transactionType: transactionType,
                             transactionDate:

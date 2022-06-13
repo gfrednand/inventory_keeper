@@ -20,15 +20,13 @@ ProductSummary _$ProductSummaryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProductSummary {
-  bool? get active => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String get productId => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   int get auditedQuantity => throw _privateConstructorUsedError;
   int get currentStock => throw _privateConstructorUsedError;
-  double? get amount => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
   int get lastUpdatedAt => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,15 +40,13 @@ abstract class $ProductSummaryCopyWith<$Res> {
           ProductSummary value, $Res Function(ProductSummary) then) =
       _$ProductSummaryCopyWithImpl<$Res>;
   $Res call(
-      {bool? active,
-      String id,
-      String name,
+      {String? id,
+      String productId,
       int quantity,
       int auditedQuantity,
       int currentStock,
-      double? amount,
-      int lastUpdatedAt,
-      String userId});
+      double amount,
+      int lastUpdatedAt});
 }
 
 /// @nodoc
@@ -64,28 +60,22 @@ class _$ProductSummaryCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? active = freezed,
     Object? id = freezed,
-    Object? name = freezed,
+    Object? productId = freezed,
     Object? quantity = freezed,
     Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
     Object? amount = freezed,
     Object? lastUpdatedAt = freezed,
-    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
-      active: active == freezed
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool?,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productId: productId == freezed
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -102,15 +92,11 @@ class _$ProductSummaryCopyWithImpl<$Res>
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as double,
       lastUpdatedAt: lastUpdatedAt == freezed
           ? _value.lastUpdatedAt
           : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -123,15 +109,13 @@ abstract class _$$_ProductSummaryCopyWith<$Res>
       __$$_ProductSummaryCopyWithImpl<$Res>;
   @override
   $Res call(
-      {bool? active,
-      String id,
-      String name,
+      {String? id,
+      String productId,
       int quantity,
       int auditedQuantity,
       int currentStock,
-      double? amount,
-      int lastUpdatedAt,
-      String userId});
+      double amount,
+      int lastUpdatedAt});
 }
 
 /// @nodoc
@@ -147,28 +131,22 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? active = freezed,
     Object? id = freezed,
-    Object? name = freezed,
+    Object? productId = freezed,
     Object? quantity = freezed,
     Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
     Object? amount = freezed,
     Object? lastUpdatedAt = freezed,
-    Object? userId = freezed,
   }) {
     return _then(_$_ProductSummary(
-      active: active == freezed
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool?,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productId: productId == freezed
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -185,15 +163,11 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as double,
       lastUpdatedAt: lastUpdatedAt == freezed
           ? _value.lastUpdatedAt
           : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -204,41 +178,39 @@ class _$_ProductSummary
     with DiagnosticableTreeMixin
     implements _ProductSummary {
   const _$_ProductSummary(
-      {this.active,
-      required this.id,
-      required this.name,
-      required this.quantity,
-      required this.auditedQuantity,
-      required this.currentStock,
-      this.amount,
-      required this.lastUpdatedAt,
-      required this.userId});
+      {this.id,
+      required this.productId,
+      this.quantity = 0,
+      this.auditedQuantity = 0,
+      this.currentStock = 0,
+      this.amount = 0,
+      required this.lastUpdatedAt});
 
   factory _$_ProductSummary.fromJson(Map<String, dynamic> json) =>
       _$$_ProductSummaryFromJson(json);
 
   @override
-  final bool? active;
+  final String? id;
   @override
-  final String id;
+  final String productId;
   @override
-  final String name;
-  @override
+  @JsonKey()
   final int quantity;
   @override
+  @JsonKey()
   final int auditedQuantity;
   @override
+  @JsonKey()
   final int currentStock;
   @override
-  final double? amount;
+  @JsonKey()
+  final double amount;
   @override
   final int lastUpdatedAt;
-  @override
-  final String userId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductSummary(active: $active, id: $id, name: $name, quantity: $quantity, auditedQuantity: $auditedQuantity, currentStock: $currentStock, amount: $amount, lastUpdatedAt: $lastUpdatedAt, userId: $userId)';
+    return 'ProductSummary(id: $id, productId: $productId, quantity: $quantity, auditedQuantity: $auditedQuantity, currentStock: $currentStock, amount: $amount, lastUpdatedAt: $lastUpdatedAt)';
   }
 
   @override
@@ -246,15 +218,13 @@ class _$_ProductSummary
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ProductSummary'))
-      ..add(DiagnosticsProperty('active', active))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('productId', productId))
       ..add(DiagnosticsProperty('quantity', quantity))
       ..add(DiagnosticsProperty('auditedQuantity', auditedQuantity))
       ..add(DiagnosticsProperty('currentStock', currentStock))
       ..add(DiagnosticsProperty('amount', amount))
-      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
-      ..add(DiagnosticsProperty('userId', userId));
+      ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt));
   }
 
   @override
@@ -262,9 +232,8 @@ class _$_ProductSummary
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProductSummary &&
-            const DeepCollectionEquality().equals(other.active, active) &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.productId, productId) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality()
                 .equals(other.auditedQuantity, auditedQuantity) &&
@@ -272,23 +241,20 @@ class _$_ProductSummary
                 .equals(other.currentStock, currentStock) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
             const DeepCollectionEquality()
-                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
-            const DeepCollectionEquality().equals(other.userId, userId));
+                .equals(other.lastUpdatedAt, lastUpdatedAt));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(active),
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(productId),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(auditedQuantity),
       const DeepCollectionEquality().hash(currentStock),
       const DeepCollectionEquality().hash(amount),
-      const DeepCollectionEquality().hash(lastUpdatedAt),
-      const DeepCollectionEquality().hash(userId));
+      const DeepCollectionEquality().hash(lastUpdatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -303,25 +269,21 @@ class _$_ProductSummary
 
 abstract class _ProductSummary implements ProductSummary {
   const factory _ProductSummary(
-      {final bool? active,
-      required final String id,
-      required final String name,
-      required final int quantity,
-      required final int auditedQuantity,
-      required final int currentStock,
-      final double? amount,
-      required final int lastUpdatedAt,
-      required final String userId}) = _$_ProductSummary;
+      {final String? id,
+      required final String productId,
+      final int quantity,
+      final int auditedQuantity,
+      final int currentStock,
+      final double amount,
+      required final int lastUpdatedAt}) = _$_ProductSummary;
 
   factory _ProductSummary.fromJson(Map<String, dynamic> json) =
       _$_ProductSummary.fromJson;
 
   @override
-  bool? get active => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   @override
-  String get id => throw _privateConstructorUsedError;
-  @override
-  String get name => throw _privateConstructorUsedError;
+  String get productId => throw _privateConstructorUsedError;
   @override
   int get quantity => throw _privateConstructorUsedError;
   @override
@@ -329,11 +291,9 @@ abstract class _ProductSummary implements ProductSummary {
   @override
   int get currentStock => throw _privateConstructorUsedError;
   @override
-  double? get amount => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
   @override
   int get lastUpdatedAt => throw _privateConstructorUsedError;
-  @override
-  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ProductSummaryCopyWith<_$_ProductSummary> get copyWith =>

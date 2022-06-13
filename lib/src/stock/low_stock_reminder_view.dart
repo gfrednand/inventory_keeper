@@ -56,10 +56,10 @@ class LowStockReminderView extends StatelessWidget {
       ),
       body: GetBuilder<ProductController>(builder: (cont) {
         final products = productController.products
-            .where((p) => p.safetyStock > p.currentStock)
+            .where((p) => p.safetyQuantity > p.currentStock)
             .toList();
         final excessProducts = productController.products
-            .where((p) => p.currentStock > (p.safetyStock + excessFactor))
+            .where((p) => p.currentStock > (p.safetyQuantity + excessFactor))
             .toList();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +81,7 @@ class LowStockReminderView extends StatelessWidget {
                                 StockQuantityField(
                                   productName: item.name,
                                   title: 'Safety Stock',
-                                  counter: item.safetyStock,
+                                  counter: item.safetyQuantity,
                                   transactionType: TransactionType.all,
                                 ),
                               ).then((map) {
@@ -145,7 +145,7 @@ class LowStockReminderView extends StatelessWidget {
             children: [
               CurrentStockQuantity(
                 backGroundColor: Colors.green,
-                currentStock: products[index].safetyStock,
+                currentStock: products[index].safetyQuantity,
                 withBackground: true,
                 fontSize: 16,
               ),

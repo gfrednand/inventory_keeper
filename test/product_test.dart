@@ -28,8 +28,7 @@ Future<void> main() async {
     expect(product.buyPrice, 500);
     expect(product.salePrice, 800);
     expect(product.currentStock, 9);
-    expect(product.safetyStock, 0);
-    expect(product.isIncomingStock, null);
+    expect(product.safetyQuantity, 0);
     // expect(product.createdAt, DateTime.now());
   });
 

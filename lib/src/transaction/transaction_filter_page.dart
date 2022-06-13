@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
+import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
@@ -12,7 +12,7 @@ class TransactionFilterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactionController = Get.find<TransactionController>();
+    final transactionController = ProductTransactionController.instance;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -96,8 +96,8 @@ class TransactionFilterPage extends StatelessWidget {
   }
 
   ///
-  Widget getChipFilter(TransactionController transactionController) {
-    return GetBuilder<TransactionController>(
+  Widget getChipFilter(ProductTransactionController transactionController) {
+    return GetBuilder<ProductTransactionController>(
       builder: (cont) {
         final chips = [
           FilterChip(
@@ -163,10 +163,10 @@ class TransactionFilterPage extends StatelessWidget {
   ///Filter title
   Widget getFilterTitle(
     String title,
-    TransactionController transactionController, {
+    ProductTransactionController transactionController, {
     bool showSwitch = false,
   }) {
-    return GetBuilder<TransactionController>(
+    return GetBuilder<ProductTransactionController>(
       builder: (cont) {
         return Padding(
           padding: const EdgeInsets.only(top: 20, left: 10, right: 5),
@@ -196,9 +196,9 @@ class TransactionFilterPage extends StatelessWidget {
   /// Date range picker
   Widget getDateRangePicker(
     BuildContext context,
-    TransactionController transactionController,
+    ProductTransactionController transactionController,
   ) {
-    return GetBuilder<TransactionController>(
+    return GetBuilder<ProductTransactionController>(
       builder: (cont) {
         return SizedBox(
           height: 60,
