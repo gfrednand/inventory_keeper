@@ -15,12 +15,74 @@ admin.initializeApp();
 // Cloud function to be triggered when doc is created inside a transaction/{transactionId}
 //and call updateTransactionSummary() method
 
-exports.createTransactions = functions.firestore.document('transactions/{transactionId}').onCreate((_, __) => updateTransactionSummary());
+exports.createTransactions = functions.firestore.document('transactions/{transactionId}').onCreate((_, __) => createTransaction());
+exports.createTeam = functions.firestore.document('teams/{teamId}').onCreate((snapshot, context) => createTeam(snapshot));
+exports.createteamSettingsLastUpdate = functions.firestore.document('teams/{teamId}/teamSettings/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'teamSettingsLastUpdate');
+});
+
+exports.createusersLastUpdate = functions.firestore.document('users/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    if (doc.selectedTeamId) {
+        await updateAt(doc.selectedTeamId, doc.lastUpdatedAt, 'usersLastUpdate');
+    }
+});
+exports.createrolesLastUpdate = functions.firestore.document('teams/{teamId}/roles/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'rolesLastUpdate');
+});
+exports.createpermissionsLastUpdate = functions.firestore.document('teams/{teamId}/permissions/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'permissionsLastUpdate');
+});
+exports.createproductsLastUpdate = functions.firestore.document('teams/{teamId}/products/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'productsLastUpdate');
+});
+exports.createstockSummariesLastUpdate = functions.firestore.document('teams/{teamId}/stockSummaries/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'stockSummariesLastUpdate');
+});
+exports.createproductTransactionsLastUpdate = functions.firestore.document('teams/{teamId}/productTransactions/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'productTransactionsLastUpdate');
+});
+exports.createpartnersLastUpdate = functions.firestore.document('teams/{teamId}/partners/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'partnersLastUpdate');
+});
+exports.createcategoriesLastUpdate = functions.firestore.document('teams/{teamId}/categories/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'categoriesLastUpdate');
+});
+exports.createproductsSummaryLastUpdate = functions.firestore.document('teams/{teamId}/productsSummary/{id}').onWrite(async (change, context) => {
+    const doc: any = change.after.data();
+    await updateAt(doc.teamId, doc.lastUpdatedAt, 'productsSummaryLastUpdate');
+});
+
+
+async function createTeam(snapshot: functions.firestore.QueryDocumentSnapshot) {
+    const firestore = admin.firestore();
+
+    const doc: any = snapshot.data();
+
+
+
+    await firestore.collection(`users`).doc(doc.userId).update({ 'teams': [snapshot.id], 'selectedTeamId': snapshot.id });
+
+    await updateAt(snapshot.id, doc.lastUpdatedAt, 'teamsLastUpdate');
+}
+
+async function updateAt(teamId: string, lastUpdatedAt: number, updateField: string) {
+    const firestore = admin.firestore();
+    await firestore.collection('teams').doc(teamId).collection('updatedAt').doc('latest').set({ [updateField]: lastUpdatedAt }, { merge: true })
+}
 
 
 // Where all business logic go
 
-async function updateTransactionSummary() {
+async function createTransaction() {
 
 
     // setup initial data

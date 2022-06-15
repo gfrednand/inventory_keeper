@@ -25,7 +25,7 @@ class _LayoutPageState extends State<LayoutPage> {
     const HomePage(),
     const ProductListView(),
     const TransactionPage(),
-    const ProfileScreen()
+    ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {

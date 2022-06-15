@@ -13,6 +13,7 @@ part 'team_settings.g.dart';
 abstract class TeamSettings with _$TeamSettings {
   const factory TeamSettings({
     String? currency,
+    required String teamId,
     @Default(true) bool isSoundOn,
     String? appVersion,
   }) = _TeamSettings;

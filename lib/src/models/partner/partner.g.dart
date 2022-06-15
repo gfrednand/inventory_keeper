@@ -10,6 +10,7 @@ _$_Partner _$$_PartnerFromJson(Map<String, dynamic> json) => _$_Partner(
       id: json['id'] as String?,
       name: json['name'] as String,
       userId: json['userId'] as String,
+      teamId: json['teamId'] as String,
       type: $enumDecode(_$PartnerTypeEnumMap, json['type']),
       lastUpdatedAt: json['lastUpdatedAt'] as int,
     );
@@ -19,6 +20,7 @@ Map<String, dynamic> _$$_PartnerToJson(_$_Partner instance) =>
       'id': instance.id,
       'name': instance.name,
       'userId': instance.userId,
+      'teamId': instance.teamId,
       'type': _$PartnerTypeEnumMap[instance.type],
       'lastUpdatedAt': instance.lastUpdatedAt,
     };

@@ -25,6 +25,7 @@ abstract class Partner with _$Partner {
     String? id,
     required String name,
     required String userId,
+    required String teamId,
     required PartnerType type,
     required int lastUpdatedAt,
   }) = _Partner;

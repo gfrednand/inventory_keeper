@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:inventory_keeper/src/auth/login_screen.dart';
 import 'package:inventory_keeper/src/auth/phone_number_field_page.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/controllers/partner_controller.dart';
@@ -17,7 +16,6 @@ import 'package:inventory_keeper/src/controllers/team_controller.dart';
 import 'package:inventory_keeper/src/controllers/team_settings_controller.dart';
 import 'package:inventory_keeper/src/controllers/user_controller.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
-import 'package:inventory_keeper/src/models/team/team.dart';
 import 'package:inventory_keeper/src/models/updatedAt/updated_at.dart';
 import 'package:inventory_keeper/src/models/user/user.dart' as model;
 import 'package:inventory_keeper/src/team/team_initial_page.dart';
@@ -47,22 +45,22 @@ class AuthController extends BaseController {
   void checkUpdatedValue(UpdatedAt? updatedAt) {
     if (updatedAt != null) {
       TeamSettingsController.instance.lastUpdatedAt =
-          updatedAt.settingsLastUpdate;
+          updatedAt.teamSettingsLastUpdate;
       UserController.instance.lastUpdatedAt = updatedAt.usersLastUpdate;
       RoleController.instance.lastUpdatedAt = updatedAt.rolesLastUpdate;
       // ProductController.instance.lastUpdatedAt =
       //     updatedAt.permissionsLastUpdate;
       ProductController.instance.lastUpdatedAt = updatedAt.productsLastUpdate;
       StockSummaryController.instance.lastUpdatedAt =
-          updatedAt.stockSummaryLastUpdate;
+          updatedAt.stockSummariesLastUpdate;
       ProductTransactionController.instance.lastUpdatedAt =
           updatedAt.productTransactionsLastUpdate;
-      PartnerController.instance.lastUpdatedAt = updatedAt.partnerLastUpdate;
+      PartnerController.instance.lastUpdatedAt = updatedAt.partnersLastUpdate;
       ProductCategoryController.instance.lastUpdatedAt =
-          updatedAt.categoryLastUpdate;
+          updatedAt.categoriesLastUpdate;
       ProductSummaryController.instance.lastUpdatedAt =
           updatedAt.productsSummaryLastUpdate;
-      TeamController.instance.lastUpdatedAt = updatedAt.teamLastUpdate;
+      TeamController.instance.lastUpdatedAt = updatedAt.teamsLastUpdate;
     }
   }
 
@@ -71,32 +69,38 @@ class AuthController extends BaseController {
     super.onReady();
     _authUser = Rx<User?>(firebaseAuth.currentUser);
     _authUser.bindStream(firebaseAuth.authStateChanges());
-    ever(_authUser, _setInitialScreen);
     ever(updatedAtRx, checkUpdatedValue);
-    updatedAtRx.bindStream(
-      updatedAtCollectionRef.snapshots().map(
-        (snapshot) {
-          return snapshot.docs.isNotEmpty
-              ? UpdatedAt.fromJson(
-                  snapshot.docs.first.data()! as Map<String, dynamic>,
-                )
-              : null;
-        },
-      ),
-    );
+    if (teamId != null) {
+      updatedAtRx.bindStream(
+        updatedAtCollectionRef(teamId!)
+            .doc('latest')
+            .snapshots()
+            .map<UpdatedAt?>(
+              (snapshot) => snapshot.data() != null
+                  ? UpdatedAt.fromJson(snapshot.data()! as Map<String, dynamic>)
+                  : null,
+            ),
+      );
+    }
+    ever(_authUser, _setInitialScreen);
   }
 
-  void _setInitialScreen(User? user) {
-    if (user == null) {
+  void _setInitialScreen(User? authUser) {
+    if (authUser == null) {
       Get.offAll<void>(PhoneNumberFieldPage.new);
     } else {
+      box.write('loggedInUserId', authUser.uid);
+
       final teams = TeamController.instance.teams;
       final user = UserController.instance.user;
+
+      print('OOOOP ${teams?.length}');
+      print('USER ${user?.toJson()}');
 
       final dooesUserHaveTeam = user != null &&
           teams != null &&
           teams.firstWhereOrNull(
-                (team) => team.id != user.selectedTeamUid,
+                (team) => team.id == user.selectedTeamId,
               ) !=
               null;
       if (dooesUserHaveTeam) {

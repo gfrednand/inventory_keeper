@@ -13,6 +13,7 @@ import 'package:inventory_keeper/src/models/stock_summary/stock_summary.dart';
 /// Initial Stck Summary
 ///
 StockSummary initiaStock = const StockSummary(
+    teamId: '',
     totalSale: 0,
     productsSummary: [],
     totalAmount: 0,

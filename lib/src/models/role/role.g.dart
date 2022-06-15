@@ -8,6 +8,7 @@ part of 'role.dart';
 
 _$_Role _$$_RoleFromJson(Map<String, dynamic> json) => _$_Role(
       id: json['id'] as String?,
+      teamId: json['teamId'] as String,
       name: json['name'] as String,
       lastUpdatedAt: json['lastUpdatedAt'] as int,
       permissions: (json['permissions'] as List<dynamic>)
@@ -17,6 +18,7 @@ _$_Role _$$_RoleFromJson(Map<String, dynamic> json) => _$_Role(
 
 Map<String, dynamic> _$$_RoleToJson(_$_Role instance) => <String, dynamic>{
       'id': instance.id,
+      'teamId': instance.teamId,
       'name': instance.name,
       'lastUpdatedAt': instance.lastUpdatedAt,
       'permissions': instance.permissions,

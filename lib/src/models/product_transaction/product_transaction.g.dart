@@ -11,6 +11,7 @@ _$_ProductTransaction _$$_ProductTransactionFromJson(
     _$_ProductTransaction(
       id: json['id'] as String?,
       userId: json['userId'] as String,
+      teamId: json['teamId'] as String,
       isPastTransaction: json['isPastTransaction'] as bool? ?? false,
       transactionType:
           $enumDecode(_$TransactionTypeEnumMap, json['transactionType']),
@@ -33,6 +34,7 @@ Map<String, dynamic> _$$_ProductTransactionToJson(
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
+      'teamId': instance.teamId,
       'isPastTransaction': instance.isPastTransaction,
       'transactionType': _$TransactionTypeEnumMap[instance.transactionType],
       'totalAmount': instance.totalAmount,

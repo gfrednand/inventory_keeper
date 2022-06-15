@@ -30,6 +30,7 @@ abstract class ProductTransaction with _$ProductTransaction {
   const factory ProductTransaction({
     String? id,
     required String userId,
+    required String teamId,
     @Default(false) bool isPastTransaction,
     required TransactionType transactionType,
     required double totalAmount,

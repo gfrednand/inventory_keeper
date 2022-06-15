@@ -9,9 +9,9 @@ part of 'user.dart';
 _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       id: json['id'] as String?,
       uid: json['uid'] as String,
-      selectedTeamUid: json['selectedTeamUid'] as String?,
+      selectedTeamId: json['selectedTeamId'] as String?,
       teams: (json['teams'] as List<dynamic>?)
-          ?.map((dynamic e) => Team.fromJson(e as Map<String, dynamic>))
+          ?.map((dynamic e) => e as String)
           .toList(),
       fullname: json['fullname'] as String,
       phoneNumber: json['phoneNumber'] as String,
@@ -26,7 +26,7 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'id': instance.id,
       'uid': instance.uid,
-      'selectedTeamUid': instance.selectedTeamUid,
+      'selectedTeamId': instance.selectedTeamId,
       'teams': instance.teams,
       'fullname': instance.fullname,
       'phoneNumber': instance.phoneNumber,

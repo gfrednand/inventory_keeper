@@ -9,6 +9,7 @@ part of 'team_settings.dart';
 _$_TeamSettings _$$_TeamSettingsFromJson(Map<String, dynamic> json) =>
     _$_TeamSettings(
       currency: json['currency'] as String?,
+      teamId: json['teamId'] as String,
       isSoundOn: json['isSoundOn'] as bool? ?? true,
       appVersion: json['appVersion'] as String?,
     );
@@ -16,6 +17,7 @@ _$_TeamSettings _$$_TeamSettingsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_TeamSettingsToJson(_$_TeamSettings instance) =>
     <String, dynamic>{
       'currency': instance.currency,
+      'teamId': instance.teamId,
       'isSoundOn': instance.isSoundOn,
       'appVersion': instance.appVersion,
     };

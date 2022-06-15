@@ -22,6 +22,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 mixin _$Product {
   String? get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   bool? get active => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $ProductCopyWith<$Res> {
   $Res call(
       {String? id,
       String userId,
+      String teamId,
       String name,
       String? image,
       bool? active,
@@ -75,6 +77,7 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
+    Object? teamId = freezed,
     Object? name = freezed,
     Object? image = freezed,
     Object? active = freezed,
@@ -96,6 +99,10 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       name: name == freezed
           ? _value.name
@@ -169,6 +176,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   $Res call(
       {String? id,
       String userId,
+      String teamId,
       String name,
       String? image,
       bool? active,
@@ -199,6 +207,7 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
+    Object? teamId = freezed,
     Object? name = freezed,
     Object? image = freezed,
     Object? active = freezed,
@@ -220,6 +229,10 @@ class __$$_ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       name: name == freezed
           ? _value.name
@@ -279,6 +292,7 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
   const _$_Product(
       {this.id,
       required this.userId,
+      required this.teamId,
       required this.name,
       this.image,
       this.active,
@@ -299,6 +313,8 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
   final String? id;
   @override
   final String userId;
+  @override
+  final String teamId;
   @override
   final String name;
   @override
@@ -330,7 +346,7 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Product(id: $id, userId: $userId, name: $name, image: $image, active: $active, description: $description, unit: $unit, salePrice: $salePrice, buyPrice: $buyPrice, currentStock: $currentStock, safetyQuantity: $safetyQuantity, category: $category, expireDate: $expireDate, lastUpdatedAt: $lastUpdatedAt)';
+    return 'Product(id: $id, userId: $userId, teamId: $teamId, name: $name, image: $image, active: $active, description: $description, unit: $unit, salePrice: $salePrice, buyPrice: $buyPrice, currentStock: $currentStock, safetyQuantity: $safetyQuantity, category: $category, expireDate: $expireDate, lastUpdatedAt: $lastUpdatedAt)';
   }
 
   @override
@@ -340,6 +356,7 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
       ..add(DiagnosticsProperty('type', 'Product'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('image', image))
       ..add(DiagnosticsProperty('active', active))
@@ -361,6 +378,7 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
             other is _$_Product &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.active, active) &&
@@ -386,6 +404,7 @@ class _$_Product with DiagnosticableTreeMixin implements _Product {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(image),
       const DeepCollectionEquality().hash(active),
@@ -414,6 +433,7 @@ abstract class _Product implements Product {
   const factory _Product(
       {final String? id,
       required final String userId,
+      required final String teamId,
       required final String name,
       final String? image,
       final bool? active,
@@ -433,6 +453,8 @@ abstract class _Product implements Product {
   String? get id => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   String get name => throw _privateConstructorUsedError;
   @override

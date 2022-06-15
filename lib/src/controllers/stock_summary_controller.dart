@@ -37,29 +37,31 @@ class StockSummaryController extends BaseController {
 
   /// Future Items
   Future<void> fetchItems({int? lastUpdatedAt}) async {
-    busy = true;
-    QuerySnapshot? snapshot;
-    if (lastUpdatedAt != null) {
-      snapshot = await stockSummaryCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapshot = await stockSummaryCollectionRef.get();
-    }
-
-    final objs = <StockSummary>[];
-    for (final doc in snapshot.docs) {
-      if (doc.data() != null) {
-        // ignore: cast_nullable_to_non_nullable
-        final json = doc.data() as Map<String, dynamic>;
-        json['id'] = doc.id;
-        objs.add(StockSummary.fromJson(json));
+    if (teamId != null) {
+      busy = true;
+      QuerySnapshot? snapshot;
+      if (lastUpdatedAt != null) {
+        snapshot = await stockSummaryCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapshot = await stockSummaryCollectionRef(teamId!).get();
       }
+
+      final objs = <StockSummary>[];
+      for (final doc in snapshot.docs) {
+        if (doc.data() != null) {
+          // ignore: cast_nullable_to_non_nullable
+          final json = doc.data() as Map<String, dynamic>;
+          json['id'] = doc.id;
+          objs.add(StockSummary.fromJson(json));
+        }
+      }
+      _stockSummaries = objs;
+      if (objs.isNotEmpty) {
+        _stockSummary = objs[0];
+      }
+      busy = false;
     }
-    _stockSummaries = objs;
-    if (objs.isNotEmpty) {
-      _stockSummary = objs[0];
-    }
-    busy = false;
   }
 }

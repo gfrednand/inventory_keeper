@@ -24,6 +24,7 @@ abstract class Team with _$Team {
     String? id,
     required String name,
     required int lastUpdatedAt,
+    required String userId,
     // UpdatedAt? updatedAt,
     // TeamSettings? teamSettings,
     // List<Product>? products,

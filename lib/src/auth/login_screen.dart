@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/auth_controller.dart';
+import 'package:inventory_keeper/src/controllers/user_controller.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
+import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 
 /// Login Screen
 class LoginScreen extends StatelessWidget {
@@ -31,15 +33,27 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              'Hello Human, Password Pleaaaase',
-              style: TextStyle(
+            Text(
+              'Hello ${UserController.instance.user?.fullname ?? ''}',
+              style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(
               height: 25,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: CustomFormField(
+                controller: _passwordController,
+                isObscure: true,
+                focusNode: FocusNode(),
+                inputAction: TextInputAction.done,
+                keyboardType: TextInputType.visiblePassword,
+                label: 'Password',
+              ),
             ),
             const SizedBox(
               height: 25,

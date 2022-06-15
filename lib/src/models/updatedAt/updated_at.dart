@@ -12,17 +12,17 @@ part 'updated_at.g.dart';
 @freezed
 abstract class UpdatedAt with _$UpdatedAt {
   const factory UpdatedAt({
-    @Default(0) int settingsLastUpdate,
+    @Default(0) int teamSettingsLastUpdate,
     @Default(0) int usersLastUpdate,
     @Default(0) int rolesLastUpdate,
     @Default(0) int permissionsLastUpdate,
     @Default(0) int productsLastUpdate,
-    @Default(0) int stockSummaryLastUpdate,
+    @Default(0) int stockSummariesLastUpdate,
     @Default(0) int productTransactionsLastUpdate,
-    @Default(0) int partnerLastUpdate,
-    @Default(0) int categoryLastUpdate,
+    @Default(0) int partnersLastUpdate,
+    @Default(0) int categoriesLastUpdate,
     @Default(0) int productsSummaryLastUpdate,
-    @Default(0) int teamLastUpdate,
+    @Default(0) int teamsLastUpdate,
   }) = _UpdatedAt;
 
   factory UpdatedAt.fromJson(Map<String, dynamic> json) =>

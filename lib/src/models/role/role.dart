@@ -11,6 +11,7 @@ part 'role.g.dart';
 abstract class Role with _$Role {
   const factory Role({
     String? id,
+    required String teamId,
     required String name,
     required int lastUpdatedAt,
     required List<Permission> permissions,

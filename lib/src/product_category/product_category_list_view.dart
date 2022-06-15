@@ -38,7 +38,7 @@ class ProductCategoryListView extends StatelessWidget {
                       child: CustomFormField(
                         keyboardType: TextInputType.text,
                         controller: productCategoryController.nameController,
-                        label: 'Product Type',
+                        label: 'Product Category',
                         validator: (value) {
                           if (value == null) {
                             return 'Please provide product type';
@@ -63,8 +63,8 @@ class ProductCategoryListView extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Obx(
-              () {
+            child: GetBuilder<ProductCategoryController>(
+              builder: (cont) {
                 final data = productCategoryController.productCategories;
                 if (data.isEmpty) {
                   return const Center(

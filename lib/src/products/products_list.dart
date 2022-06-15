@@ -39,9 +39,9 @@ class ProductsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productController = Get.find<ProductController>();
-    if (productController.filteredProducts.isEmpty) {
-      productController.filteredProductsByNameAndCategory();
-    }
+    // if (productController.filteredProducts.isEmpty) {
+    //   productController.filteredProductsByNameAndCategory();
+    // }
 
     return GetBuilder<ProductController>(builder: (cont) {
       final data = productController.filteredProducts

@@ -68,57 +68,66 @@ class ProductCategoryController extends BaseController {
   Future<void> fetchData(int? lastUpdatedAt) async {
     final datas = <ProductCategory>[];
     QuerySnapshot<Object?> snapShot;
-    if (lastUpdatedAt != null) {
-      snapShot = await categoryCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapShot = await categoryCollectionRef.get();
+    if (teamId != null) {
+      if (lastUpdatedAt != null) {
+        snapShot = await categoryCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await categoryCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(ProductCategory.fromJson(json));
+      }
+      _productCategories = datas;
+      update();
     }
-    for (final doc in snapShot.docs) {
-      final json = doc.data()! as Map<String, dynamic>;
-      json['id'] = doc.id;
-      datas.add(ProductCategory.fromJson(json));
-    }
-    _productCategories = datas;
-    update();
   }
 
   /// Add a product to a current productCategories state
   Future<void> addProductCategory() async {
-    final map = <String, dynamic>{
-      'name': nameController.text,
-      'lastUpdatedAt': dateToMillSeconds(DateTime.now())
-    };
-    final success = await categoryCollectionRef
-        .add(map)
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to add data: ${error.toString()}');
-      return false;
-    });
-    if (success) {
-      nameController.text = '';
+    if (teamId != null) {
+      final map = <String, dynamic>{
+        'teamId': teamId,
+        'name': nameController.text,
+        'lastUpdatedAt': dateToMillSeconds(DateTime.now())
+      };
+
+      final success = await categoryCollectionRef(teamId!)
+          .add(map)
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to add data: ${error.toString()}');
+        return false;
+      });
+      if (success) {
+        nameController.text = '';
+      }
+
+      // if (success) _productCategories.add(newProduct);
+      // notifyListeners();
     }
-    // if (success) _productCategories.add(newProduct);
-    // notifyListeners();
   }
 
   /// Remove product from a current productCategories state
   Future<void> removeProductCategory(ProductCategory item) async {
-    final success = await categoryCollectionRef
-        .doc(item.id)
-        .delete()
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to delete user: $error');
-      return false;
-    });
-    if (success) {
-      // final index = _productCategories.indexWhere((p) => p.id == item.id);
-      // _productCategories.removeAt(index);
+    if (teamId != null) {
+      final success = await categoryCollectionRef(teamId!)
+          .doc(item.id)
+          .delete()
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to delete user: $error');
+        return false;
+      });
+      if (success) {
+        // final index = _productCategories.indexWhere((p) => p.id == item.id);
+        // _productCategories.removeAt(index);
+      }
+      update();
     }
-    update();
   }
 
   ///

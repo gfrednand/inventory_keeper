@@ -13,44 +13,71 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 /// Team Collections
 CollectionReference teamCollectionRef =
-    FirebaseFirestore.instance.collection('team');
+    FirebaseFirestore.instance.collection('teams');
 
 /// Team Setting Collections
-CollectionReference teamSettingsCollectionRef =
-    FirebaseFirestore.instance.collection('teamSettings');
+CollectionReference teamSettingsCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('teamSettings');
 
 /// User Collections
 CollectionReference usersCollectionRef =
     FirebaseFirestore.instance.collection('users');
 
 /// Roles Collections
-CollectionReference rolesCollectionRef =
-    FirebaseFirestore.instance.collection('roles');
+CollectionReference rolesCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('roles');
 
 /// Permission Collections
-CollectionReference permissionsCollectionRef =
-    FirebaseFirestore.instance.collection('permissions');
+CollectionReference permissionsCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('permissions');
 
 /// Products Collections
-CollectionReference productsCollectionRef =
-    FirebaseFirestore.instance.collection('products');
+CollectionReference productsCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('products');
 
 /// Stock Summary Collections
-CollectionReference stockSummaryCollectionRef =
-    FirebaseFirestore.instance.collection('stockSummary');
+CollectionReference stockSummaryCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('stockSummaries');
 
 /// Product Transaction Collections
-CollectionReference productTransactionsCollectionRef =
-    FirebaseFirestore.instance.collection('productTransactions');
+CollectionReference productTransactionsCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('productTransactions');
 
 /// Partner Collections
-CollectionReference partnerCollectionRef =
-    FirebaseFirestore.instance.collection('partner');
+CollectionReference partnerCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('partners');
 
 /// Category Collections
-CollectionReference categoryCollectionRef =
-    FirebaseFirestore.instance.collection('category');
+CollectionReference categoryCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('categories');
 
 /// Category Collections
-CollectionReference updatedAtCollectionRef =
-    FirebaseFirestore.instance.collection('updatedAt');
+CollectionReference updatedAtCollectionRef(String teamId) =>
+    FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('updatedAt');

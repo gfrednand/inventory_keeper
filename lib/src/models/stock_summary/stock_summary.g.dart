@@ -9,6 +9,7 @@ part of 'stock_summary.dart';
 _$_StockSummary _$$_StockSummaryFromJson(Map<String, dynamic> json) =>
     _$_StockSummary(
       id: json['id'] as String?,
+      teamId: json['teamId'] as String,
       totalAmount: (json['totalAmount'] as num).toDouble(),
       totalQuantity: json['totalQuantity'] as int,
       totalIn: json['totalIn'] as int,
@@ -25,6 +26,7 @@ _$_StockSummary _$$_StockSummaryFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_StockSummaryToJson(_$_StockSummary instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'teamId': instance.teamId,
       'totalAmount': instance.totalAmount,
       'totalQuantity': instance.totalQuantity,
       'totalIn': instance.totalIn,

@@ -15,8 +15,8 @@ abstract class User with _$User {
   const factory User({
     String? id,
     required String uid,
-    String? selectedTeamUid,
-    List<Team>? teams,
+    String? selectedTeamId,
+    List<String>? teams,
     required String fullname,
     required String phoneNumber,
     String? email,

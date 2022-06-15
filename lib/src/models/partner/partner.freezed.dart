@@ -23,6 +23,7 @@ mixin _$Partner {
   String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   PartnerType get type => throw _privateConstructorUsedError;
   int get lastUpdatedAt => throw _privateConstructorUsedError;
 
@@ -39,6 +40,7 @@ abstract class $PartnerCopyWith<$Res> {
       {String? id,
       String name,
       String userId,
+      String teamId,
       PartnerType type,
       int lastUpdatedAt});
 }
@@ -56,6 +58,7 @@ class _$PartnerCopyWithImpl<$Res> implements $PartnerCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? userId = freezed,
+    Object? teamId = freezed,
     Object? type = freezed,
     Object? lastUpdatedAt = freezed,
   }) {
@@ -71,6 +74,10 @@ class _$PartnerCopyWithImpl<$Res> implements $PartnerCopyWith<$Res> {
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       type: type == freezed
           ? _value.type
@@ -94,6 +101,7 @@ abstract class _$$_PartnerCopyWith<$Res> implements $PartnerCopyWith<$Res> {
       {String? id,
       String name,
       String userId,
+      String teamId,
       PartnerType type,
       int lastUpdatedAt});
 }
@@ -112,6 +120,7 @@ class __$$_PartnerCopyWithImpl<$Res> extends _$PartnerCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? userId = freezed,
+    Object? teamId = freezed,
     Object? type = freezed,
     Object? lastUpdatedAt = freezed,
   }) {
@@ -127,6 +136,10 @@ class __$$_PartnerCopyWithImpl<$Res> extends _$PartnerCopyWithImpl<$Res>
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       type: type == freezed
           ? _value.type
@@ -147,6 +160,7 @@ class _$_Partner with DiagnosticableTreeMixin implements _Partner {
       {this.id,
       required this.name,
       required this.userId,
+      required this.teamId,
       required this.type,
       required this.lastUpdatedAt});
 
@@ -160,13 +174,15 @@ class _$_Partner with DiagnosticableTreeMixin implements _Partner {
   @override
   final String userId;
   @override
+  final String teamId;
+  @override
   final PartnerType type;
   @override
   final int lastUpdatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Partner(id: $id, name: $name, userId: $userId, type: $type, lastUpdatedAt: $lastUpdatedAt)';
+    return 'Partner(id: $id, name: $name, userId: $userId, teamId: $teamId, type: $type, lastUpdatedAt: $lastUpdatedAt)';
   }
 
   @override
@@ -177,6 +193,7 @@ class _$_Partner with DiagnosticableTreeMixin implements _Partner {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('type', type))
       ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt));
   }
@@ -189,6 +206,7 @@ class _$_Partner with DiagnosticableTreeMixin implements _Partner {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality()
                 .equals(other.lastUpdatedAt, lastUpdatedAt));
@@ -201,6 +219,7 @@ class _$_Partner with DiagnosticableTreeMixin implements _Partner {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(lastUpdatedAt));
 
@@ -220,6 +239,7 @@ abstract class _Partner implements Partner {
       {final String? id,
       required final String name,
       required final String userId,
+      required final String teamId,
       required final PartnerType type,
       required final int lastUpdatedAt}) = _$_Partner;
 
@@ -231,6 +251,8 @@ abstract class _Partner implements Partner {
   String get name => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   PartnerType get type => throw _privateConstructorUsedError;
   @override

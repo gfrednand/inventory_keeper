@@ -131,155 +131,168 @@ class ProductController extends BaseController {
 
   /// Future Products
   Future<void> fetchData(int? lastUpdatedAt) async {
-    final prods = <Product>[];
-    QuerySnapshot<Object?> snapShot;
-    if (lastUpdatedAt != null) {
-      snapShot = await productsCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapShot = await productsCollectionRef.get();
+    if (teamId != null) {
+      final prods = <Product>[];
+      QuerySnapshot<Object?> snapShot;
+      if (lastUpdatedAt != null) {
+        snapShot = await productsCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await productsCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        prods.add(Product.fromJson(json));
+      }
+      _products = products;
+      update();
     }
-    for (final doc in snapShot.docs) {
-      final json = doc.data()! as Map<String, dynamic>;
-      json['id'] = doc.id;
-      prods.add(Product.fromJson(json));
-    }
-    _products = products;
-    update();
   }
 
   /// Add a product to a current products state
   Future<void> addProduct(Product product) async {
-    loadDialog<void>(loadingText: 'Adding Product ....');
-    final productMap = product.toJson();
-    if (currentStock != null) {
-      productMap['currentStock'] = currentStock ?? 0;
-    }
-    if (productCategory != null) {
-      productMap['category'] = productCategory?.toJson();
-    }
+    if (teamId != null) {
+      loadDialog<void>(loadingText: 'Adding Product ....');
+      final productMap = product.toJson();
+      productMap['teamId'] = teamId;
+      if (currentStock != null) {
+        productMap['currentStock'] = currentStock ?? 0;
+      }
+      if (productCategory != null) {
+        productMap['category'] = productCategory?.toJson();
+      }
 
-    if (safetyQuantity != null) {
-      productMap['safetyQuantity'] = safetyQuantity ?? 0;
-    }
-    final success = await productsCollectionRef
-        .add(productMap)
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to add data: ${error.toString()}');
-      return false;
-    });
+      if (safetyQuantity != null) {
+        productMap['safetyQuantity'] = safetyQuantity ?? 0;
+      }
+      final success = await productsCollectionRef(teamId!)
+          .add(productMap)
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to add data: ${error.toString()}');
+        return false;
+      });
 
-    Get.back<void>();
-    if (success) {
       Get.back<void>();
-      filteredProductsByNameAndCategory();
-      Get.snackbar(
-        'Item',
-        'Added Successful',
-        // snackPosition: SnackPosition.BOTTOM,
-      );
-      resetValues(success: success);
-    } else {
-      Get.snackbar(
-        'Item',
-        'Failed to add',
-        // snackPosition: SnackPosition.BOTTOM,
-      );
+      if (success) {
+        Get.back<void>();
+        filteredProductsByNameAndCategory();
+        Get.snackbar(
+          'Item',
+          'Added Successful',
+          // snackPosition: SnackPosition.BOTTOM,
+        );
+        resetValues(success: success);
+      } else {
+        Get.snackbar(
+          'Item',
+          'Failed to add',
+          // snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     }
   }
 
   /// Update a product to a current products state
   Future<void> updateProductSafetyStock(
       Product prod, int safetyQuantity) async {
-    loadDialog<dynamic>(
-      loadingText: 'Updating Safety ...',
-    );
-    final productToUpdate = Product(
-        id: prod.id,
-        userId: firebaseAuth.currentUser!.uid,
-        name: prod.name,
-        safetyQuantity: safetyQuantity,
-        lastUpdatedAt: dateToMillSeconds(DateTime.now()));
-
-    final success = await productsCollectionRef
-        .doc(prod.id)
-        .set(productToUpdate, SetOptions(merge: true))
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to update user: $error');
-      return false;
-    });
-
-    Get.back<void>();
-
-    if (success) {
-      Get.snackbar(
-        'Safety Stock',
-        'Successful Updated',
+    if (teamId != null) {
+      loadDialog<dynamic>(
+        loadingText: 'Updating Safety ...',
       );
-    } else {
-      Get.snackbar(
-        'Safety Stock',
-        'Failed to Updated',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      final productToUpdate = Product(
+          teamId: teamId ?? '',
+          id: prod.id,
+          userId: firebaseAuth.currentUser!.uid,
+          name: prod.name,
+          safetyQuantity: safetyQuantity,
+          lastUpdatedAt: dateToMillSeconds(DateTime.now()));
+
+      final success = await productsCollectionRef(teamId!)
+          .doc(prod.id)
+          .set(productToUpdate, SetOptions(merge: true))
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to update user: $error');
+        return false;
+      });
+
+      Get.back<void>();
+
+      if (success) {
+        Get.snackbar(
+          'Safety Stock',
+          'Successful Updated',
+        );
+      } else {
+        Get.snackbar(
+          'Safety Stock',
+          'Failed to Updated',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     }
   }
 
   /// Update a product to a current products state
   Future<void> updateProduct(Product product) async {
-    loadDialog<void>(loadingText: 'Updating Product...');
-    final productMap = product.toJson();
-    if (currentStock != null) {
-      productMap[' currentStock'] = currentStock ?? 0;
-    }
-    if (productCategory != null) {
-      productMap['category'] = productCategory?.toJson();
-    }
-    if (safetyQuantity != null) {
-      productMap['safetyQuantity'] = safetyQuantity ?? 0;
-    }
-    productMap['lastUpdatedAt'] = dateToMillSeconds(DateTime.now());
+    if (teamId != null) {
+      loadDialog<void>(loadingText: 'Updating Product...');
+      final productMap = product.toJson();
+      productMap['teamId'] = teamId;
+      if (currentStock != null) {
+        productMap[' currentStock'] = currentStock ?? 0;
+      }
+      if (productCategory != null) {
+        productMap['category'] = productCategory?.toJson();
+      }
+      if (safetyQuantity != null) {
+        productMap['safetyQuantity'] = safetyQuantity ?? 0;
+      }
+      productMap['lastUpdatedAt'] = dateToMillSeconds(DateTime.now());
 
-    final success = await productsCollectionRef
-        .doc(product.id)
-        .set(productMap, SetOptions(merge: true))
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to update user: $error');
-      return false;
-    });
-    Get.back<void>();
-    if (success) {
+      final success = await productsCollectionRef(teamId!)
+          .doc(product.id)
+          .set(productMap, SetOptions(merge: true))
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to update user: $error');
+        return false;
+      });
       Get.back<void>();
+      if (success) {
+        Get.back<void>();
 
-      // ignore: cascade_invocations
-      Get.snackbar('Product', 'Updated Successful');
+        // ignore: cascade_invocations
+        Get.snackbar('Product', 'Updated Successful');
+      }
     }
   }
 
   /// Remove product from a current products state
   Future<void> removeProduct() async {
-    loadDialog<void>(loadingText: 'Deleting Product ....');
-    final success = await productsCollectionRef
-        .doc(product?.id)
-        .delete()
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to delete user: $error');
-      return false;
-    });
-    Get.back<void>();
-    if (success) {
+    if (teamId != null) {
+      loadDialog<void>(loadingText: 'Deleting Product ....');
+      final success = await productsCollectionRef(teamId!)
+          .doc(product?.id)
+          .delete()
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to delete user: $error');
+        return false;
+      });
       Get.back<void>();
-      // ignore: cascade_invocations
-      Get.snackbar('Product', 'Deleted Successful');
-    } else {
-      Get.back<void>();
-      // ignore: cascade_invocations
-      Get.snackbar('Product', 'Failed to Delete');
+      if (success) {
+        Get.back<void>();
+        // ignore: cascade_invocations
+        Get.snackbar('Product', 'Deleted Successful');
+      } else {
+        Get.back<void>();
+        // ignore: cascade_invocations
+        Get.snackbar('Product', 'Failed to Delete');
+      }
     }
   }
 

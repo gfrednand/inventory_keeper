@@ -14,39 +14,27 @@ import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/app_logout_menu.dart';
 
 ///Profile Screen
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   ///
-  const ProfileScreen({
+  ProfileScreen({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
+  ///
   final UserController profileController = Get.put(UserController());
-  final AuthController authController = Get.find<AuthController>();
-  final PartnerController partnerController = Get.find<PartnerController>();
 
-  @override
-  void initState() {
-    super.initState();
-    profileController.updateUserId();
-  }
+  ///
+  final AuthController authController = Get.find<AuthController>();
+
+  ///
+  final PartnerController partnerController = Get.find<PartnerController>();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(
         init: UserController(),
         builder: (controller) {
-          if (controller.user == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final photoUrl = '${controller.user!.photoUrl}';
+          final photoUrl = '${controller.user?.photoUrl}';
           return Scaffold(
             appBar: AppBar(
               elevation: 0,
@@ -127,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                        controller.user!.fullname,
+                                        '${controller.user?.fullname}',
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       const SizedBox(

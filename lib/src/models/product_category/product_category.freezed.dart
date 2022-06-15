@@ -22,6 +22,7 @@ ProductCategory _$ProductCategoryFromJson(Map<String, dynamic> json) {
 mixin _$ProductCategory {
   String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   int get lastUpdatedAt => throw _privateConstructorUsedError;
 
@@ -36,7 +37,12 @@ abstract class $ProductCategoryCopyWith<$Res> {
   factory $ProductCategoryCopyWith(
           ProductCategory value, $Res Function(ProductCategory) then) =
       _$ProductCategoryCopyWithImpl<$Res>;
-  $Res call({String? id, String name, String userId, int lastUpdatedAt});
+  $Res call(
+      {String? id,
+      String name,
+      String teamId,
+      String userId,
+      int lastUpdatedAt});
 }
 
 /// @nodoc
@@ -52,6 +58,7 @@ class _$ProductCategoryCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
+    Object? teamId = freezed,
     Object? userId = freezed,
     Object? lastUpdatedAt = freezed,
   }) {
@@ -63,6 +70,10 @@ class _$ProductCategoryCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       userId: userId == freezed
           ? _value.userId
@@ -83,7 +94,12 @@ abstract class _$$_ProductCategoryCopyWith<$Res>
           _$_ProductCategory value, $Res Function(_$_ProductCategory) then) =
       __$$_ProductCategoryCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String name, String userId, int lastUpdatedAt});
+  $Res call(
+      {String? id,
+      String name,
+      String teamId,
+      String userId,
+      int lastUpdatedAt});
 }
 
 /// @nodoc
@@ -101,6 +117,7 @@ class __$$_ProductCategoryCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
+    Object? teamId = freezed,
     Object? userId = freezed,
     Object? lastUpdatedAt = freezed,
   }) {
@@ -112,6 +129,10 @@ class __$$_ProductCategoryCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       userId: userId == freezed
           ? _value.userId
@@ -133,6 +154,7 @@ class _$_ProductCategory
   const _$_ProductCategory(
       {this.id,
       required this.name,
+      required this.teamId,
       required this.userId,
       required this.lastUpdatedAt});
 
@@ -144,13 +166,15 @@ class _$_ProductCategory
   @override
   final String name;
   @override
+  final String teamId;
+  @override
   final String userId;
   @override
   final int lastUpdatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductCategory(id: $id, name: $name, userId: $userId, lastUpdatedAt: $lastUpdatedAt)';
+    return 'ProductCategory(id: $id, name: $name, teamId: $teamId, userId: $userId, lastUpdatedAt: $lastUpdatedAt)';
   }
 
   @override
@@ -160,6 +184,7 @@ class _$_ProductCategory
       ..add(DiagnosticsProperty('type', 'ProductCategory'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt));
   }
@@ -171,6 +196,7 @@ class _$_ProductCategory
             other is _$_ProductCategory &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality()
                 .equals(other.lastUpdatedAt, lastUpdatedAt));
@@ -182,6 +208,7 @@ class _$_ProductCategory
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(lastUpdatedAt));
 
@@ -200,6 +227,7 @@ abstract class _ProductCategory implements ProductCategory {
   const factory _ProductCategory(
       {final String? id,
       required final String name,
+      required final String teamId,
       required final String userId,
       required final int lastUpdatedAt}) = _$_ProductCategory;
 
@@ -210,6 +238,8 @@ abstract class _ProductCategory implements ProductCategory {
   String? get id => throw _privateConstructorUsedError;
   @override
   String get name => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
   @override

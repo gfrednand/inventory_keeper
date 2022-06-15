@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/auth/signup_screen.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/models/team/team.dart';
 import 'package:inventory_keeper/src/utility/firestore_constant.dart';
-import 'package:uuid/uuid.dart';
 
 /// Team Controller
 class TeamController extends BaseController {
@@ -33,7 +32,8 @@ class TeamController extends BaseController {
   }
 
   @override
-  void onReady() {
+  void onInit() {
+    super.onInit();
     fetchItems();
   }
 
@@ -64,8 +64,26 @@ class TeamController extends BaseController {
   }
 
   /// Register Team
-  void registerTeam(Team team) {
-    _createdTeam = team.copyWith(id: const Uuid().v4());
-    Get.to<void>(SignupScreen.new);
+  Future<void> registerTeam(String name) async {
+    final team = Team(
+      userId: firebaseAuth.currentUser!.uid,
+      name: name,
+      lastUpdatedAt: DateTime.now().millisecondsSinceEpoch,
+    );
+    final success = await teamCollectionRef
+        .add(team.toJson())
+        .then((value) => true)
+        .catchError((dynamic error) {
+      print('Failed to add data: ${error.toString()}');
+      return false;
+    });
+    if (success) {
+      Get.snackbar(
+        'Team',
+        'Added Successful',
+      );
+
+      await Get.to<void>(() => const LayoutPage());
+    }
   }
 }

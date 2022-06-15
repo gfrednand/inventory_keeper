@@ -23,6 +23,7 @@ mixin _$Team {
   String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get lastUpdatedAt => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +34,7 @@ mixin _$Team {
 abstract class $TeamCopyWith<$Res> {
   factory $TeamCopyWith(Team value, $Res Function(Team) then) =
       _$TeamCopyWithImpl<$Res>;
-  $Res call({String? id, String name, int lastUpdatedAt});
+  $Res call({String? id, String name, int lastUpdatedAt, String userId});
 }
 
 /// @nodoc
@@ -49,6 +50,7 @@ class _$TeamCopyWithImpl<$Res> implements $TeamCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -63,6 +65,10 @@ class _$TeamCopyWithImpl<$Res> implements $TeamCopyWith<$Res> {
           ? _value.lastUpdatedAt
           : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
               as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -72,7 +78,7 @@ abstract class _$$_TeamCopyWith<$Res> implements $TeamCopyWith<$Res> {
   factory _$$_TeamCopyWith(_$_Team value, $Res Function(_$_Team) then) =
       __$$_TeamCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String name, int lastUpdatedAt});
+  $Res call({String? id, String name, int lastUpdatedAt, String userId});
 }
 
 /// @nodoc
@@ -89,6 +95,7 @@ class __$$_TeamCopyWithImpl<$Res> extends _$TeamCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? lastUpdatedAt = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_$_Team(
       id: id == freezed
@@ -103,6 +110,10 @@ class __$$_TeamCopyWithImpl<$Res> extends _$TeamCopyWithImpl<$Res>
           ? _value.lastUpdatedAt
           : lastUpdatedAt // ignore: cast_nullable_to_non_nullable
               as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -110,7 +121,11 @@ class __$$_TeamCopyWithImpl<$Res> extends _$TeamCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Team implements _Team {
-  const _$_Team({this.id, required this.name, required this.lastUpdatedAt});
+  const _$_Team(
+      {this.id,
+      required this.name,
+      required this.lastUpdatedAt,
+      required this.userId});
 
   factory _$_Team.fromJson(Map<String, dynamic> json) => _$$_TeamFromJson(json);
 
@@ -120,10 +135,12 @@ class _$_Team implements _Team {
   final String name;
   @override
   final int lastUpdatedAt;
+  @override
+  final String userId;
 
   @override
   String toString() {
-    return 'Team(id: $id, name: $name, lastUpdatedAt: $lastUpdatedAt)';
+    return 'Team(id: $id, name: $name, lastUpdatedAt: $lastUpdatedAt, userId: $userId)';
   }
 
   @override
@@ -134,7 +151,8 @@ class _$_Team implements _Team {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
-                .equals(other.lastUpdatedAt, lastUpdatedAt));
+                .equals(other.lastUpdatedAt, lastUpdatedAt) &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @JsonKey(ignore: true)
@@ -143,7 +161,8 @@ class _$_Team implements _Team {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(lastUpdatedAt));
+      const DeepCollectionEquality().hash(lastUpdatedAt),
+      const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
   @override
@@ -160,7 +179,8 @@ abstract class _Team implements Team {
   const factory _Team(
       {final String? id,
       required final String name,
-      required final int lastUpdatedAt}) = _$_Team;
+      required final int lastUpdatedAt,
+      required final String userId}) = _$_Team;
 
   factory _Team.fromJson(Map<String, dynamic> json) = _$_Team.fromJson;
 
@@ -170,6 +190,8 @@ abstract class _Team implements Team {
   String get name => throw _privateConstructorUsedError;
   @override
   int get lastUpdatedAt => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_TeamCopyWith<_$_Team> get copyWith => throw _privateConstructorUsedError;

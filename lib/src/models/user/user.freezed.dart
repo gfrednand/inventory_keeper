@@ -22,8 +22,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
 mixin _$User {
   String? get id => throw _privateConstructorUsedError;
   String get uid => throw _privateConstructorUsedError;
-  String? get selectedTeamUid => throw _privateConstructorUsedError;
-  List<Team>? get teams => throw _privateConstructorUsedError;
+  String? get selectedTeamId => throw _privateConstructorUsedError;
+  List<String>? get teams => throw _privateConstructorUsedError;
   String get fullname => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
@@ -43,8 +43,8 @@ abstract class $UserCopyWith<$Res> {
   $Res call(
       {String? id,
       String uid,
-      String? selectedTeamUid,
-      List<Team>? teams,
+      String? selectedTeamId,
+      List<String>? teams,
       String fullname,
       String phoneNumber,
       String? email,
@@ -65,7 +65,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? uid = freezed,
-    Object? selectedTeamUid = freezed,
+    Object? selectedTeamId = freezed,
     Object? teams = freezed,
     Object? fullname = freezed,
     Object? phoneNumber = freezed,
@@ -83,14 +83,14 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      selectedTeamUid: selectedTeamUid == freezed
-          ? _value.selectedTeamUid
-          : selectedTeamUid // ignore: cast_nullable_to_non_nullable
+      selectedTeamId: selectedTeamId == freezed
+          ? _value.selectedTeamId
+          : selectedTeamId // ignore: cast_nullable_to_non_nullable
               as String?,
       teams: teams == freezed
           ? _value.teams
           : teams // ignore: cast_nullable_to_non_nullable
-              as List<Team>?,
+              as List<String>?,
       fullname: fullname == freezed
           ? _value.fullname
           : fullname // ignore: cast_nullable_to_non_nullable
@@ -127,8 +127,8 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   $Res call(
       {String? id,
       String uid,
-      String? selectedTeamUid,
-      List<Team>? teams,
+      String? selectedTeamId,
+      List<String>? teams,
       String fullname,
       String phoneNumber,
       String? email,
@@ -150,7 +150,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? uid = freezed,
-    Object? selectedTeamUid = freezed,
+    Object? selectedTeamId = freezed,
     Object? teams = freezed,
     Object? fullname = freezed,
     Object? phoneNumber = freezed,
@@ -168,14 +168,14 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      selectedTeamUid: selectedTeamUid == freezed
-          ? _value.selectedTeamUid
-          : selectedTeamUid // ignore: cast_nullable_to_non_nullable
+      selectedTeamId: selectedTeamId == freezed
+          ? _value.selectedTeamId
+          : selectedTeamId // ignore: cast_nullable_to_non_nullable
               as String?,
       teams: teams == freezed
           ? _value._teams
           : teams // ignore: cast_nullable_to_non_nullable
-              as List<Team>?,
+              as List<String>?,
       fullname: fullname == freezed
           ? _value.fullname
           : fullname // ignore: cast_nullable_to_non_nullable
@@ -210,8 +210,8 @@ class _$_User implements _User {
   const _$_User(
       {this.id,
       required this.uid,
-      this.selectedTeamUid,
-      final List<Team>? teams,
+      this.selectedTeamId,
+      final List<String>? teams,
       required this.fullname,
       required this.phoneNumber,
       this.email,
@@ -228,10 +228,10 @@ class _$_User implements _User {
   @override
   final String uid;
   @override
-  final String? selectedTeamUid;
-  final List<Team>? _teams;
+  final String? selectedTeamId;
+  final List<String>? _teams;
   @override
-  List<Team>? get teams {
+  List<String>? get teams {
     final value = _teams;
     if (value == null) return null;
     // ignore: implicit_dynamic_type
@@ -259,7 +259,7 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(id: $id, uid: $uid, selectedTeamUid: $selectedTeamUid, teams: $teams, fullname: $fullname, phoneNumber: $phoneNumber, email: $email, photoUrl: $photoUrl, lastUpdatedAt: $lastUpdatedAt, roles: $roles)';
+    return 'User(id: $id, uid: $uid, selectedTeamId: $selectedTeamId, teams: $teams, fullname: $fullname, phoneNumber: $phoneNumber, email: $email, photoUrl: $photoUrl, lastUpdatedAt: $lastUpdatedAt, roles: $roles)';
   }
 
   @override
@@ -270,7 +270,7 @@ class _$_User implements _User {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.uid, uid) &&
             const DeepCollectionEquality()
-                .equals(other.selectedTeamUid, selectedTeamUid) &&
+                .equals(other.selectedTeamId, selectedTeamId) &&
             const DeepCollectionEquality().equals(other._teams, _teams) &&
             const DeepCollectionEquality().equals(other.fullname, fullname) &&
             const DeepCollectionEquality()
@@ -288,7 +288,7 @@ class _$_User implements _User {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(uid),
-      const DeepCollectionEquality().hash(selectedTeamUid),
+      const DeepCollectionEquality().hash(selectedTeamId),
       const DeepCollectionEquality().hash(_teams),
       const DeepCollectionEquality().hash(fullname),
       const DeepCollectionEquality().hash(phoneNumber),
@@ -312,8 +312,8 @@ abstract class _User implements User {
   const factory _User(
       {final String? id,
       required final String uid,
-      final String? selectedTeamUid,
-      final List<Team>? teams,
+      final String? selectedTeamId,
+      final List<String>? teams,
       required final String fullname,
       required final String phoneNumber,
       final String? email,
@@ -328,9 +328,9 @@ abstract class _User implements User {
   @override
   String get uid => throw _privateConstructorUsedError;
   @override
-  String? get selectedTeamUid => throw _privateConstructorUsedError;
+  String? get selectedTeamId => throw _privateConstructorUsedError;
   @override
-  List<Team>? get teams => throw _privateConstructorUsedError;
+  List<String>? get teams => throw _privateConstructorUsedError;
   @override
   String get fullname => throw _privateConstructorUsedError;
   @override

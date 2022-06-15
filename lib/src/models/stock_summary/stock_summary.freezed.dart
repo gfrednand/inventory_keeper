@@ -21,6 +21,7 @@ StockSummary _$StockSummaryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$StockSummary {
   String? get id => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
   int get totalQuantity => throw _privateConstructorUsedError;
   int get totalIn => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $StockSummaryCopyWith<$Res> {
       _$StockSummaryCopyWithImpl<$Res>;
   $Res call(
       {String? id,
+      String teamId,
       double totalAmount,
       int totalQuantity,
       int totalIn,
@@ -65,6 +67,7 @@ class _$StockSummaryCopyWithImpl<$Res> implements $StockSummaryCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? teamId = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
     Object? totalIn = freezed,
@@ -79,6 +82,10 @@ class _$StockSummaryCopyWithImpl<$Res> implements $StockSummaryCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       totalAmount: totalAmount == freezed
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
@@ -124,6 +131,7 @@ abstract class _$$_StockSummaryCopyWith<$Res>
   @override
   $Res call(
       {String? id,
+      String teamId,
       double totalAmount,
       int totalQuantity,
       int totalIn,
@@ -148,6 +156,7 @@ class __$$_StockSummaryCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? teamId = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
     Object? totalIn = freezed,
@@ -162,6 +171,10 @@ class __$$_StockSummaryCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       totalAmount: totalAmount == freezed
           ? _value.totalAmount
           : totalAmount // ignore: cast_nullable_to_non_nullable
@@ -203,6 +216,7 @@ class __$$_StockSummaryCopyWithImpl<$Res>
 class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
   const _$_StockSummary(
       {this.id,
+      required this.teamId,
       required this.totalAmount,
       required this.totalQuantity,
       required this.totalIn,
@@ -218,6 +232,8 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
 
   @override
   final String? id;
+  @override
+  final String teamId;
   @override
   final double totalAmount;
   @override
@@ -241,7 +257,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'StockSummary(id: $id, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalIn: $totalIn, totalOut: $totalOut, totalSale: $totalSale, totalBuy: $totalBuy, lastUpdatedAt: $lastUpdatedAt, productsSummary: $productsSummary)';
+    return 'StockSummary(id: $id, teamId: $teamId, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalIn: $totalIn, totalOut: $totalOut, totalSale: $totalSale, totalBuy: $totalBuy, lastUpdatedAt: $lastUpdatedAt, productsSummary: $productsSummary)';
   }
 
   @override
@@ -250,6 +266,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
     properties
       ..add(DiagnosticsProperty('type', 'StockSummary'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('totalAmount', totalAmount))
       ..add(DiagnosticsProperty('totalQuantity', totalQuantity))
       ..add(DiagnosticsProperty('totalIn', totalIn))
@@ -266,6 +283,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
         (other.runtimeType == runtimeType &&
             other is _$_StockSummary &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality()
                 .equals(other.totalAmount, totalAmount) &&
             const DeepCollectionEquality()
@@ -285,6 +303,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(totalAmount),
       const DeepCollectionEquality().hash(totalQuantity),
       const DeepCollectionEquality().hash(totalIn),
@@ -308,6 +327,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
 abstract class _StockSummary implements StockSummary {
   const factory _StockSummary(
       {final String? id,
+      required final String teamId,
       required final double totalAmount,
       required final int totalQuantity,
       required final int totalIn,
@@ -322,6 +342,8 @@ abstract class _StockSummary implements StockSummary {
 
   @override
   String? get id => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   double get totalAmount => throw _privateConstructorUsedError;
   @override

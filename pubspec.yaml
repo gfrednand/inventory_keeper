@@ -26,6 +26,7 @@ dependencies:
   flutter_native_splash: ^2.1.6
   freezed_annotation: ^2.0.3
   get: ^4.6.5
+  get_storage: ^2.0.3
   google_fonts: ^2.3.2
   grouped_list: ^4.2.0
   http: ^0.13.4

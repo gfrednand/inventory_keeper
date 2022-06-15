@@ -33,21 +33,23 @@ class ProductSummaryController extends BaseController {
 
   /// Future Items
   Future<void> fetchData(int? lastUpdatedAt) async {
-    final datas = <ProductSummary>[];
-    QuerySnapshot<Object?> snapShot;
-    if (lastUpdatedAt != null) {
-      snapShot = await productsCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapShot = await productsCollectionRef.get();
+    if (teamId != null) {
+      final datas = <ProductSummary>[];
+      QuerySnapshot<Object?> snapShot;
+      if (lastUpdatedAt != null) {
+        snapShot = await productsCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await productsCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(ProductSummary.fromJson(json));
+      }
+      _productSummaries = datas;
+      update();
     }
-    for (final doc in snapShot.docs) {
-      final json = doc.data()! as Map<String, dynamic>;
-      json['id'] = doc.id;
-      datas.add(ProductSummary.fromJson(json));
-    }
-    _productSummaries = datas;
-    update();
   }
 }

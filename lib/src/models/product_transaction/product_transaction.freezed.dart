@@ -22,6 +22,7 @@ ProductTransaction _$ProductTransactionFromJson(Map<String, dynamic> json) {
 mixin _$ProductTransaction {
   String? get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   bool get isPastTransaction => throw _privateConstructorUsedError;
   TransactionType get transactionType => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $ProductTransactionCopyWith<$Res> {
   $Res call(
       {String? id,
       String userId,
+      String teamId,
       bool isPastTransaction,
       TransactionType transactionType,
       double totalAmount,
@@ -73,6 +75,7 @@ class _$ProductTransactionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
+    Object? teamId = freezed,
     Object? isPastTransaction = freezed,
     Object? transactionType = freezed,
     Object? totalAmount = freezed,
@@ -91,6 +94,10 @@ class _$ProductTransactionCopyWithImpl<$Res>
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       isPastTransaction: isPastTransaction == freezed
           ? _value.isPastTransaction
@@ -153,6 +160,7 @@ abstract class _$$_ProductTransactionCopyWith<$Res>
   $Res call(
       {String? id,
       String userId,
+      String teamId,
       bool isPastTransaction,
       TransactionType transactionType,
       double totalAmount,
@@ -182,6 +190,7 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? userId = freezed,
+    Object? teamId = freezed,
     Object? isPastTransaction = freezed,
     Object? transactionType = freezed,
     Object? totalAmount = freezed,
@@ -200,6 +209,10 @@ class __$$_ProductTransactionCopyWithImpl<$Res>
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       isPastTransaction: isPastTransaction == freezed
           ? _value.isPastTransaction
@@ -249,6 +262,7 @@ class _$_ProductTransaction
   const _$_ProductTransaction(
       {this.id,
       required this.userId,
+      required this.teamId,
       this.isPastTransaction = false,
       required this.transactionType,
       required this.totalAmount,
@@ -267,6 +281,8 @@ class _$_ProductTransaction
   final String? id;
   @override
   final String userId;
+  @override
+  final String teamId;
   @override
   @JsonKey()
   final bool isPastTransaction;
@@ -295,7 +311,7 @@ class _$_ProductTransaction
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductTransaction(id: $id, userId: $userId, isPastTransaction: $isPastTransaction, transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalAuditQuantity: $totalAuditQuantity, partner: $partner, productsSummary: $productsSummary, lastUpdatedAt: $lastUpdatedAt, transactionDate: $transactionDate)';
+    return 'ProductTransaction(id: $id, userId: $userId, teamId: $teamId, isPastTransaction: $isPastTransaction, transactionType: $transactionType, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalAuditQuantity: $totalAuditQuantity, partner: $partner, productsSummary: $productsSummary, lastUpdatedAt: $lastUpdatedAt, transactionDate: $transactionDate)';
   }
 
   @override
@@ -305,6 +321,7 @@ class _$_ProductTransaction
       ..add(DiagnosticsProperty('type', 'ProductTransaction'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('isPastTransaction', isPastTransaction))
       ..add(DiagnosticsProperty('transactionType', transactionType))
       ..add(DiagnosticsProperty('totalAmount', totalAmount))
@@ -323,6 +340,7 @@ class _$_ProductTransaction
             other is _$_ProductTransaction &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality()
                 .equals(other.isPastTransaction, isPastTransaction) &&
             const DeepCollectionEquality()
@@ -348,6 +366,7 @@ class _$_ProductTransaction
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(isPastTransaction),
       const DeepCollectionEquality().hash(transactionType),
       const DeepCollectionEquality().hash(totalAmount),
@@ -374,6 +393,7 @@ abstract class _ProductTransaction implements ProductTransaction {
   const factory _ProductTransaction(
       {final String? id,
       required final String userId,
+      required final String teamId,
       final bool isPastTransaction,
       required final TransactionType transactionType,
       required final double totalAmount,
@@ -391,6 +411,8 @@ abstract class _ProductTransaction implements ProductTransaction {
   String? get id => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   bool get isPastTransaction => throw _privateConstructorUsedError;
   @override

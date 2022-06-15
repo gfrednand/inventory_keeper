@@ -27,7 +27,7 @@ class AddTeamPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close),
         ),
-        title: const Text('Create Team Profile'),
+        title: const Text('Create Team'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -69,13 +69,8 @@ class AddTeamPage extends StatelessWidget {
                           ),
                         )
                       : InkWell(
-                          onTap: () => TeamController.instance.registerTeam(
-                            Team(
-                              name: _teamNameController.text,
-                              lastUpdatedAt:
-                                  DateTime.now().millisecondsSinceEpoch,
-                            ),
-                          ),
+                          onTap: () => TeamController.instance
+                              .registerTeam(_teamNameController.text),
                           child: const Center(
                             child: Text(
                               'Create Team',

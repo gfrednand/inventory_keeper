@@ -66,6 +66,7 @@ class CartController extends BaseController {
       _items.update(
         productId,
         (existingCartItem) => ProductSummary(
+          teamId: existingCartItem.teamId,
           id: existingCartItem.id,
           productId: existingCartItem.productId,
           lastUpdatedAt: dateToMillSeconds(DateTime.now()),
@@ -79,6 +80,7 @@ class CartController extends BaseController {
       _items.putIfAbsent(
         productId,
         () => ProductSummary(
+          teamId: teamId ?? '',
           productId: productId,
           lastUpdatedAt: dateToMillSeconds(DateTime.now()),
           currentStock: currentStock ?? 0,

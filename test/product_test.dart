@@ -12,6 +12,7 @@ Future<void> main() async {
   test('test 1', () {
     // The model should be able to receive the following data:
     var product = Product(
+      teamId: '',
       userId: '',
       id: 'ABC',
       name: 'Pepsi',

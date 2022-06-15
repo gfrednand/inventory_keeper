@@ -21,6 +21,7 @@ Role _$RoleFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Role {
   String? get id => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get lastUpdatedAt => throw _privateConstructorUsedError;
   List<Permission> get permissions => throw _privateConstructorUsedError;
@@ -36,6 +37,7 @@ abstract class $RoleCopyWith<$Res> {
       _$RoleCopyWithImpl<$Res>;
   $Res call(
       {String? id,
+      String teamId,
       String name,
       int lastUpdatedAt,
       List<Permission> permissions});
@@ -52,6 +54,7 @@ class _$RoleCopyWithImpl<$Res> implements $RoleCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? teamId = freezed,
     Object? name = freezed,
     Object? lastUpdatedAt = freezed,
     Object? permissions = freezed,
@@ -61,6 +64,10 @@ class _$RoleCopyWithImpl<$Res> implements $RoleCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -84,6 +91,7 @@ abstract class _$$_RoleCopyWith<$Res> implements $RoleCopyWith<$Res> {
   @override
   $Res call(
       {String? id,
+      String teamId,
       String name,
       int lastUpdatedAt,
       List<Permission> permissions});
@@ -101,6 +109,7 @@ class __$$_RoleCopyWithImpl<$Res> extends _$RoleCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? teamId = freezed,
     Object? name = freezed,
     Object? lastUpdatedAt = freezed,
     Object? permissions = freezed,
@@ -110,6 +119,10 @@ class __$$_RoleCopyWithImpl<$Res> extends _$RoleCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -131,6 +144,7 @@ class __$$_RoleCopyWithImpl<$Res> extends _$RoleCopyWithImpl<$Res>
 class _$_Role with DiagnosticableTreeMixin implements _Role {
   const _$_Role(
       {this.id,
+      required this.teamId,
       required this.name,
       required this.lastUpdatedAt,
       required final List<Permission> permissions})
@@ -140,6 +154,8 @@ class _$_Role with DiagnosticableTreeMixin implements _Role {
 
   @override
   final String? id;
+  @override
+  final String teamId;
   @override
   final String name;
   @override
@@ -153,7 +169,7 @@ class _$_Role with DiagnosticableTreeMixin implements _Role {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Role(id: $id, name: $name, lastUpdatedAt: $lastUpdatedAt, permissions: $permissions)';
+    return 'Role(id: $id, teamId: $teamId, name: $name, lastUpdatedAt: $lastUpdatedAt, permissions: $permissions)';
   }
 
   @override
@@ -162,6 +178,7 @@ class _$_Role with DiagnosticableTreeMixin implements _Role {
     properties
       ..add(DiagnosticsProperty('type', 'Role'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('lastUpdatedAt', lastUpdatedAt))
       ..add(DiagnosticsProperty('permissions', permissions));
@@ -173,6 +190,7 @@ class _$_Role with DiagnosticableTreeMixin implements _Role {
         (other.runtimeType == runtimeType &&
             other is _$_Role &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.lastUpdatedAt, lastUpdatedAt) &&
@@ -185,6 +203,7 @@ class _$_Role with DiagnosticableTreeMixin implements _Role {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(lastUpdatedAt),
       const DeepCollectionEquality().hash(_permissions));
@@ -203,6 +222,7 @@ class _$_Role with DiagnosticableTreeMixin implements _Role {
 abstract class _Role implements Role {
   const factory _Role(
       {final String? id,
+      required final String teamId,
       required final String name,
       required final int lastUpdatedAt,
       required final List<Permission> permissions}) = _$_Role;
@@ -211,6 +231,8 @@ abstract class _Role implements Role {
 
   @override
   String? get id => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   String get name => throw _privateConstructorUsedError;
   @override

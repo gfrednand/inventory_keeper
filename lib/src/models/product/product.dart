@@ -17,6 +17,7 @@ abstract class Product with _$Product {
   const factory Product({
     String? id,
     required String userId,
+    required String teamId,
     required String name,
     String? image,
     bool? active,

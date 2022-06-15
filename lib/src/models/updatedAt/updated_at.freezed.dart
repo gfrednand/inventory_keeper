@@ -20,17 +20,17 @@ UpdatedAt _$UpdatedAtFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UpdatedAt {
-  int get settingsLastUpdate => throw _privateConstructorUsedError;
+  int get teamSettingsLastUpdate => throw _privateConstructorUsedError;
   int get usersLastUpdate => throw _privateConstructorUsedError;
   int get rolesLastUpdate => throw _privateConstructorUsedError;
   int get permissionsLastUpdate => throw _privateConstructorUsedError;
   int get productsLastUpdate => throw _privateConstructorUsedError;
-  int get stockSummaryLastUpdate => throw _privateConstructorUsedError;
+  int get stockSummariesLastUpdate => throw _privateConstructorUsedError;
   int get productTransactionsLastUpdate => throw _privateConstructorUsedError;
-  int get partnerLastUpdate => throw _privateConstructorUsedError;
-  int get categoryLastUpdate => throw _privateConstructorUsedError;
+  int get partnersLastUpdate => throw _privateConstructorUsedError;
+  int get categoriesLastUpdate => throw _privateConstructorUsedError;
   int get productsSummaryLastUpdate => throw _privateConstructorUsedError;
-  int get teamLastUpdate => throw _privateConstructorUsedError;
+  int get teamsLastUpdate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,17 +43,17 @@ abstract class $UpdatedAtCopyWith<$Res> {
   factory $UpdatedAtCopyWith(UpdatedAt value, $Res Function(UpdatedAt) then) =
       _$UpdatedAtCopyWithImpl<$Res>;
   $Res call(
-      {int settingsLastUpdate,
+      {int teamSettingsLastUpdate,
       int usersLastUpdate,
       int rolesLastUpdate,
       int permissionsLastUpdate,
       int productsLastUpdate,
-      int stockSummaryLastUpdate,
+      int stockSummariesLastUpdate,
       int productTransactionsLastUpdate,
-      int partnerLastUpdate,
-      int categoryLastUpdate,
+      int partnersLastUpdate,
+      int categoriesLastUpdate,
       int productsSummaryLastUpdate,
-      int teamLastUpdate});
+      int teamsLastUpdate});
 }
 
 /// @nodoc
@@ -66,22 +66,22 @@ class _$UpdatedAtCopyWithImpl<$Res> implements $UpdatedAtCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? settingsLastUpdate = freezed,
+    Object? teamSettingsLastUpdate = freezed,
     Object? usersLastUpdate = freezed,
     Object? rolesLastUpdate = freezed,
     Object? permissionsLastUpdate = freezed,
     Object? productsLastUpdate = freezed,
-    Object? stockSummaryLastUpdate = freezed,
+    Object? stockSummariesLastUpdate = freezed,
     Object? productTransactionsLastUpdate = freezed,
-    Object? partnerLastUpdate = freezed,
-    Object? categoryLastUpdate = freezed,
+    Object? partnersLastUpdate = freezed,
+    Object? categoriesLastUpdate = freezed,
     Object? productsSummaryLastUpdate = freezed,
-    Object? teamLastUpdate = freezed,
+    Object? teamsLastUpdate = freezed,
   }) {
     return _then(_value.copyWith(
-      settingsLastUpdate: settingsLastUpdate == freezed
-          ? _value.settingsLastUpdate
-          : settingsLastUpdate // ignore: cast_nullable_to_non_nullable
+      teamSettingsLastUpdate: teamSettingsLastUpdate == freezed
+          ? _value.teamSettingsLastUpdate
+          : teamSettingsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
       usersLastUpdate: usersLastUpdate == freezed
           ? _value.usersLastUpdate
@@ -99,29 +99,29 @@ class _$UpdatedAtCopyWithImpl<$Res> implements $UpdatedAtCopyWith<$Res> {
           ? _value.productsLastUpdate
           : productsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      stockSummaryLastUpdate: stockSummaryLastUpdate == freezed
-          ? _value.stockSummaryLastUpdate
-          : stockSummaryLastUpdate // ignore: cast_nullable_to_non_nullable
+      stockSummariesLastUpdate: stockSummariesLastUpdate == freezed
+          ? _value.stockSummariesLastUpdate
+          : stockSummariesLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
       productTransactionsLastUpdate: productTransactionsLastUpdate == freezed
           ? _value.productTransactionsLastUpdate
           : productTransactionsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      partnerLastUpdate: partnerLastUpdate == freezed
-          ? _value.partnerLastUpdate
-          : partnerLastUpdate // ignore: cast_nullable_to_non_nullable
+      partnersLastUpdate: partnersLastUpdate == freezed
+          ? _value.partnersLastUpdate
+          : partnersLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      categoryLastUpdate: categoryLastUpdate == freezed
-          ? _value.categoryLastUpdate
-          : categoryLastUpdate // ignore: cast_nullable_to_non_nullable
+      categoriesLastUpdate: categoriesLastUpdate == freezed
+          ? _value.categoriesLastUpdate
+          : categoriesLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
       productsSummaryLastUpdate: productsSummaryLastUpdate == freezed
           ? _value.productsSummaryLastUpdate
           : productsSummaryLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      teamLastUpdate: teamLastUpdate == freezed
-          ? _value.teamLastUpdate
-          : teamLastUpdate // ignore: cast_nullable_to_non_nullable
+      teamsLastUpdate: teamsLastUpdate == freezed
+          ? _value.teamsLastUpdate
+          : teamsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -134,17 +134,17 @@ abstract class _$$_UpdatedAtCopyWith<$Res> implements $UpdatedAtCopyWith<$Res> {
       __$$_UpdatedAtCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int settingsLastUpdate,
+      {int teamSettingsLastUpdate,
       int usersLastUpdate,
       int rolesLastUpdate,
       int permissionsLastUpdate,
       int productsLastUpdate,
-      int stockSummaryLastUpdate,
+      int stockSummariesLastUpdate,
       int productTransactionsLastUpdate,
-      int partnerLastUpdate,
-      int categoryLastUpdate,
+      int partnersLastUpdate,
+      int categoriesLastUpdate,
       int productsSummaryLastUpdate,
-      int teamLastUpdate});
+      int teamsLastUpdate});
 }
 
 /// @nodoc
@@ -159,22 +159,22 @@ class __$$_UpdatedAtCopyWithImpl<$Res> extends _$UpdatedAtCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? settingsLastUpdate = freezed,
+    Object? teamSettingsLastUpdate = freezed,
     Object? usersLastUpdate = freezed,
     Object? rolesLastUpdate = freezed,
     Object? permissionsLastUpdate = freezed,
     Object? productsLastUpdate = freezed,
-    Object? stockSummaryLastUpdate = freezed,
+    Object? stockSummariesLastUpdate = freezed,
     Object? productTransactionsLastUpdate = freezed,
-    Object? partnerLastUpdate = freezed,
-    Object? categoryLastUpdate = freezed,
+    Object? partnersLastUpdate = freezed,
+    Object? categoriesLastUpdate = freezed,
     Object? productsSummaryLastUpdate = freezed,
-    Object? teamLastUpdate = freezed,
+    Object? teamsLastUpdate = freezed,
   }) {
     return _then(_$_UpdatedAt(
-      settingsLastUpdate: settingsLastUpdate == freezed
-          ? _value.settingsLastUpdate
-          : settingsLastUpdate // ignore: cast_nullable_to_non_nullable
+      teamSettingsLastUpdate: teamSettingsLastUpdate == freezed
+          ? _value.teamSettingsLastUpdate
+          : teamSettingsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
       usersLastUpdate: usersLastUpdate == freezed
           ? _value.usersLastUpdate
@@ -192,29 +192,29 @@ class __$$_UpdatedAtCopyWithImpl<$Res> extends _$UpdatedAtCopyWithImpl<$Res>
           ? _value.productsLastUpdate
           : productsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      stockSummaryLastUpdate: stockSummaryLastUpdate == freezed
-          ? _value.stockSummaryLastUpdate
-          : stockSummaryLastUpdate // ignore: cast_nullable_to_non_nullable
+      stockSummariesLastUpdate: stockSummariesLastUpdate == freezed
+          ? _value.stockSummariesLastUpdate
+          : stockSummariesLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
       productTransactionsLastUpdate: productTransactionsLastUpdate == freezed
           ? _value.productTransactionsLastUpdate
           : productTransactionsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      partnerLastUpdate: partnerLastUpdate == freezed
-          ? _value.partnerLastUpdate
-          : partnerLastUpdate // ignore: cast_nullable_to_non_nullable
+      partnersLastUpdate: partnersLastUpdate == freezed
+          ? _value.partnersLastUpdate
+          : partnersLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      categoryLastUpdate: categoryLastUpdate == freezed
-          ? _value.categoryLastUpdate
-          : categoryLastUpdate // ignore: cast_nullable_to_non_nullable
+      categoriesLastUpdate: categoriesLastUpdate == freezed
+          ? _value.categoriesLastUpdate
+          : categoriesLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
       productsSummaryLastUpdate: productsSummaryLastUpdate == freezed
           ? _value.productsSummaryLastUpdate
           : productsSummaryLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
-      teamLastUpdate: teamLastUpdate == freezed
-          ? _value.teamLastUpdate
-          : teamLastUpdate // ignore: cast_nullable_to_non_nullable
+      teamsLastUpdate: teamsLastUpdate == freezed
+          ? _value.teamsLastUpdate
+          : teamsLastUpdate // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -224,24 +224,24 @@ class __$$_UpdatedAtCopyWithImpl<$Res> extends _$UpdatedAtCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UpdatedAt with DiagnosticableTreeMixin implements _UpdatedAt {
   const _$_UpdatedAt(
-      {this.settingsLastUpdate = 0,
+      {this.teamSettingsLastUpdate = 0,
       this.usersLastUpdate = 0,
       this.rolesLastUpdate = 0,
       this.permissionsLastUpdate = 0,
       this.productsLastUpdate = 0,
-      this.stockSummaryLastUpdate = 0,
+      this.stockSummariesLastUpdate = 0,
       this.productTransactionsLastUpdate = 0,
-      this.partnerLastUpdate = 0,
-      this.categoryLastUpdate = 0,
+      this.partnersLastUpdate = 0,
+      this.categoriesLastUpdate = 0,
       this.productsSummaryLastUpdate = 0,
-      this.teamLastUpdate = 0});
+      this.teamsLastUpdate = 0});
 
   factory _$_UpdatedAt.fromJson(Map<String, dynamic> json) =>
       _$$_UpdatedAtFromJson(json);
 
   @override
   @JsonKey()
-  final int settingsLastUpdate;
+  final int teamSettingsLastUpdate;
   @override
   @JsonKey()
   final int usersLastUpdate;
@@ -256,26 +256,26 @@ class _$_UpdatedAt with DiagnosticableTreeMixin implements _UpdatedAt {
   final int productsLastUpdate;
   @override
   @JsonKey()
-  final int stockSummaryLastUpdate;
+  final int stockSummariesLastUpdate;
   @override
   @JsonKey()
   final int productTransactionsLastUpdate;
   @override
   @JsonKey()
-  final int partnerLastUpdate;
+  final int partnersLastUpdate;
   @override
   @JsonKey()
-  final int categoryLastUpdate;
+  final int categoriesLastUpdate;
   @override
   @JsonKey()
   final int productsSummaryLastUpdate;
   @override
   @JsonKey()
-  final int teamLastUpdate;
+  final int teamsLastUpdate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UpdatedAt(settingsLastUpdate: $settingsLastUpdate, usersLastUpdate: $usersLastUpdate, rolesLastUpdate: $rolesLastUpdate, permissionsLastUpdate: $permissionsLastUpdate, productsLastUpdate: $productsLastUpdate, stockSummaryLastUpdate: $stockSummaryLastUpdate, productTransactionsLastUpdate: $productTransactionsLastUpdate, partnerLastUpdate: $partnerLastUpdate, categoryLastUpdate: $categoryLastUpdate, productsSummaryLastUpdate: $productsSummaryLastUpdate, teamLastUpdate: $teamLastUpdate)';
+    return 'UpdatedAt(teamSettingsLastUpdate: $teamSettingsLastUpdate, usersLastUpdate: $usersLastUpdate, rolesLastUpdate: $rolesLastUpdate, permissionsLastUpdate: $permissionsLastUpdate, productsLastUpdate: $productsLastUpdate, stockSummariesLastUpdate: $stockSummariesLastUpdate, productTransactionsLastUpdate: $productTransactionsLastUpdate, partnersLastUpdate: $partnersLastUpdate, categoriesLastUpdate: $categoriesLastUpdate, productsSummaryLastUpdate: $productsSummaryLastUpdate, teamsLastUpdate: $teamsLastUpdate)';
   }
 
   @override
@@ -283,20 +283,21 @@ class _$_UpdatedAt with DiagnosticableTreeMixin implements _UpdatedAt {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'UpdatedAt'))
-      ..add(DiagnosticsProperty('settingsLastUpdate', settingsLastUpdate))
+      ..add(
+          DiagnosticsProperty('teamSettingsLastUpdate', teamSettingsLastUpdate))
       ..add(DiagnosticsProperty('usersLastUpdate', usersLastUpdate))
       ..add(DiagnosticsProperty('rolesLastUpdate', rolesLastUpdate))
       ..add(DiagnosticsProperty('permissionsLastUpdate', permissionsLastUpdate))
       ..add(DiagnosticsProperty('productsLastUpdate', productsLastUpdate))
-      ..add(
-          DiagnosticsProperty('stockSummaryLastUpdate', stockSummaryLastUpdate))
+      ..add(DiagnosticsProperty(
+          'stockSummariesLastUpdate', stockSummariesLastUpdate))
       ..add(DiagnosticsProperty(
           'productTransactionsLastUpdate', productTransactionsLastUpdate))
-      ..add(DiagnosticsProperty('partnerLastUpdate', partnerLastUpdate))
-      ..add(DiagnosticsProperty('categoryLastUpdate', categoryLastUpdate))
+      ..add(DiagnosticsProperty('partnersLastUpdate', partnersLastUpdate))
+      ..add(DiagnosticsProperty('categoriesLastUpdate', categoriesLastUpdate))
       ..add(DiagnosticsProperty(
           'productsSummaryLastUpdate', productsSummaryLastUpdate))
-      ..add(DiagnosticsProperty('teamLastUpdate', teamLastUpdate));
+      ..add(DiagnosticsProperty('teamsLastUpdate', teamsLastUpdate));
   }
 
   @override
@@ -305,7 +306,7 @@ class _$_UpdatedAt with DiagnosticableTreeMixin implements _UpdatedAt {
         (other.runtimeType == runtimeType &&
             other is _$_UpdatedAt &&
             const DeepCollectionEquality()
-                .equals(other.settingsLastUpdate, settingsLastUpdate) &&
+                .equals(other.teamSettingsLastUpdate, teamSettingsLastUpdate) &&
             const DeepCollectionEquality()
                 .equals(other.usersLastUpdate, usersLastUpdate) &&
             const DeepCollectionEquality()
@@ -314,36 +315,36 @@ class _$_UpdatedAt with DiagnosticableTreeMixin implements _UpdatedAt {
                 .equals(other.permissionsLastUpdate, permissionsLastUpdate) &&
             const DeepCollectionEquality()
                 .equals(other.productsLastUpdate, productsLastUpdate) &&
-            const DeepCollectionEquality()
-                .equals(other.stockSummaryLastUpdate, stockSummaryLastUpdate) &&
+            const DeepCollectionEquality().equals(
+                other.stockSummariesLastUpdate, stockSummariesLastUpdate) &&
             const DeepCollectionEquality().equals(
                 other.productTransactionsLastUpdate,
                 productTransactionsLastUpdate) &&
             const DeepCollectionEquality()
-                .equals(other.partnerLastUpdate, partnerLastUpdate) &&
+                .equals(other.partnersLastUpdate, partnersLastUpdate) &&
             const DeepCollectionEquality()
-                .equals(other.categoryLastUpdate, categoryLastUpdate) &&
+                .equals(other.categoriesLastUpdate, categoriesLastUpdate) &&
             const DeepCollectionEquality().equals(
                 other.productsSummaryLastUpdate, productsSummaryLastUpdate) &&
             const DeepCollectionEquality()
-                .equals(other.teamLastUpdate, teamLastUpdate));
+                .equals(other.teamsLastUpdate, teamsLastUpdate));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(settingsLastUpdate),
+      const DeepCollectionEquality().hash(teamSettingsLastUpdate),
       const DeepCollectionEquality().hash(usersLastUpdate),
       const DeepCollectionEquality().hash(rolesLastUpdate),
       const DeepCollectionEquality().hash(permissionsLastUpdate),
       const DeepCollectionEquality().hash(productsLastUpdate),
-      const DeepCollectionEquality().hash(stockSummaryLastUpdate),
+      const DeepCollectionEquality().hash(stockSummariesLastUpdate),
       const DeepCollectionEquality().hash(productTransactionsLastUpdate),
-      const DeepCollectionEquality().hash(partnerLastUpdate),
-      const DeepCollectionEquality().hash(categoryLastUpdate),
+      const DeepCollectionEquality().hash(partnersLastUpdate),
+      const DeepCollectionEquality().hash(categoriesLastUpdate),
       const DeepCollectionEquality().hash(productsSummaryLastUpdate),
-      const DeepCollectionEquality().hash(teamLastUpdate));
+      const DeepCollectionEquality().hash(teamsLastUpdate));
 
   @JsonKey(ignore: true)
   @override
@@ -358,23 +359,23 @@ class _$_UpdatedAt with DiagnosticableTreeMixin implements _UpdatedAt {
 
 abstract class _UpdatedAt implements UpdatedAt {
   const factory _UpdatedAt(
-      {final int settingsLastUpdate,
+      {final int teamSettingsLastUpdate,
       final int usersLastUpdate,
       final int rolesLastUpdate,
       final int permissionsLastUpdate,
       final int productsLastUpdate,
-      final int stockSummaryLastUpdate,
+      final int stockSummariesLastUpdate,
       final int productTransactionsLastUpdate,
-      final int partnerLastUpdate,
-      final int categoryLastUpdate,
+      final int partnersLastUpdate,
+      final int categoriesLastUpdate,
       final int productsSummaryLastUpdate,
-      final int teamLastUpdate}) = _$_UpdatedAt;
+      final int teamsLastUpdate}) = _$_UpdatedAt;
 
   factory _UpdatedAt.fromJson(Map<String, dynamic> json) =
       _$_UpdatedAt.fromJson;
 
   @override
-  int get settingsLastUpdate => throw _privateConstructorUsedError;
+  int get teamSettingsLastUpdate => throw _privateConstructorUsedError;
   @override
   int get usersLastUpdate => throw _privateConstructorUsedError;
   @override
@@ -384,17 +385,17 @@ abstract class _UpdatedAt implements UpdatedAt {
   @override
   int get productsLastUpdate => throw _privateConstructorUsedError;
   @override
-  int get stockSummaryLastUpdate => throw _privateConstructorUsedError;
+  int get stockSummariesLastUpdate => throw _privateConstructorUsedError;
   @override
   int get productTransactionsLastUpdate => throw _privateConstructorUsedError;
   @override
-  int get partnerLastUpdate => throw _privateConstructorUsedError;
+  int get partnersLastUpdate => throw _privateConstructorUsedError;
   @override
-  int get categoryLastUpdate => throw _privateConstructorUsedError;
+  int get categoriesLastUpdate => throw _privateConstructorUsedError;
   @override
   int get productsSummaryLastUpdate => throw _privateConstructorUsedError;
   @override
-  int get teamLastUpdate => throw _privateConstructorUsedError;
+  int get teamsLastUpdate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_UpdatedAtCopyWith<_$_UpdatedAt> get copyWith =>

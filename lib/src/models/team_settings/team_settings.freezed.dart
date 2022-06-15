@@ -21,6 +21,7 @@ TeamSettings _$TeamSettingsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TeamSettings {
   String? get currency => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   bool get isSoundOn => throw _privateConstructorUsedError;
   String? get appVersion => throw _privateConstructorUsedError;
 
@@ -35,7 +36,8 @@ abstract class $TeamSettingsCopyWith<$Res> {
   factory $TeamSettingsCopyWith(
           TeamSettings value, $Res Function(TeamSettings) then) =
       _$TeamSettingsCopyWithImpl<$Res>;
-  $Res call({String? currency, bool isSoundOn, String? appVersion});
+  $Res call(
+      {String? currency, String teamId, bool isSoundOn, String? appVersion});
 }
 
 /// @nodoc
@@ -49,6 +51,7 @@ class _$TeamSettingsCopyWithImpl<$Res> implements $TeamSettingsCopyWith<$Res> {
   @override
   $Res call({
     Object? currency = freezed,
+    Object? teamId = freezed,
     Object? isSoundOn = freezed,
     Object? appVersion = freezed,
   }) {
@@ -57,6 +60,10 @@ class _$TeamSettingsCopyWithImpl<$Res> implements $TeamSettingsCopyWith<$Res> {
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       isSoundOn: isSoundOn == freezed
           ? _value.isSoundOn
           : isSoundOn // ignore: cast_nullable_to_non_nullable
@@ -76,7 +83,8 @@ abstract class _$$_TeamSettingsCopyWith<$Res>
           _$_TeamSettings value, $Res Function(_$_TeamSettings) then) =
       __$$_TeamSettingsCopyWithImpl<$Res>;
   @override
-  $Res call({String? currency, bool isSoundOn, String? appVersion});
+  $Res call(
+      {String? currency, String teamId, bool isSoundOn, String? appVersion});
 }
 
 /// @nodoc
@@ -93,6 +101,7 @@ class __$$_TeamSettingsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? currency = freezed,
+    Object? teamId = freezed,
     Object? isSoundOn = freezed,
     Object? appVersion = freezed,
   }) {
@@ -101,6 +110,10 @@ class __$$_TeamSettingsCopyWithImpl<$Res>
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       isSoundOn: isSoundOn == freezed
           ? _value.isSoundOn
           : isSoundOn // ignore: cast_nullable_to_non_nullable
@@ -117,13 +130,18 @@ class __$$_TeamSettingsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TeamSettings with DiagnosticableTreeMixin implements _TeamSettings {
   const _$_TeamSettings(
-      {this.currency, this.isSoundOn = true, this.appVersion});
+      {this.currency,
+      required this.teamId,
+      this.isSoundOn = true,
+      this.appVersion});
 
   factory _$_TeamSettings.fromJson(Map<String, dynamic> json) =>
       _$$_TeamSettingsFromJson(json);
 
   @override
   final String? currency;
+  @override
+  final String teamId;
   @override
   @JsonKey()
   final bool isSoundOn;
@@ -132,7 +150,7 @@ class _$_TeamSettings with DiagnosticableTreeMixin implements _TeamSettings {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TeamSettings(currency: $currency, isSoundOn: $isSoundOn, appVersion: $appVersion)';
+    return 'TeamSettings(currency: $currency, teamId: $teamId, isSoundOn: $isSoundOn, appVersion: $appVersion)';
   }
 
   @override
@@ -141,6 +159,7 @@ class _$_TeamSettings with DiagnosticableTreeMixin implements _TeamSettings {
     properties
       ..add(DiagnosticsProperty('type', 'TeamSettings'))
       ..add(DiagnosticsProperty('currency', currency))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('isSoundOn', isSoundOn))
       ..add(DiagnosticsProperty('appVersion', appVersion));
   }
@@ -151,6 +170,7 @@ class _$_TeamSettings with DiagnosticableTreeMixin implements _TeamSettings {
         (other.runtimeType == runtimeType &&
             other is _$_TeamSettings &&
             const DeepCollectionEquality().equals(other.currency, currency) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality().equals(other.isSoundOn, isSoundOn) &&
             const DeepCollectionEquality()
                 .equals(other.appVersion, appVersion));
@@ -161,6 +181,7 @@ class _$_TeamSettings with DiagnosticableTreeMixin implements _TeamSettings {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(currency),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(isSoundOn),
       const DeepCollectionEquality().hash(appVersion));
 
@@ -178,6 +199,7 @@ class _$_TeamSettings with DiagnosticableTreeMixin implements _TeamSettings {
 abstract class _TeamSettings implements TeamSettings {
   const factory _TeamSettings(
       {final String? currency,
+      required final String teamId,
       final bool isSoundOn,
       final String? appVersion}) = _$_TeamSettings;
 
@@ -186,6 +208,8 @@ abstract class _TeamSettings implements TeamSettings {
 
   @override
   String? get currency => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   bool get isSoundOn => throw _privateConstructorUsedError;
   @override

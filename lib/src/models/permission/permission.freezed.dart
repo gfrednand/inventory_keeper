@@ -21,6 +21,7 @@ Permission _$PermissionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Permission {
   String? get id => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   bool get active => throw _privateConstructorUsedError;
 
@@ -35,7 +36,7 @@ abstract class $PermissionCopyWith<$Res> {
   factory $PermissionCopyWith(
           Permission value, $Res Function(Permission) then) =
       _$PermissionCopyWithImpl<$Res>;
-  $Res call({String? id, String name, bool active});
+  $Res call({String? id, String teamId, String name, bool active});
 }
 
 /// @nodoc
@@ -49,6 +50,7 @@ class _$PermissionCopyWithImpl<$Res> implements $PermissionCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? teamId = freezed,
     Object? name = freezed,
     Object? active = freezed,
   }) {
@@ -57,6 +59,10 @@ class _$PermissionCopyWithImpl<$Res> implements $PermissionCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -76,7 +82,7 @@ abstract class _$$_PermissionCopyWith<$Res>
           _$_Permission value, $Res Function(_$_Permission) then) =
       __$$_PermissionCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String name, bool active});
+  $Res call({String? id, String teamId, String name, bool active});
 }
 
 /// @nodoc
@@ -92,6 +98,7 @@ class __$$_PermissionCopyWithImpl<$Res> extends _$PermissionCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? teamId = freezed,
     Object? name = freezed,
     Object? active = freezed,
   }) {
@@ -100,6 +107,10 @@ class __$$_PermissionCopyWithImpl<$Res> extends _$PermissionCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -115,7 +126,11 @@ class __$$_PermissionCopyWithImpl<$Res> extends _$PermissionCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Permission with DiagnosticableTreeMixin implements _Permission {
-  const _$_Permission({this.id, required this.name, required this.active});
+  const _$_Permission(
+      {this.id,
+      required this.teamId,
+      required this.name,
+      required this.active});
 
   factory _$_Permission.fromJson(Map<String, dynamic> json) =>
       _$$_PermissionFromJson(json);
@@ -123,13 +138,15 @@ class _$_Permission with DiagnosticableTreeMixin implements _Permission {
   @override
   final String? id;
   @override
+  final String teamId;
+  @override
   final String name;
   @override
   final bool active;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Permission(id: $id, name: $name, active: $active)';
+    return 'Permission(id: $id, teamId: $teamId, name: $name, active: $active)';
   }
 
   @override
@@ -138,6 +155,7 @@ class _$_Permission with DiagnosticableTreeMixin implements _Permission {
     properties
       ..add(DiagnosticsProperty('type', 'Permission'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('active', active));
   }
@@ -148,6 +166,7 @@ class _$_Permission with DiagnosticableTreeMixin implements _Permission {
         (other.runtimeType == runtimeType &&
             other is _$_Permission &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.active, active));
   }
@@ -157,6 +176,7 @@ class _$_Permission with DiagnosticableTreeMixin implements _Permission {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(active));
 
@@ -174,6 +194,7 @@ class _$_Permission with DiagnosticableTreeMixin implements _Permission {
 abstract class _Permission implements Permission {
   const factory _Permission(
       {final String? id,
+      required final String teamId,
       required final String name,
       required final bool active}) = _$_Permission;
 
@@ -182,6 +203,8 @@ abstract class _Permission implements Permission {
 
   @override
   String? get id => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   String get name => throw _privateConstructorUsedError;
   @override

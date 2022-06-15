@@ -33,21 +33,23 @@ class RoleController extends BaseController {
 
   /// Future Items
   Future<void> fetchData(int? lastUpdatedAt) async {
-    final datas = <Role>[];
-    QuerySnapshot<Object?> snapShot;
-    if (lastUpdatedAt != null) {
-      snapShot = await rolesCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapShot = await rolesCollectionRef.get();
+    if (teamId != null) {
+      final datas = <Role>[];
+      QuerySnapshot<Object?> snapShot;
+      if (lastUpdatedAt != null) {
+        snapShot = await rolesCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await rolesCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(Role.fromJson(json));
+      }
+      _roles = datas;
+      update();
     }
-    for (final doc in snapShot.docs) {
-      final json = doc.data()! as Map<String, dynamic>;
-      json['id'] = doc.id;
-      datas.add(Role.fromJson(json));
-    }
-    _roles = datas;
-    update();
   }
 }

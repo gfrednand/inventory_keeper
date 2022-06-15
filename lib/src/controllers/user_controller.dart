@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/auth/login_screen.dart';
@@ -7,8 +8,22 @@ import 'package:inventory_keeper/src/utility/firestore_constant.dart';
 
 /// User Controlelr
 class UserController extends BaseController {
-  ///User controller instance
+  /// User constroller instance
   static UserController instance = Get.find();
+
+  ///
+  static User dummyUser = const User(
+    uid: 'uid',
+    fullname: 'demo user',
+    phoneNumber: '12345678',
+    lastUpdatedAt: 0,
+  );
+
+  ///
+  List<User> _users = [];
+
+  ///
+  List<User> get users => _users;
 
   ///
   final RxInt _lastUpdatedAt = 0.obs;
@@ -21,35 +36,67 @@ class UserController extends BaseController {
     _lastUpdatedAt(value);
   }
 
-  User? _user;
+  /// User
+  User? get user => userRx.value;
 
   ///
-  User? get user => _user;
+  String? get _uid => box.read('loggedInUserId');
 
-  final Rx<String> _uid = ''.obs;
+  ///
+  Rx<User?> userRx = Rx(dummyUser);
 
-  /// Update user Id
-  void updateUserId({String? uid}) {
-    var userUid = firebaseAuth.currentUser!.uid;
+  @override
+  void onReady() {
+    super.onReady();
+    userRx.bindStream(getUserDetails());
+    ever(userRx, getUserData);
+    ever(_lastUpdatedAt, fetchData);
+  }
 
-    if (uid != null) {
-      userUid = uid;
+  ///
+  Stream<User?> getUserDetails() {
+    return usersCollectionRef.doc(_uid).snapshots().map<User?>(
+          (snapshot) => snapshot.data() != null
+              ? User.fromJson(snapshot.data()! as Map<String, dynamic>)
+              : null,
+        );
+  }
+
+  /// Future Items
+  Future<void> fetchData(int? lastUpdatedAt) async {
+    final datas = <User>[];
+    QuerySnapshot<Object?> snapShot;
+    busy = true;
+    if (teamId != null) {
+      if (lastUpdatedAt != null) {
+        snapShot = await partnerCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await partnerCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(User.fromJson(json));
+      }
+      _users = datas;
     }
-    _uid.value = userUid;
-    getUserData();
+
+    busy = false;
   }
 
   ///
   Future<void> checkByPhoneNumber(String phoneNumber) async {
     busy = true;
-    User? user;
     final snapshot = await usersCollectionRef
         .where('phoneNumber', isEqualTo: phoneNumber)
         .get();
     if (snapshot.docs.isNotEmpty) {
-      user = User.fromJson(snapshot.docs[0].data()! as Map<String, dynamic>);
+      userRx.value =
+          User.fromJson(snapshot.docs[0].data()! as Map<String, dynamic>);
     }
-    if (user == null) {
+    if (userRx.value == null) {
       Get.snackbar(
         'Oops',
         'Phone number does not exist, please regiser',
@@ -58,26 +105,20 @@ class UserController extends BaseController {
         // snackPosition: SnackPosition.BOTTOM,
       );
     } else {
+      await box.write('selectedTeamId', userRx.value?.selectedTeamId);
       await Get.to<void>(LoginScreen(phoneNumber: phoneNumber));
     }
     busy = false;
   }
 
   ///
-  Future<void> getUserData() async {
+  void getUserData(User? user) {
     // final thumbnails = <String>[];
     // final myVideos = await firestore
     //     .collection('videos')
     //     .where('uid', isEqualTo: _uid.value)
     //     .get();
-    busy = true;
-    final userDoc = await usersCollectionRef.doc(_uid.value).get();
-    if (userDoc.data() != null) {
-      final userData = userDoc.data()! as Map<String, dynamic>;
-
-      _user = User.fromJson(userData);
-    }
-    busy = false;
+    box.write('selectedTeamId', user?.selectedTeamId);
 
     // var likes = 0;
     // var followers = 0;
@@ -113,52 +154,52 @@ class UserController extends BaseController {
     //     isFollowing = false;
     //   }
     // });
+    // }
+
+    // followUser() async {
+    //   final doc = await firestore
+    //       .collection('users')
+    //       .doc(_uid.value)
+    //       .collection('followers')
+    //       .doc(authController.user.uid)
+    //       .get();
+
+    //   if (!doc.exists) {
+    //     await firestore
+    //         .collection('users')
+    //         .doc(_uid.value)
+    //         .collection('followers')
+    //         .doc(authController.user.uid)
+    //         .set({});
+    //     await firestore
+    //         .collection('users')
+    //         .doc(authController.user.uid)
+    //         .collection('following')
+    //         .doc(_uid.value)
+    //         .set({});
+    //     _user.value.update(
+    //       'followers',
+    //       (value) => (int.parse(value) + 1).toString(),
+    //     );
+    //   } else {
+    //     await firestore
+    //         .collection('users')
+    //         .doc(_uid.value)
+    //         .collection('followers')
+    //         .doc(authController.user.uid)
+    //         .delete();
+    //     await firestore
+    //         .collection('users')
+    //         .doc(authController.user.uid)
+    //         .collection('following')
+    //         .doc(_uid.value)
+    //         .delete();
+    //     _user.value.update(
+    //       'followers',
+    //       (value) => (int.parse(value) - 1).toString(),
+    //     );
+    //   }
+    //   _user.value.update('isFollowing', (value) => !value);
+    // update();
   }
-
-  // followUser() async {
-  //   final doc = await firestore
-  //       .collection('users')
-  //       .doc(_uid.value)
-  //       .collection('followers')
-  //       .doc(authController.user.uid)
-  //       .get();
-
-  //   if (!doc.exists) {
-  //     await firestore
-  //         .collection('users')
-  //         .doc(_uid.value)
-  //         .collection('followers')
-  //         .doc(authController.user.uid)
-  //         .set({});
-  //     await firestore
-  //         .collection('users')
-  //         .doc(authController.user.uid)
-  //         .collection('following')
-  //         .doc(_uid.value)
-  //         .set({});
-  //     _user.value.update(
-  //       'followers',
-  //       (value) => (int.parse(value) + 1).toString(),
-  //     );
-  //   } else {
-  //     await firestore
-  //         .collection('users')
-  //         .doc(_uid.value)
-  //         .collection('followers')
-  //         .doc(authController.user.uid)
-  //         .delete();
-  //     await firestore
-  //         .collection('users')
-  //         .doc(authController.user.uid)
-  //         .collection('following')
-  //         .doc(_uid.value)
-  //         .delete();
-  //     _user.value.update(
-  //       'followers',
-  //       (value) => (int.parse(value) - 1).toString(),
-  //     );
-  //   }
-  //   _user.value.update('isFollowing', (value) => !value);
-  //   update();
-  // }
 }

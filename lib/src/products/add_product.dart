@@ -95,6 +95,7 @@ class AddProduct extends StatelessWidget {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   final newProduct = Product(
+                    teamId: '',
                     userId: firebaseAuth.currentUser!.uid,
                     id: product?.id,
                     lastUpdatedAt: DateTime.now().millisecondsSinceEpoch,

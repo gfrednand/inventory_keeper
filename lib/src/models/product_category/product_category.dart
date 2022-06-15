@@ -15,6 +15,7 @@ abstract class ProductCategory with _$ProductCategory {
   const factory ProductCategory({
     String? id,
     required String name,
+    required String teamId,
     required String userId,
     required int lastUpdatedAt,
   }) = _ProductCategory;

@@ -22,6 +22,7 @@ ProductSummary _$ProductSummaryFromJson(Map<String, dynamic> json) {
 mixin _$ProductSummary {
   String? get id => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
+  String get teamId => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   int get auditedQuantity => throw _privateConstructorUsedError;
   int get currentStock => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $ProductSummaryCopyWith<$Res> {
   $Res call(
       {String? id,
       String productId,
+      String teamId,
       int quantity,
       int auditedQuantity,
       int currentStock,
@@ -62,6 +64,7 @@ class _$ProductSummaryCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? productId = freezed,
+    Object? teamId = freezed,
     Object? quantity = freezed,
     Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
@@ -76,6 +79,10 @@ class _$ProductSummaryCopyWithImpl<$Res>
       productId: productId == freezed
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -111,6 +118,7 @@ abstract class _$$_ProductSummaryCopyWith<$Res>
   $Res call(
       {String? id,
       String productId,
+      String teamId,
       int quantity,
       int auditedQuantity,
       int currentStock,
@@ -133,6 +141,7 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? productId = freezed,
+    Object? teamId = freezed,
     Object? quantity = freezed,
     Object? auditedQuantity = freezed,
     Object? currentStock = freezed,
@@ -147,6 +156,10 @@ class __$$_ProductSummaryCopyWithImpl<$Res>
       productId: productId == freezed
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
+              as String,
+      teamId: teamId == freezed
+          ? _value.teamId
+          : teamId // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -180,6 +193,7 @@ class _$_ProductSummary
   const _$_ProductSummary(
       {this.id,
       required this.productId,
+      required this.teamId,
       this.quantity = 0,
       this.auditedQuantity = 0,
       this.currentStock = 0,
@@ -193,6 +207,8 @@ class _$_ProductSummary
   final String? id;
   @override
   final String productId;
+  @override
+  final String teamId;
   @override
   @JsonKey()
   final int quantity;
@@ -210,7 +226,7 @@ class _$_ProductSummary
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProductSummary(id: $id, productId: $productId, quantity: $quantity, auditedQuantity: $auditedQuantity, currentStock: $currentStock, amount: $amount, lastUpdatedAt: $lastUpdatedAt)';
+    return 'ProductSummary(id: $id, productId: $productId, teamId: $teamId, quantity: $quantity, auditedQuantity: $auditedQuantity, currentStock: $currentStock, amount: $amount, lastUpdatedAt: $lastUpdatedAt)';
   }
 
   @override
@@ -220,6 +236,7 @@ class _$_ProductSummary
       ..add(DiagnosticsProperty('type', 'ProductSummary'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('productId', productId))
+      ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('quantity', quantity))
       ..add(DiagnosticsProperty('auditedQuantity', auditedQuantity))
       ..add(DiagnosticsProperty('currentStock', currentStock))
@@ -234,6 +251,7 @@ class _$_ProductSummary
             other is _$_ProductSummary &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.productId, productId) &&
+            const DeepCollectionEquality().equals(other.teamId, teamId) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality()
                 .equals(other.auditedQuantity, auditedQuantity) &&
@@ -250,6 +268,7 @@ class _$_ProductSummary
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(productId),
+      const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(auditedQuantity),
       const DeepCollectionEquality().hash(currentStock),
@@ -271,6 +290,7 @@ abstract class _ProductSummary implements ProductSummary {
   const factory _ProductSummary(
       {final String? id,
       required final String productId,
+      required final String teamId,
       final int quantity,
       final int auditedQuantity,
       final int currentStock,
@@ -284,6 +304,8 @@ abstract class _ProductSummary implements ProductSummary {
   String? get id => throw _privateConstructorUsedError;
   @override
   String get productId => throw _privateConstructorUsedError;
+  @override
+  String get teamId => throw _privateConstructorUsedError;
   @override
   int get quantity => throw _privateConstructorUsedError;
   @override

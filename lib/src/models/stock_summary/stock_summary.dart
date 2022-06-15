@@ -15,6 +15,7 @@ part 'stock_summary.g.dart';
 abstract class StockSummary with _$StockSummary {
   const factory StockSummary({
     String? id,
+    required String teamId,
     required double totalAmount,
     required int totalQuantity,
     required int totalIn,

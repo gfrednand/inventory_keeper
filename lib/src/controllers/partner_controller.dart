@@ -58,19 +58,22 @@ class PartnerController extends BaseController {
     final datas = <Partner>[];
     QuerySnapshot<Object?> snapShot;
     busy = true;
-    if (lastUpdatedAt != null) {
-      snapShot = await partnerCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapShot = await partnerCollectionRef.get();
+    if (teamId != null) {
+      if (lastUpdatedAt != null) {
+        snapShot = await partnerCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await partnerCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(Partner.fromJson(json));
+      }
+      _partners = datas;
     }
-    for (final doc in snapShot.docs) {
-      final json = doc.data()! as Map<String, dynamic>;
-      json['id'] = doc.id;
-      datas.add(Partner.fromJson(json));
-    }
-    _partners = datas;
+
     busy = false;
   }
 
@@ -82,42 +85,46 @@ class PartnerController extends BaseController {
       'type': type.name,
       'lastUpdatedAt': dateToMillSeconds(DateTime.now())
     };
-    final success = await partnerCollectionRef
-        .add(map)
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to add data: ${error.toString()}');
-      return false;
-    });
-    busy = false;
-    if (success) {
-      nameController.text = '';
+    if (teamId != null) {
+      final success = await partnerCollectionRef(teamId!)
+          .add(map)
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to add data: ${error.toString()}');
+        return false;
+      });
+      busy = false;
+      if (success) {
+        nameController.text = '';
 
-      Get.snackbar(
-        type.name,
-        'Successful Added',
-      );
-    } else {
-      Get.snackbar(
-        type.name,
-        'Failed to Add',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+        Get.snackbar(
+          type.name,
+          'Successful Added',
+        );
+      } else {
+        Get.snackbar(
+          type.name,
+          'Failed to Add',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     }
   }
 
   /// Remove partner
   Future<void> removePartner(Partner item) async {
     busy = true;
-    final success = await partnerCollectionRef
-        .doc(item.id)
-        .delete()
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to delete user: $error');
-      return false;
-    });
-    if (success) {}
-    busy = false;
+    if (teamId != null) {
+      final success = await partnerCollectionRef(teamId!)
+          .doc(item.id)
+          .delete()
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to delete user: $error');
+        return false;
+      });
+      if (success) {}
+      busy = false;
+    }
   }
 }

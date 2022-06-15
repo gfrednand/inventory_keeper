@@ -33,21 +33,23 @@ class TeamSettingsController extends BaseController {
 
   /// Future Items
   Future<void> fetchData(int? lastUpdatedAt) async {
-    TeamSettings? data;
-    QuerySnapshot<Object?> snapShot;
-    if (lastUpdatedAt != null) {
-      snapShot = await teamSettingsCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapShot = await productsCollectionRef.get();
+    if (teamId != null) {
+      TeamSettings? data;
+      QuerySnapshot<Object?> snapShot;
+      if (lastUpdatedAt != null) {
+        snapShot = await teamSettingsCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await teamSettingsCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        // final json = doc.data()! as Map<String, dynamic>;
+        // json['id'] = doc.id;
+        // datas.add(TeamSettings.fromJson(json));
+      }
+      _teamSettings = data;
+      update();
     }
-    for (final doc in snapShot.docs) {
-      // final json = doc.data()! as Map<String, dynamic>;
-      // json['id'] = doc.id;
-      // datas.add(TeamSettings.fromJson(json));
-    }
-    _teamSettings = data;
-    update();
   }
 }

@@ -81,42 +81,46 @@ class ProductTransactionController extends BaseController {
 
   /// Future Items
   Future<void> fetchData(int? lastUpdatedAt) async {
-    final datas = <ProductTransaction>[];
-    QuerySnapshot<Object?> snapShot;
-    if (lastUpdatedAt != null) {
-      snapShot = await productTransactionsCollectionRef
-          .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-          .get();
-    } else {
-      snapShot = await productTransactionsCollectionRef.get();
+    if (teamId != null) {
+      final datas = <ProductTransaction>[];
+      QuerySnapshot<Object?> snapShot;
+      if (lastUpdatedAt != null) {
+        snapShot = await productTransactionsCollectionRef(teamId!)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await productTransactionsCollectionRef(teamId!).get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(ProductTransaction.fromJson(json));
+      }
+      _productTransactions = datas;
+      update();
     }
-    for (final doc in snapShot.docs) {
-      final json = doc.data()! as Map<String, dynamic>;
-      json['id'] = doc.id;
-      datas.add(ProductTransaction.fromJson(json));
-    }
-    _productTransactions = datas;
-    update();
   }
 
   /// Get Past Transaction Summary By Date
   Future<void> previousTransactionSummary({
     required DateTime date,
   }) async {
-    final datas = <ProductTransaction>[];
-    _summaryDate = DateFormat.yMMMEd().format(date);
+    if (teamId != null) {
+      final datas = <ProductTransaction>[];
+      _summaryDate = DateFormat.yMMMEd().format(date);
 
-    final snapShot = await productTransactionsCollectionRef
-        .where('transactionDate', isEqualTo: dateToMillSeconds(date))
-        .get();
+      final snapShot = await productTransactionsCollectionRef(teamId!)
+          .where('transactionDate', isEqualTo: dateToMillSeconds(date))
+          .get();
 
-    for (final doc in snapShot.docs) {
-      final json = doc.data()! as Map<String, dynamic>;
-      json['id'] = doc.id;
-      datas.add(ProductTransaction.fromJson(json));
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(ProductTransaction.fromJson(json));
+      }
+      _previousProductTransaction = datas[0];
+      update();
     }
-    _previousProductTransaction = datas[0];
-    update();
   }
 
   /// Add transaction
@@ -125,40 +129,43 @@ class ProductTransactionController extends BaseController {
     required TransactionType transactionType,
     DateTime? transactionDate,
   }) async {
-    loadDialog<void>(loadingText: 'Updating stock...');
-    final prodTnx = ProductTransaction(
-      userId: firebaseAuth.currentUser!.uid,
-      transactionType: transactionType,
-      productsSummary: [],
-      totalAuditQuantity: cartController.totalAuditedQuantity,
-      totalQuantity: cartController.totalQuantity,
-      totalAmount: cartController.totalAmount,
-      lastUpdatedAt: dateToMillSeconds(transactionDate ?? DateTime.now()),
-      transactionDate: dateToMillSeconds(transactionDate ?? DateTime.now()),
-    );
-
-    final map = prodTnx.toJson();
-    map['productsSummary'] = prodSummaryMap(cartController.items);
-    final success = await productTransactionsCollectionRef
-        .add(map)
-        .then((value) => true)
-        .catchError((dynamic error) {
-      print('Failed to add data: ${error.toString()}');
-      return false;
-    });
-    Get.back<void>();
-    if (success) {
-      cartController.clear();
-      Get.back<void>();
-    } else {
-      Get.snackbar(
-        'Transaction',
-        'Failed',
-        snackPosition: SnackPosition.BOTTOM,
+    if (teamId != null) {
+      loadDialog<void>(loadingText: 'Updating stock...');
+      final prodTnx = ProductTransaction(
+        teamId: teamId ?? '',
+        userId: firebaseAuth.currentUser!.uid,
+        transactionType: transactionType,
+        productsSummary: [],
+        totalAuditQuantity: cartController.totalAuditedQuantity,
+        totalQuantity: cartController.totalQuantity,
+        totalAmount: cartController.totalAmount,
+        lastUpdatedAt: dateToMillSeconds(transactionDate ?? DateTime.now()),
+        transactionDate: dateToMillSeconds(transactionDate ?? DateTime.now()),
       );
-    }
 
-    update();
+      final map = prodTnx.toJson();
+      map['productsSummary'] = prodSummaryMap(cartController.items);
+      final success = await productTransactionsCollectionRef(teamId!)
+          .add(map)
+          .then((value) => true)
+          .catchError((dynamic error) {
+        print('Failed to add data: ${error.toString()}');
+        return false;
+      });
+      Get.back<void>();
+      if (success) {
+        cartController.clear();
+        Get.back<void>();
+      } else {
+        Get.snackbar(
+          'Transaction',
+          'Failed',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+
+      update();
+    }
   }
 
   ///
