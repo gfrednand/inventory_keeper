@@ -5,7 +5,6 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:inventory_keeper/src/models/user/user.dart';
 // import 'package:inventory_keeper/src/models/product/product.dart';
 // import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 // import 'package:inventory_keeper/src/models/stock_summary/stock_summay.dart';

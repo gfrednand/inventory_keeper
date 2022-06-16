@@ -40,7 +40,7 @@ class ProductDetailBottomBar extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: AppColors.blue700,

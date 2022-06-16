@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/auth/login_screen.dart';
 import 'package:inventory_keeper/src/home_binding.dart';
 import 'package:inventory_keeper/src/homepage/splash_page.dart';
 import 'package:inventory_keeper/src/utility/themes.dart';

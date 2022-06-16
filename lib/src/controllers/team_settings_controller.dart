@@ -41,7 +41,7 @@ class TeamSettingsController extends BaseController {
     if (teamId != null) {
       final datas = <TeamSettings>[];
       QuerySnapshot<Object?> snapShot;
-      if (lastUpdatedAt != null) {
+      if (lastUpdatedAt != null && _teamSettings.isNotEmpty) {
         snapShot = await teamSettingsCollectionRef(teamId!)
             .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
             .get();

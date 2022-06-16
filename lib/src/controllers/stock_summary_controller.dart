@@ -40,7 +40,7 @@ class StockSummaryController extends BaseController {
     if (teamId != null) {
       busy = true;
       QuerySnapshot? snapshot;
-      if (lastUpdatedAt != null) {
+      if (lastUpdatedAt != null && _stockSummaries.isNotEmpty) {
         snapshot = await stockSummaryCollectionRef(teamId!)
             .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
             .get();

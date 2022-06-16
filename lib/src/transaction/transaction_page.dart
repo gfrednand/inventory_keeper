@@ -120,13 +120,14 @@ class TransactionPage extends StatelessWidget {
                               ),
                             );
                           },
-                          // contentPadding:const EdgeInsets.symmetric(horizontal:8),
                           horizontalTitleGap: 0,
                           leading: icon,
                           title: Text(
                             '$titleLabel',
                             style: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
                           ),
                           subtitle: Text(
                             '$total Item${total > 1 ? 's' : ''}',

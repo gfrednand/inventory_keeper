@@ -93,46 +93,17 @@ class AddPastTransaction extends StatelessWidget {
                       SectionDivider(
                         color: color,
                       ),
-                      GetBuilder<ProductTransactionController>(builder: (cont) {
-                        final dateLabel = dateFormat(
-                            transactionController.pastTransactionDate);
-                        return ListTile(
-                          title: const Text('Date'),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(dateLabel),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            selectDate(context, lastDate: DateTime.now()).then(
-                              (value) => transactionController
-                                  .pastTransactionDate = value,
-                            );
-                          },
-                        );
-                      }),
-                      const SectionDivider(),
-                      if (partnerLabel != null)
-                        GetBuilder<PartnerController>(builder: (cont) {
-                          var selectedPartnerLabel = 'Select';
-                          if (partnerController.partner != null) {
-                            selectedPartnerLabel =
-                                '${partnerController.partner?.name}';
-                          }
+                      GetBuilder<ProductTransactionController>(
+                        builder: (cont) {
+                          final dateLabel = dateFormat(
+                            transactionController.pastTransactionDate,
+                          );
                           return ListTile(
-                            title: Text(partnerLabel!),
+                            title: const Text('Date'),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(selectedPartnerLabel),
+                                Text(dateLabel),
                                 const SizedBox(
                                   width: 16,
                                 ),
@@ -143,14 +114,49 @@ class AddPastTransaction extends StatelessWidget {
                               ],
                             ),
                             onTap: () {
-                              Get.to<void>(
-                                () => PartnerListView(
-                                  type: partnerType!,
-                                ),
+                              selectDate(context, lastDate: DateTime.now())
+                                  .then(
+                                (value) => transactionController
+                                    .pastTransactionDate = value,
                               );
                             },
                           );
-                        }),
+                        },
+                      ),
+                      const SectionDivider(),
+                      if (partnerLabel != null)
+                        GetBuilder<PartnerController>(
+                          builder: (cont) {
+                            var selectedPartnerLabel = 'Select';
+                            if (partnerController.partner != null) {
+                              selectedPartnerLabel =
+                                  '${partnerController.partner?.name}';
+                            }
+                            return ListTile(
+                              title: Text(partnerLabel!),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(selectedPartnerLabel),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 16,
+                                  )
+                                ],
+                              ),
+                              onTap: () {
+                                Get.to<void>(
+                                  () => PartnerListView(
+                                    type: partnerType!,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
                       if (partnerLabel != null) const SectionDivider(),
                       ListTile(
                         title: const Text('Item'),
@@ -219,44 +225,45 @@ class AddPastTransaction extends StatelessWidget {
               ),
             ),
             Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.blue700,
-                    padding: const EdgeInsets.only(
-                      top: 16,
-                      bottom: 16,
-                      left: 14,
-                      right: 24,
-                    ),
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: AppColors.blue700,
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    bottom: 16,
+                    left: 14,
+                    right: 24,
                   ),
-                  onPressed: () async {
-                    if (cartController.items.isEmpty) {
-                      Get.snackbar(
-                        'Heey',
-                        'Add at least one item first',
-                        snackPosition: SnackPosition.BOTTOM,
+                ),
+                onPressed: () async {
+                  if (cartController.items.isEmpty) {
+                    Get.snackbar(
+                      'Heey',
+                      'Add at least one item first',
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                  } else if (cartController.items.isEmpty) {
+                    Get.snackbar(
+                      'Heey',
+                      'Transaction date is missing',
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                  } else {
+                    if (cartController.items.isNotEmpty) {
+                      await transactionController.addTransaction(
+                        cartController: cartController,
+                        transactionType: transactionType,
+                        transactionDate:
+                            transactionController.pastTransactionDate,
                       );
-                    } else if (cartController.items.isEmpty) {
-                      Get.snackbar(
-                        'Heey',
-                        'Transaction date is missing',
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    } else {
-                      if (cartController.items.isNotEmpty) {
-                        await transactionController.addTransaction(
-                            cartController: cartController,
-                            transactionType: transactionType,
-                            transactionDate:
-                                transactionController.pastTransactionDate);
-                      }
                     }
-                  },
-                  child: const Text('Save'),
-                ))
+                  }
+                },
+                child: const Text('Save'),
+              ),
+            )
           ],
         ),
       ),

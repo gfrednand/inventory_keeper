@@ -201,18 +201,21 @@ class ProductController extends BaseController {
 
   /// Update a product to a current products state
   Future<void> updateProductSafetyStock(
-      Product prod, int safetyQuantity) async {
+    Product prod,
+    int safetyQuantity,
+  ) async {
     if (teamId != null) {
       loadDialog<dynamic>(
         loadingText: 'Updating Safety ...',
       );
       final productToUpdate = Product(
-          teamId: teamId ?? '',
-          id: prod.id,
-          userId: firebaseAuth.currentUser!.uid,
-          name: prod.name,
-          safetyQuantity: safetyQuantity,
-          lastUpdatedAt: DateTime.now().millisecondsSinceEpoch);
+        teamId: teamId ?? '',
+        id: prod.id,
+        userId: firebaseAuth.currentUser!.uid,
+        name: prod.name,
+        safetyQuantity: safetyQuantity,
+        lastUpdatedAt: DateTime.now().millisecondsSinceEpoch,
+      );
 
       final success = await productsCollectionRef(teamId!)
           .doc(prod.id)

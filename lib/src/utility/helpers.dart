@@ -13,15 +13,17 @@ import 'package:inventory_keeper/src/models/stock_summary/stock_summary.dart';
 /// Initial Stck Summary
 ///
 StockSummary initiaStock = const StockSummary(
-    teamId: '',
-    totalSale: 0,
-    productsSummary: [],
-    totalAmount: 0,
-    totalBuy: 0,
-    totalIn: 0,
-    totalOut: 0,
-    totalQuantity: 0,
-    lastUpdatedAt: 0);
+  teamId: '',
+  totalSale: 0,
+  productsSummary: [],
+  totalAmount: 0,
+  totalAuditQuantity: 0,
+  totalBuy: 0,
+  totalIn: 0,
+  totalOut: 0,
+  totalQuantity: 0,
+  lastUpdatedAt: 0,
+);
 
 /// Check if number is integer
 

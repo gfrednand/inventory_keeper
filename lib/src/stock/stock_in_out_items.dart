@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/cart_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_summary_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/add_product.dart';
@@ -66,15 +64,16 @@ class StockInOutItems extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                Get.to<void>(
-                  () => const AddProduct(
-                    addProductEnum: AddProductEnum.add,
-                  ),
-                  transition: Transition.fadeIn,
-                );
-              },
-              icon: const Icon(Icons.add))
+            onPressed: () {
+              Get.to<void>(
+                () => const AddProduct(
+                  addProductEnum: AddProductEnum.add,
+                ),
+                transition: Transition.fadeIn,
+              );
+            },
+            icon: const Icon(Icons.add),
+          )
         ],
       ),
       body: Column(
@@ -98,7 +97,8 @@ class StockInOutItems extends StatelessWidget {
                           p = p.copyWith(
                             currentStock: productsSummary
                                     .firstWhereOrNull(
-                                        (pSummary) => pSummary.id == item.id)
+                                      (pSummary) => pSummary.id == item.id,
+                                    )
                                     ?.currentStock ??
                                 0,
                           );
@@ -107,7 +107,7 @@ class StockInOutItems extends StatelessWidget {
                       } else {
                         products = unProcesedProducts;
                       }
-                      var data = products;
+                      final data = products;
 
                       if (data.isNotEmpty) {
                         return GetBuilder<CartController>(

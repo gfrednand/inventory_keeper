@@ -5,7 +5,6 @@ import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_category/product_category.dart';
 import 'package:inventory_keeper/src/utility/firestore_constant.dart';
-import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// ProductCategory Controller
 class ProductCategoryController extends BaseController {

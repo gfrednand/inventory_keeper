@@ -79,7 +79,8 @@ class ProductSearchDelegate extends SearchDelegate<Product?> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // This method is called everytime the search term changes.
-    // If you want to add search suggestions as the user enters their search term, this is the place to do that.
+    // If you want to add search suggestions as the user enters their search
+    //term, this is the place to do that.
     return Column();
   }
 }

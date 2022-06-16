@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/product_item.dart';
@@ -142,7 +141,8 @@ class TransactionDetailsPage extends StatelessWidget {
                     const SectionDivider(),
                 itemBuilder: (context, index) {
                   final item = productSummaryToProduct(
-                      transaction.productsSummary[index]);
+                    transaction.productsSummary[index],
+                  );
                   if (item != null) {
                     return ProductItem(
                       item: item,

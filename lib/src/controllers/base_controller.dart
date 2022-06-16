@@ -1,13 +1,19 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:inventory_keeper/src/services/data_service.dart';
+import 'package:inventory_keeper/src/team/team_initial_page.dart';
 
 ///
 class BaseController extends GetxController {
   ///
-  final box = GetStorage();
-
-  ///
-  String? get teamId => box.read('selectedTeamId');
+  String? get teamId {
+    final id = Get.find<DataService>().restoreTeamId();
+    if (id == null) {
+      Get.offAll<void>(() => const TeamInitialPage());
+      return null;
+    } else {
+      return id;
+    }
+  }
 
   bool _busy = false;
   String? _errorMessage;

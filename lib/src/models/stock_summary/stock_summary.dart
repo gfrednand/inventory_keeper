@@ -4,8 +4,6 @@
 // ignore_for_file: public_member_api_docs
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
-
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
 
 part 'stock_summary.freezed.dart';
@@ -18,6 +16,7 @@ abstract class StockSummary with _$StockSummary {
     required String teamId,
     required double totalAmount,
     required int totalQuantity,
+    required int totalAuditQuantity,
     required int totalIn,
     required int totalOut,
     required double totalSale,

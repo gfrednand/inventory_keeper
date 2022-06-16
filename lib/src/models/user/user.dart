@@ -5,7 +5,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inventory_keeper/src/models/role/role.dart';
-import 'package:inventory_keeper/src/models/team/team.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';

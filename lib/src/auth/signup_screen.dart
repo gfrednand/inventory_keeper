@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventory_keeper/src/auth/login_screen.dart';
 import 'package:inventory_keeper/src/auth/phone_number_field_page.dart';
 import 'package:inventory_keeper/src/controllers/auth_controller.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
@@ -115,42 +114,44 @@ class SignupScreen extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              GetBuilder<AuthController>(builder: (cont) {
-                return Container(
-                  width: MediaQuery.of(context).size.width - 40,
-                  height: 50,
-                  decoration: const BoxDecoration(
-                    color: AppColors.blue700,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
+              GetBuilder<AuthController>(
+                builder: (cont) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                      color: AppColors.blue700,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
                     ),
-                  ),
-                  child: authController.busy
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : InkWell(
-                          onTap: () => authController.registerUser(
-                            _usernameController.text,
-                            _phoneNumberController.text,
-                            _passwordController.text,
-                            authController.profilePhoto,
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Register',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
+                    child: authController.busy
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () => authController.registerUser(
+                              _usernameController.text,
+                              _phoneNumberController.text,
+                              _passwordController.text,
+                              authController.profilePhoto,
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                );
-              }),
+                  );
+                },
+              ),
               const SizedBox(
                 height: 15,
               ),

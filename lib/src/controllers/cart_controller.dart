@@ -1,7 +1,5 @@
-import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
-import 'package:inventory_keeper/src/utility/helpers.dart';
 
 /// Cart controller
 class CartController extends BaseController {

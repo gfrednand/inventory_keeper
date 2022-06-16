@@ -72,25 +72,29 @@
 //           init: ProductTypeController(),
 //           builder: (cont) {
 //             return Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+//               padding: 
+//const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
 //               child: SizedBox(
 //                 height: 30,
 //                 child: ListView.separated(
-//                   itemCount: productTypeController.filteredproductTypes.length,
+//                   itemCount: 
+// productTypeController.filteredproductTypes.length,
 //                   scrollDirection: Axis.horizontal,
 //                   itemBuilder: (ctx, index) {
 //                     final type =
 //                         productTypeController.filteredproductTypes[index];
 //                     return FilterChip(
 //                       label: Text(
-//                         productTypeController.filteredproductTypes[index].name,
+//                        
+// productTypeController.filteredproductTypes[index].name,
 //                       ),
 //                       onSelected: (value) {
 //                         productTypeController.changeType(type);
 //                         Get.find<ProductController>().productType = type;
 //                       },
 //                       // backgroundColor: Color.fromARGB(84, 158, 158, 158),
-//                       selectedColor: const Color.fromARGB(170, 144, 202, 249),
+//                      
+// selectedColor: const Color.fromARGB(170, 144, 202, 249),
 //                       selected: productTypeController.type?.id == type.id,
 //                     );
 

@@ -5,7 +5,6 @@ import 'package:inventory_keeper/src/controllers/auth_controller.dart';
 import 'package:inventory_keeper/src/controllers/partner_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_category_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_summary_controller.dart';
 import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
 import 'package:inventory_keeper/src/controllers/role_controller.dart';
 import 'package:inventory_keeper/src/controllers/stock_summary_controller.dart';

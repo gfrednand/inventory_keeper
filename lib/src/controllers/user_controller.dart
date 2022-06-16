@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:inventory_keeper/src/auth/login_screen.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/user/user.dart';
-import 'package:inventory_keeper/src/team/team_initial_page.dart';
+import 'package:inventory_keeper/src/services/data_service.dart';
 import 'package:inventory_keeper/src/utility/firestore_constant.dart';
 
 /// User Controlelr
@@ -21,10 +21,10 @@ class UserController extends BaseController {
   );
 
   ///
-  // RxList<User> _users = <User>[].obs;
+  List<User> _teamMembers = [];
 
   ///
-  // RxList<User> get users => _users;
+  List<User> get teamMembers => _teamMembers;
 
   ///
   final RxInt _lastUpdatedAt = 0.obs;
@@ -41,7 +41,6 @@ class UserController extends BaseController {
   User? get user => userRx.value;
 
   ///
-  String? get _uid => box.read('loggedInUserId');
 
   ///
   Rx<User?> userRx = Rx(dummyUser);
@@ -51,40 +50,69 @@ class UserController extends BaseController {
     super.onReady();
     userRx.bindStream(getUserDetails());
     ever(userRx, getUserData);
+    ever(_lastUpdatedAt, fetchData);
   }
 
   ///
   Stream<User?> getUserDetails() {
-    return usersCollectionRef.doc(_uid).snapshots().map<User?>(
-          (snapshot) => snapshot.data() != null
-              ? User.fromJson(snapshot.data()! as Map<String, dynamic>)
-              : null,
-        );
+    final uid = Get.find<DataService>().restoreUserId();
+    if (uid != null) {
+      return usersCollectionRef.doc(uid).snapshots().map<User?>(
+            (snapshot) => snapshot.data() != null
+                ? User.fromJson(snapshot.data()! as Map<String, dynamic>)
+                : null,
+          );
+    }
+    return const Stream.empty();
+  }
+
+  /// Get Team Members
+  Future<void> getTeamMembers(String teamId) async {
+    final datas = <User>[];
+    QuerySnapshot<Object?> snapShot;
+    busy = true;
+    snapShot =
+        await usersCollectionRef.where('teams', arrayContains: teamId).get();
+
+    for (final doc in snapShot.docs) {
+      final json = doc.data()! as Map<String, dynamic>;
+      json['id'] = doc.id;
+      datas.add(User.fromJson(json));
+    }
+    _teamMembers = datas;
+
+    busy = false;
   }
 
   /// Future Items
-  // Future<void> fetchData(int? lastUpdatedAt) async {
-  //   final datas = <User>[];
-  //   QuerySnapshot<Object?> snapShot;
-  //   busy = true;
-  //   if (teamId != null) {
-  //     if (lastUpdatedAt != null) {
-  //       snapShot = await usersCollectionRef
-  //           .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
-  //           .get();
-  //     } else {
-  //       snapShot = await usersCollectionRef.get();
-  //     }
-  //     for (final doc in snapShot.docs) {
-  //       final json = doc.data()! as Map<String, dynamic>;
-  //       json['id'] = doc.id;
-  //       datas.add(User.fromJson(json));
-  //     }
-  //     _users.value = datas;
-  //   }
+  Future<void> fetchData(int? lastUpdatedAt) async {
+    final datas = <User>[];
+    QuerySnapshot<Object?> snapShot;
+    busy = true;
+    if (teamId != null) {
+      if (lastUpdatedAt != null && _teamMembers.isNotEmpty) {
+        snapShot = await usersCollectionRef
+            .where('teams', arrayContains: teamId)
+            .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
+            .get();
+      } else {
+        snapShot = await usersCollectionRef
+            .where('teams', arrayContains: teamId)
+            .get();
+      }
+      for (final doc in snapShot.docs) {
+        final json = doc.data()! as Map<String, dynamic>;
+        json['id'] = doc.id;
+        datas.add(User.fromJson(json));
+      }
+      _teamMembers = _teamMembers..addAll(datas);
 
-  //   busy = false;
-  // }
+      final seen = <String>{};
+      _teamMembers = _teamMembers.where((i) => seen.add(i.id ?? '')).toList();
+    }
+
+    busy = false;
+  }
 
   ///
   Future<void> checkByPhoneNumber(String phoneNumber) async {
@@ -105,7 +133,9 @@ class UserController extends BaseController {
         // snackPosition: SnackPosition.BOTTOM,
       );
     } else {
-      await box.write('selectedTeamId', userRx.value?.selectedTeamId);
+      if (userRx.value?.selectedTeamId != null) {
+        Get.find<DataService>().storeTeamId(userRx.value!.selectedTeamId!);
+      }
       await Get.to<void>(() => LoginScreen(phoneNumber: phoneNumber));
     }
     busy = false;
@@ -114,10 +144,9 @@ class UserController extends BaseController {
   ///
   void getUserData(User? user) {
     if (user != null) {
-      if (user.selectedTeamId == null) {
-        Get.to<void>(() => const TeamInitialPage());
-      } else {
-        box.write('selectedTeamId', user.selectedTeamId);
+      if (user.selectedTeamId != null) {
+        getTeamMembers(user.selectedTeamId!);
+        Get.find<DataService>().storeTeamId(user.selectedTeamId!);
       }
     }
     // final thumbnails = <String>[];

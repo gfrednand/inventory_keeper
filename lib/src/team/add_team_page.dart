@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/team_controller.dart';
 import 'package:inventory_keeper/src/homepage/home_item_container.dart';
-import 'package:inventory_keeper/src/models/team/team.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 
@@ -30,7 +29,7 @@ class AddTeamPage extends StatelessWidget {
         title: const Text('Create Team'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: HomeItemContainer(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -52,38 +51,40 @@ class AddTeamPage extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              GetBuilder<TeamController>(builder: (cont) {
-                return Container(
-                  width: MediaQuery.of(context).size.width - 40,
-                  height: 50,
-                  decoration: const BoxDecoration(
-                    color: AppColors.blue700,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
+              GetBuilder<TeamController>(
+                builder: (cont) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                      color: AppColors.blue700,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
                     ),
-                  ),
-                  child: TeamController.instance.busy
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : InkWell(
-                          onTap: () => TeamController.instance
-                              .registerTeam(_teamNameController.text),
-                          child: const Center(
-                            child: Text(
-                              'Create Team',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
+                    child: TeamController.instance.busy
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () => TeamController.instance
+                                .registerTeam(_teamNameController.text),
+                            child: const Center(
+                              child: Text(
+                                'Create Team',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                );
-              }),
+                  );
+                },
+              ),
               const SizedBox(
                 height: 50,
               ),

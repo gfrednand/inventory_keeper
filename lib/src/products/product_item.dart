@@ -24,8 +24,8 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final type = item.category == null ? '' : ('${item.category!.name} | ');
-    final buyPrice = ('${oCcy.format(item.buyPrice)} | ');
-    final salePrice = ('${oCcy.format(item.salePrice)} ');
+    final buyPrice = '${oCcy.format(item.buyPrice)} | ';
+    final salePrice = '${oCcy.format(item.salePrice)} ';
 
     return Material(
       type: MaterialType.transparency,

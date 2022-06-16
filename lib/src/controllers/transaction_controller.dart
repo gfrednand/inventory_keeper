@@ -107,7 +107,8 @@
 //       });
 //       for (final summary in prodSummary) {
 //         final index =
-//             productsSummary.indexWhere((summary) => summary.id == summary.id);
+//             productsSummary.
+//indexWhere((summary) => summary.id == summary.id);
 //         if (index == -1) {
 //           productsSummary.add(summary);
 //         } else {
@@ -185,7 +186,8 @@
 //         'value': dateToMillSeconds(date)
 //       };
 //     }
-//     final objs = await _api.allItems(queryMap: queryMap, condition: condition);
+//     final objs = await _api.allItems
+//(queryMap: queryMap, condition: condition);
 
 //     busy = false;
 //     for (final item in objs) {
@@ -205,7 +207,8 @@
 //   }
 
 //   ///
-//   List<Map<String, dynamic>> prodSummaryMap(Map<String, ProductSummary> map) {
+//   List<Map<String, dynamic>> 
+//prodSummaryMap(Map<String, ProductSummary> map) {
 //     return map.values.map(
 //       (e) {
 //         return {

@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inventory_keeper/src/models/partner/partner.dart';
 import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
-import 'package:inventory_keeper/src/models/server_timestamp_converter.dart';
 
 part 'product_transaction.freezed.dart';
 part 'product_transaction.g.dart';

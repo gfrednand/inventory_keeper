@@ -41,7 +41,7 @@ class TeamController extends BaseController {
   Future<void> fetchData(int? lastUpdatedAt) async {
     busy = true;
     QuerySnapshot? snapshot;
-    if (lastUpdatedAt != null) {
+    if (lastUpdatedAt != null && _teams.isNotEmpty) {
       snapshot = await teamCollectionRef
           .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
           .get();
@@ -58,8 +58,8 @@ class TeamController extends BaseController {
         datas.add(Team.fromJson(json));
       }
     }
-    _teams = datas;
     _teams = _teams..addAll(datas);
+
     final seen = <String>{};
     _teams = _teams.where((i) => seen.add(i.id ?? '')).toList();
     busy = false;

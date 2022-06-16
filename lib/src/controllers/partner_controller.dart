@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
 import 'package:inventory_keeper/src/models/partner/partner.dart';
 import 'package:inventory_keeper/src/utility/firestore_constant.dart';
-import 'package:inventory_keeper/src/utility/helpers.dart';
 
 ///PartnerController
 class PartnerController extends BaseController {

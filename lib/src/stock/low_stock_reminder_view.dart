@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/transaction_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_transaction/product_transaction.dart';
 import 'package:inventory_keeper/src/products/current_stock_quantity.dart';
@@ -54,23 +53,25 @@ class LowStockReminderView extends StatelessWidget {
         ],
         title: const Text('Safety Stock'),
       ),
-      body: GetBuilder<ProductController>(builder: (cont) {
-        final products = productController.products
-            .where((p) => p.safetyQuantity > p.currentStock)
-            .toList();
-        final excessProducts = productController.products
-            .where((p) => p.currentStock > (p.safetyQuantity + excessFactor))
-            .toList();
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              color: const Color.fromARGB(255, 236, 232, 232),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: ListTile(
-                onTap: () {
-                  productController.filteredProductsByNameAndCategory();
-                  Get.to<void>(() => Scaffold(
+      body: GetBuilder<ProductController>(
+        builder: (cont) {
+          final products = productController.products
+              .where((p) => p.safetyQuantity > p.currentStock)
+              .toList();
+          final excessProducts = productController.products
+              .where((p) => p.currentStock > (p.safetyQuantity + excessFactor))
+              .toList();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: const Color.fromARGB(255, 236, 232, 232),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: ListTile(
+                  onTap: () {
+                    productController.filteredProductsByNameAndCategory();
+                    Get.to<void>(
+                      () => Scaffold(
                         body: Padding(
                           padding: const EdgeInsets.only(top: 50),
                           child: ProductsList(
@@ -94,46 +95,51 @@ class LowStockReminderView extends StatelessWidget {
                             },
                           ),
                         ),
-                      ));
-                },
-                leading: const Icon(Icons.speed_outlined),
-                title: const Text("Add item's safety stock quantity"),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
+                      ),
+                    );
+                  },
+                  leading: const Icon(Icons.speed_outlined),
+                  title: const Text("Add item's safety stock quantity"),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                'Low stock items (${products.length})',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.orange,
-                ),
-              ),
-            ),
-            generateProductsList(products),
-            if (excessProducts.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  'Excess stock items (${excessProducts.length})',
+                  'Low stock items (${products.length})',
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Colors.teal),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.orange,
+                  ),
                 ),
               ),
-            if (excessProducts.isNotEmpty) generateProductsList(excessProducts)
-          ],
-        );
-      }),
+              generateProductsList(products),
+              if (excessProducts.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'Excess stock items (${excessProducts.length})',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.teal,
+                    ),
+                  ),
+                ),
+              if (excessProducts.isNotEmpty)
+                generateProductsList(excessProducts)
+            ],
+          );
+        },
+      ),
     );
   }
 
+  ///
   ListView generateProductsList(List<Product> products) {
     return ListView.builder(
       shrinkWrap: true,

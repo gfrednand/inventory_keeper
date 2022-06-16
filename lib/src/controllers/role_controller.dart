@@ -37,7 +37,7 @@ class RoleController extends BaseController {
       busy = true;
       final datas = <Role>[];
       QuerySnapshot<Object?> snapShot;
-      if (lastUpdatedAt != null) {
+      if (lastUpdatedAt != null && _roles.isNotEmpty) {
         snapShot = await rolesCollectionRef(teamId!)
             .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
             .get();

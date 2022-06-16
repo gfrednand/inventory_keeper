@@ -24,6 +24,7 @@ mixin _$StockSummary {
   String get teamId => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
   int get totalQuantity => throw _privateConstructorUsedError;
+  int get totalAuditQuantity => throw _privateConstructorUsedError;
   int get totalIn => throw _privateConstructorUsedError;
   int get totalOut => throw _privateConstructorUsedError;
   double get totalSale => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $StockSummaryCopyWith<$Res> {
       String teamId,
       double totalAmount,
       int totalQuantity,
+      int totalAuditQuantity,
       int totalIn,
       int totalOut,
       double totalSale,
@@ -70,6 +72,7 @@ class _$StockSummaryCopyWithImpl<$Res> implements $StockSummaryCopyWith<$Res> {
     Object? teamId = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
+    Object? totalAuditQuantity = freezed,
     Object? totalIn = freezed,
     Object? totalOut = freezed,
     Object? totalSale = freezed,
@@ -93,6 +96,10 @@ class _$StockSummaryCopyWithImpl<$Res> implements $StockSummaryCopyWith<$Res> {
       totalQuantity: totalQuantity == freezed
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalAuditQuantity: totalAuditQuantity == freezed
+          ? _value.totalAuditQuantity
+          : totalAuditQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       totalIn: totalIn == freezed
           ? _value.totalIn
@@ -134,6 +141,7 @@ abstract class _$$_StockSummaryCopyWith<$Res>
       String teamId,
       double totalAmount,
       int totalQuantity,
+      int totalAuditQuantity,
       int totalIn,
       int totalOut,
       double totalSale,
@@ -159,6 +167,7 @@ class __$$_StockSummaryCopyWithImpl<$Res>
     Object? teamId = freezed,
     Object? totalAmount = freezed,
     Object? totalQuantity = freezed,
+    Object? totalAuditQuantity = freezed,
     Object? totalIn = freezed,
     Object? totalOut = freezed,
     Object? totalSale = freezed,
@@ -182,6 +191,10 @@ class __$$_StockSummaryCopyWithImpl<$Res>
       totalQuantity: totalQuantity == freezed
           ? _value.totalQuantity
           : totalQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalAuditQuantity: totalAuditQuantity == freezed
+          ? _value.totalAuditQuantity
+          : totalAuditQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       totalIn: totalIn == freezed
           ? _value.totalIn
@@ -219,6 +232,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
       required this.teamId,
       required this.totalAmount,
       required this.totalQuantity,
+      required this.totalAuditQuantity,
       required this.totalIn,
       required this.totalOut,
       required this.totalSale,
@@ -239,6 +253,8 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
   @override
   final int totalQuantity;
   @override
+  final int totalAuditQuantity;
+  @override
   final int totalIn;
   @override
   final int totalOut;
@@ -257,7 +273,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'StockSummary(id: $id, teamId: $teamId, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalIn: $totalIn, totalOut: $totalOut, totalSale: $totalSale, totalBuy: $totalBuy, lastUpdatedAt: $lastUpdatedAt, productsSummary: $productsSummary)';
+    return 'StockSummary(id: $id, teamId: $teamId, totalAmount: $totalAmount, totalQuantity: $totalQuantity, totalAuditQuantity: $totalAuditQuantity, totalIn: $totalIn, totalOut: $totalOut, totalSale: $totalSale, totalBuy: $totalBuy, lastUpdatedAt: $lastUpdatedAt, productsSummary: $productsSummary)';
   }
 
   @override
@@ -269,6 +285,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
       ..add(DiagnosticsProperty('teamId', teamId))
       ..add(DiagnosticsProperty('totalAmount', totalAmount))
       ..add(DiagnosticsProperty('totalQuantity', totalQuantity))
+      ..add(DiagnosticsProperty('totalAuditQuantity', totalAuditQuantity))
       ..add(DiagnosticsProperty('totalIn', totalIn))
       ..add(DiagnosticsProperty('totalOut', totalOut))
       ..add(DiagnosticsProperty('totalSale', totalSale))
@@ -288,6 +305,8 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
                 .equals(other.totalAmount, totalAmount) &&
             const DeepCollectionEquality()
                 .equals(other.totalQuantity, totalQuantity) &&
+            const DeepCollectionEquality()
+                .equals(other.totalAuditQuantity, totalAuditQuantity) &&
             const DeepCollectionEquality().equals(other.totalIn, totalIn) &&
             const DeepCollectionEquality().equals(other.totalOut, totalOut) &&
             const DeepCollectionEquality().equals(other.totalSale, totalSale) &&
@@ -306,6 +325,7 @@ class _$_StockSummary with DiagnosticableTreeMixin implements _StockSummary {
       const DeepCollectionEquality().hash(teamId),
       const DeepCollectionEquality().hash(totalAmount),
       const DeepCollectionEquality().hash(totalQuantity),
+      const DeepCollectionEquality().hash(totalAuditQuantity),
       const DeepCollectionEquality().hash(totalIn),
       const DeepCollectionEquality().hash(totalOut),
       const DeepCollectionEquality().hash(totalSale),
@@ -330,6 +350,7 @@ abstract class _StockSummary implements StockSummary {
       required final String teamId,
       required final double totalAmount,
       required final int totalQuantity,
+      required final int totalAuditQuantity,
       required final int totalIn,
       required final int totalOut,
       required final double totalSale,
@@ -348,6 +369,8 @@ abstract class _StockSummary implements StockSummary {
   double get totalAmount => throw _privateConstructorUsedError;
   @override
   int get totalQuantity => throw _privateConstructorUsedError;
+  @override
+  int get totalAuditQuantity => throw _privateConstructorUsedError;
   @override
   int get totalIn => throw _privateConstructorUsedError;
   @override

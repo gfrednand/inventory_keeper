@@ -31,6 +31,8 @@ class UpdatedController extends BaseController {
 
   /// Check
   void checkUpdatedValue(UpdatedAt? updatedAt) {
+    print(updatedAt?.toJson());
+
     if (updatedAt != null) {
       TeamSettingsController.instance.lastUpdatedAt =
           updatedAt.teamSettingsLastUpdate;

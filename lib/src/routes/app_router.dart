@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/product_category/product_category_list_view.dart';
-import 'package:inventory_keeper/src/products/add_product.dart';
 import 'package:inventory_keeper/src/products/past_quantity_view.dart';
 import 'package:inventory_keeper/src/products/product_details.dart';
 import 'package:inventory_keeper/src/products/product_list_view.dart';
 import 'package:inventory_keeper/src/routes/fade_route.dart';
 import 'package:inventory_keeper/src/routes/slide_top_route.dart';
 import 'package:inventory_keeper/src/settings/settings_view.dart';
-import 'package:inventory_keeper/src/products/products_list.dart';
 import 'package:inventory_keeper/src/stock/low_stock_reminder_view.dart';
 import 'package:inventory_keeper/src/stock/stock_list_view.dart';
 

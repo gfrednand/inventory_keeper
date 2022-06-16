@@ -60,158 +60,160 @@ class ProductDetails extends StatelessWidget {
           ),
         ],
       ),
-      body: GetBuilder<ProductController>(builder: (cont) {
-        if (product != null) {
-          product = productWithLatestInfo(product!);
-        }
-        return Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Container(
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Hero(
-                                tag: 'avatar-${product?.id}',
-                                child: Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[400],
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20),
+      body: GetBuilder<ProductController>(
+        builder: (cont) {
+          if (product != null) {
+            product = productWithLatestInfo(product!);
+          }
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Container(
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Hero(
+                                  tag: 'avatar-${product?.id}',
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[400],
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Container(
-                              height: 100,
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product?.name ?? '-',
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      color: Color.fromARGB(255, 94, 94, 94),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 24,
-                                  ),
-                                  Wrap(
-                                    spacing: 5,
-                                    children: [
-                                      CurrentStockQuantity(
-                                        currentStock:
-                                            product?.currentStock ?? 0,
-                                        withBackground: true,
-                                      ),
-                                      const Text(
-                                        'Total Quantity',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w300,
-                                          color: AppColors.blue600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              const SizedBox(
+                                width: 8,
                               ),
-                            )
-                          ],
+                              Container(
+                                height: 100,
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product?.name ?? '-',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Color.fromARGB(255, 94, 94, 94),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    Wrap(
+                                      spacing: 5,
+                                      children: [
+                                        CurrentStockQuantity(
+                                          currentStock:
+                                              product?.currentStock ?? 0,
+                                          withBackground: true,
+                                        ),
+                                        const Text(
+                                          'Total Quantity',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300,
+                                            color: AppColors.blue600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 24, left: 12, right: 12),
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            CustomDetailItemTile(
-                              hintText: 'Buying Cost of Item',
-                              label: 'Cost',
-                              value: oCcy.format(product?.buyPrice ?? 0),
-                            ),
-                            CustomDetailItemTile(
-                              hintText: 'Selling Price of Item',
-                              label: 'Price',
-                              value: oCcy.format(product?.salePrice ?? 0),
-                            ),
-                            const SectionDivider(),
-                            CustomDetailItemTile(
-                              label: 'Category',
-                              value: product?.category?.name ?? '-',
-                            ),
-                            const SectionDivider(),
-                            CustomDetailItemTile(
-                              hintText: 'Used for notification',
-                              label: 'Safety Stock',
-                              value: '${product?.safetyQuantity ?? 0}',
-                            ),
-                            const SectionDivider(),
-                            CustomDetailItemTile(
-                              label: 'Unit Of Measure',
-                              value: product?.unit ?? '-',
-                            ),
-                          ],
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 24, left: 12, right: 12),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              CustomDetailItemTile(
+                                hintText: 'Buying Cost of Item',
+                                label: 'Cost',
+                                value: oCcy.format(product?.buyPrice ?? 0),
+                              ),
+                              CustomDetailItemTile(
+                                hintText: 'Selling Price of Item',
+                                label: 'Price',
+                                value: oCcy.format(product?.salePrice ?? 0),
+                              ),
+                              const SectionDivider(),
+                              CustomDetailItemTile(
+                                label: 'Category',
+                                value: product?.category?.name ?? '-',
+                              ),
+                              const SectionDivider(),
+                              CustomDetailItemTile(
+                                hintText: 'Used for notification',
+                                label: 'Safety Stock',
+                                value: '${product?.safetyQuantity ?? 0}',
+                              ),
+                              const SectionDivider(),
+                              CustomDetailItemTile(
+                                label: 'Unit Of Measure',
+                                value: product?.unit ?? '-',
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (showTransactionButton)
-              ProductDetailBottomBar(
-                onPressed: () {
-                  CustomModalSheet.show(
-                    isExpanded: false,
-                    context: context,
-                    child: StockInOutContainer(
-                      product: product,
-                      label: 'Select',
-                      ctx: context,
-                    ),
-                  );
-                },
-                buttonLabel: 'Items In/Out',
-                quantityWidget: Hero(
-                  tag: 'currentstock-${product?.id}',
-                  child: CurrentStockQuantity(
-                    currentStock: product?.currentStock ?? 0,
+                    ],
                   ),
                 ),
-              )
-            else
-              Container(),
-          ],
-        );
-      }),
+              ),
+              if (showTransactionButton)
+                ProductDetailBottomBar(
+                  onPressed: () {
+                    CustomModalSheet.show(
+                      isExpanded: false,
+                      context: context,
+                      child: StockInOutContainer(
+                        product: product,
+                        label: 'Select',
+                        ctx: context,
+                      ),
+                    );
+                  },
+                  buttonLabel: 'Items In/Out',
+                  quantityWidget: Hero(
+                    tag: 'currentstock-${product?.id}',
+                    child: CurrentStockQuantity(
+                      currentStock: product?.currentStock ?? 0,
+                    ),
+                  ),
+                )
+              else
+                Container(),
+            ],
+          );
+        },
+      ),
     );
   }
 }

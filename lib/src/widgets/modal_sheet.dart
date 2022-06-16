@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_keeper/src/widgets/section_divider.dart';
 
 ///
 class CustomModalSheet {
@@ -13,7 +12,7 @@ class CustomModalSheet {
   }
 
   ///
-  static void _show<T>(
+  static Future<void> _show<T>(
     BuildContext context,
     Widget child,
     bool isExpanded,

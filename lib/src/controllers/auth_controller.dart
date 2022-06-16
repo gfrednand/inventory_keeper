@@ -9,7 +9,7 @@ import 'package:inventory_keeper/src/controllers/index.dart';
 
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
 import 'package:inventory_keeper/src/models/user/user.dart' as model;
-import 'package:inventory_keeper/src/team/team_initial_page.dart';
+import 'package:inventory_keeper/src/services/data_service.dart';
 import 'package:inventory_keeper/src/utility/firestore_constant.dart';
 
 ///AuthController
@@ -38,7 +38,7 @@ class AuthController extends BaseController {
       Get.offAll<void>(PhoneNumberFieldPage.new);
     } else {
       Get.put(UpdatedController());
-      box.write('loggedInUserId', authUser.uid);
+      Get.find<DataService>().storeUserId(authUser.uid);
 
       Get.offAll<void>(() => const LayoutPage());
     }
@@ -107,7 +107,6 @@ class AuthController extends BaseController {
       busy = false;
     } catch (e) {
       busy = false;
-      print(e.toString());
       Get.snackbar(
         'Error Creating Account',
         e.toString(),
@@ -144,6 +143,7 @@ class AuthController extends BaseController {
   Future<void> signOut() async {
     busy = true;
     await firebaseAuth.signOut();
+
     busy = false;
   }
 }
