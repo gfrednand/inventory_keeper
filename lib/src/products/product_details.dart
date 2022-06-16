@@ -60,7 +60,7 @@ class ProductDetails extends StatelessWidget {
           ),
         ],
       ),
-      body: Obx(() {
+      body: GetBuilder<ProductController>(builder: (cont) {
         if (product != null) {
           product = productWithLatestInfo(product!);
         }

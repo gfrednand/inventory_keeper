@@ -64,13 +64,8 @@ exports.createproductsSummaryLastUpdate = functions.firestore.document('teams/{t
 
 async function createTeam(snapshot: functions.firestore.QueryDocumentSnapshot) {
     const firestore = admin.firestore();
-
     const doc: any = snapshot.data();
-
-
-
     await firestore.collection(`users`).doc(doc.userId).update({ 'teams': [snapshot.id], 'selectedTeamId': snapshot.id });
-
     await updateAt(snapshot.id, doc.lastUpdatedAt, 'teamsLastUpdate');
 }
 

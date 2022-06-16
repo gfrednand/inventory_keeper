@@ -28,6 +28,6 @@ class HomeBinding implements Bindings {
     Get.put<ProductCategoryController>(ProductCategoryController());
     Get.put<TeamSettingsController>(TeamSettingsController());
     Get.put<RoleController>(RoleController());
-    Get.put<ProductSummaryController>(ProductSummaryController());
+    // Get.put<ProductSummaryController>(ProductSummaryController());
   }
 }

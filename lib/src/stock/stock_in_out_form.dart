@@ -202,21 +202,24 @@ class StockInOutForm extends StatelessWidget {
                                 .firstWhereOrNull(
                               (element) => element.id == cartProducts[index].id,
                             );
-                            return ProductItem(
-                              item: prod!,
-                              trailing: Text(
-                                '${cartProducts[index].quantity}',
-                                style: TextStyle(color: color),
-                              ),
-                              onTap: () {
-                                Get.to<void>(
-                                  () => const ProductDetails(
-                                    showTransactionButton: false,
-                                  ),
-                                  arguments: prod,
-                                );
-                              },
-                            );
+                            if (prod != null) {
+                              return ProductItem(
+                                item: prod,
+                                trailing: Text(
+                                  '${cartProducts[index].quantity}',
+                                  style: TextStyle(color: color),
+                                ),
+                                onTap: () {
+                                  Get.to<void>(
+                                    () => const ProductDetails(
+                                      showTransactionButton: false,
+                                    ),
+                                    arguments: prod,
+                                  );
+                                },
+                              );
+                            }
+                            return Container();
                           },
                         ),
                       ),

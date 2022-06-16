@@ -59,7 +59,7 @@ class PartnerController extends BaseController {
     QuerySnapshot<Object?> snapShot;
     busy = true;
     if (teamId != null) {
-      if (lastUpdatedAt != null) {
+      if (lastUpdatedAt != null && _partners.isNotEmpty) {
         snapShot = await partnerCollectionRef(teamId!)
             .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
             .get();
@@ -69,9 +69,14 @@ class PartnerController extends BaseController {
       for (final doc in snapShot.docs) {
         final json = doc.data()! as Map<String, dynamic>;
         json['id'] = doc.id;
-        datas.add(Partner.fromJson(json));
+        if (json['userId'] != null) {
+          datas.add(Partner.fromJson(json));
+        }
       }
-      _partners = datas;
+
+      _partners = _partners..addAll(datas);
+      final seen = <String>{};
+      _partners = _partners.where((i) => seen.add(i.id ?? '')).toList();
     }
 
     busy = false;
@@ -80,34 +85,43 @@ class PartnerController extends BaseController {
   /// Add a partner
   Future<void> addPartner(PartnerType type) async {
     busy = true;
-    final map = <String, dynamic>{
-      'name': nameController.text,
-      'type': type.name,
-      'lastUpdatedAt': dateToMillSeconds(DateTime.now())
-    };
-    if (teamId != null) {
-      final success = await partnerCollectionRef(teamId!)
-          .add(map)
-          .then((value) => true)
-          .catchError((dynamic error) {
-        print('Failed to add data: ${error.toString()}');
-        return false;
-      });
-      busy = false;
-      if (success) {
-        nameController.text = '';
+    if (nameController.text != '') {
+      final map = <String, dynamic>{
+        'teamId': teamId,
+        'userId': firebaseAuth.currentUser!.uid,
+        'name': nameController.text,
+        'type': type.name,
+        'lastUpdatedAt': DateTime.now().millisecondsSinceEpoch
+      };
+      if (teamId != null) {
+        final success = await partnerCollectionRef(teamId!)
+            .add(map)
+            .then((value) => true)
+            .catchError((dynamic error) {
+          print('Failed to add data: ${error.toString()}');
+          return false;
+        });
+        busy = false;
+        if (success) {
+          nameController.text = '';
 
-        Get.snackbar(
-          type.name,
-          'Successful Added',
-        );
-      } else {
-        Get.snackbar(
-          type.name,
-          'Failed to Add',
-          snackPosition: SnackPosition.BOTTOM,
-        );
+          Get.snackbar(
+            type.name,
+            'Successful Added',
+          );
+        } else {
+          Get.snackbar(
+            type.name,
+            'Failed to Add',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
       }
+    } else {
+      Get.snackbar(
+        'Hey!',
+        'Name is required',
+      );
     }
   }
 

@@ -132,9 +132,10 @@ class ProductController extends BaseController {
   /// Future Products
   Future<void> fetchData(int? lastUpdatedAt) async {
     if (teamId != null) {
-      final prods = <Product>[];
+      busy = true;
+      final datas = <Product>[];
       QuerySnapshot<Object?> snapShot;
-      if (lastUpdatedAt != null) {
+      if (lastUpdatedAt != null && _products.isNotEmpty) {
         snapShot = await productsCollectionRef(teamId!)
             .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
             .get();
@@ -144,10 +145,13 @@ class ProductController extends BaseController {
       for (final doc in snapShot.docs) {
         final json = doc.data()! as Map<String, dynamic>;
         json['id'] = doc.id;
-        prods.add(Product.fromJson(json));
+        datas.add(Product.fromJson(json));
       }
-      _products = products;
-      update();
+      _products = _products..addAll(datas);
+      final seen = <String>{};
+      _products = _products.where((cat) => seen.add(cat.id ?? '')).toList();
+
+      busy = false;
     }
   }
 
@@ -208,7 +212,7 @@ class ProductController extends BaseController {
           userId: firebaseAuth.currentUser!.uid,
           name: prod.name,
           safetyQuantity: safetyQuantity,
-          lastUpdatedAt: dateToMillSeconds(DateTime.now()));
+          lastUpdatedAt: DateTime.now().millisecondsSinceEpoch);
 
       final success = await productsCollectionRef(teamId!)
           .doc(prod.id)
@@ -251,7 +255,7 @@ class ProductController extends BaseController {
       if (safetyQuantity != null) {
         productMap['safetyQuantity'] = safetyQuantity ?? 0;
       }
-      productMap['lastUpdatedAt'] = dateToMillSeconds(DateTime.now());
+      productMap['lastUpdatedAt'] = DateTime.now().millisecondsSinceEpoch;
 
       final success = await productsCollectionRef(teamId!)
           .doc(product.id)

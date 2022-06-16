@@ -25,18 +25,18 @@ class StockSummaryController extends BaseController {
   ///
   StockSummary? get stockSummary => _stockSummary;
 
-  List<StockSummary>? _stockSummaries;
+  List<StockSummary> _stockSummaries = [];
 
   ///
-  List<StockSummary>? get stockSummaries => _stockSummaries;
+  List<StockSummary> get stockSummaries => _stockSummaries;
 
   @override
   void onReady() {
-    fetchItems();
+    ever(_lastUpdatedAt, fetchData);
   }
 
   /// Future Items
-  Future<void> fetchItems({int? lastUpdatedAt}) async {
+  Future<void> fetchData(int? lastUpdatedAt) async {
     if (teamId != null) {
       busy = true;
       QuerySnapshot? snapshot;
@@ -48,18 +48,22 @@ class StockSummaryController extends BaseController {
         snapshot = await stockSummaryCollectionRef(teamId!).get();
       }
 
-      final objs = <StockSummary>[];
+      final datas = <StockSummary>[];
       for (final doc in snapshot.docs) {
         if (doc.data() != null) {
           // ignore: cast_nullable_to_non_nullable
           final json = doc.data() as Map<String, dynamic>;
           json['id'] = doc.id;
-          objs.add(StockSummary.fromJson(json));
+          datas.add(StockSummary.fromJson(json));
         }
       }
-      _stockSummaries = objs;
-      if (objs.isNotEmpty) {
-        _stockSummary = objs[0];
+      _stockSummaries = _stockSummaries..addAll(datas);
+      final seen = <String>{};
+      _stockSummaries =
+          _stockSummaries.where((i) => seen.add(i.id ?? '')).toList();
+
+      if (_stockSummaries.isNotEmpty) {
+        _stockSummary = _stockSummaries[0];
       }
       busy = false;
     }

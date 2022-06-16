@@ -16,10 +16,10 @@ class TeamController extends BaseController {
   /// Last Updated At
   int get lastUpdatedAt => _lastUpdatedAt.value;
 
-  List<Team>? _teams;
+  List<Team> _teams = [];
 
   ///
-  List<Team>? get teams => _teams;
+  List<Team> get teams => _teams;
 
   Team? _createdTeam;
 
@@ -34,11 +34,11 @@ class TeamController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    fetchItems();
+    ever(_lastUpdatedAt, fetchData);
   }
 
   /// Future Items
-  Future<void> fetchItems({int? lastUpdatedAt}) async {
+  Future<void> fetchData(int? lastUpdatedAt) async {
     busy = true;
     QuerySnapshot? snapshot;
     if (lastUpdatedAt != null) {
@@ -49,17 +49,19 @@ class TeamController extends BaseController {
       snapshot = await teamCollectionRef.get();
     }
 
-    final objs = <Team>[];
+    final datas = <Team>[];
     for (final doc in snapshot.docs) {
       if (doc.data() != null) {
         // ignore: cast_nullable_to_non_nullable
         final json = doc.data() as Map<String, dynamic>;
         json['id'] = doc.id;
-        objs.add(Team.fromJson(json));
+        datas.add(Team.fromJson(json));
       }
     }
-    _teams = objs;
-
+    _teams = datas;
+    _teams = _teams..addAll(datas);
+    final seen = <String>{};
+    _teams = _teams.where((i) => seen.add(i.id ?? '')).toList();
     busy = false;
   }
 

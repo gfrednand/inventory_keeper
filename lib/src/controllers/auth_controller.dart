@@ -5,22 +5,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:inventory_keeper/src/auth/phone_number_field_page.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
-import 'package:inventory_keeper/src/controllers/partner_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_category_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_summary_controller.dart';
-import 'package:inventory_keeper/src/controllers/product_transaction_controller.dart';
-import 'package:inventory_keeper/src/controllers/role_controller.dart';
-import 'package:inventory_keeper/src/controllers/stock_summary_controller.dart';
-import 'package:inventory_keeper/src/controllers/team_controller.dart';
-import 'package:inventory_keeper/src/controllers/team_settings_controller.dart';
-import 'package:inventory_keeper/src/controllers/user_controller.dart';
+import 'package:inventory_keeper/src/controllers/index.dart';
+
 import 'package:inventory_keeper/src/homepage/layout_page.dart';
-import 'package:inventory_keeper/src/models/updatedAt/updated_at.dart';
 import 'package:inventory_keeper/src/models/user/user.dart' as model;
 import 'package:inventory_keeper/src/team/team_initial_page.dart';
 import 'package:inventory_keeper/src/utility/firestore_constant.dart';
-import 'package:inventory_keeper/src/utility/helpers.dart';
 
 ///AuthController
 class AuthController extends BaseController {
@@ -35,53 +25,11 @@ class AuthController extends BaseController {
   ///
   User get authUser => _authUser.value!;
 
-  ///
-  Rx<UpdatedAt?> updatedAtRx = Rx(const UpdatedAt());
-
-  ///
-  UpdatedAt? get updatedAt => updatedAtRx.value;
-
-  /// Check
-  void checkUpdatedValue(UpdatedAt? updatedAt) {
-    if (updatedAt != null) {
-      TeamSettingsController.instance.lastUpdatedAt =
-          updatedAt.teamSettingsLastUpdate;
-      UserController.instance.lastUpdatedAt = updatedAt.usersLastUpdate;
-      RoleController.instance.lastUpdatedAt = updatedAt.rolesLastUpdate;
-      // ProductController.instance.lastUpdatedAt =
-      //     updatedAt.permissionsLastUpdate;
-      ProductController.instance.lastUpdatedAt = updatedAt.productsLastUpdate;
-      StockSummaryController.instance.lastUpdatedAt =
-          updatedAt.stockSummariesLastUpdate;
-      ProductTransactionController.instance.lastUpdatedAt =
-          updatedAt.productTransactionsLastUpdate;
-      PartnerController.instance.lastUpdatedAt = updatedAt.partnersLastUpdate;
-      ProductCategoryController.instance.lastUpdatedAt =
-          updatedAt.categoriesLastUpdate;
-      ProductSummaryController.instance.lastUpdatedAt =
-          updatedAt.productsSummaryLastUpdate;
-      TeamController.instance.lastUpdatedAt = updatedAt.teamsLastUpdate;
-    }
-  }
-
   @override
   void onReady() {
     super.onReady();
     _authUser = Rx<User?>(firebaseAuth.currentUser);
     _authUser.bindStream(firebaseAuth.authStateChanges());
-    ever(updatedAtRx, checkUpdatedValue);
-    if (teamId != null) {
-      updatedAtRx.bindStream(
-        updatedAtCollectionRef(teamId!)
-            .doc('latest')
-            .snapshots()
-            .map<UpdatedAt?>(
-              (snapshot) => snapshot.data() != null
-                  ? UpdatedAt.fromJson(snapshot.data()! as Map<String, dynamic>)
-                  : null,
-            ),
-      );
-    }
     ever(_authUser, _setInitialScreen);
   }
 
@@ -89,25 +37,10 @@ class AuthController extends BaseController {
     if (authUser == null) {
       Get.offAll<void>(PhoneNumberFieldPage.new);
     } else {
+      Get.put(UpdatedController());
       box.write('loggedInUserId', authUser.uid);
 
-      final teams = TeamController.instance.teams;
-      final user = UserController.instance.user;
-
-      print('OOOOP ${teams?.length}');
-      print('USER ${user?.toJson()}');
-
-      final dooesUserHaveTeam = user != null &&
-          teams != null &&
-          teams.firstWhereOrNull(
-                (team) => team.id == user.selectedTeamId,
-              ) !=
-              null;
-      if (dooesUserHaveTeam) {
-        Get.offAll<void>(() => const LayoutPage());
-      } else {
-        Get.offAll<void>(() => const TeamInitialPage());
-      }
+      Get.offAll<void>(() => const LayoutPage());
     }
   }
 
@@ -162,7 +95,7 @@ class AuthController extends BaseController {
           email: '$phoneNumber@inventoryKeeper.rahisi',
           uid: cred.user!.uid,
           photoUrl: downloadUrl,
-          lastUpdatedAt: dateToMillSeconds(DateTime.now()),
+          lastUpdatedAt: DateTime.now().millisecondsSinceEpoch,
         );
         await usersCollectionRef.doc(cred.user!.uid).set(user.toJson());
       } else {

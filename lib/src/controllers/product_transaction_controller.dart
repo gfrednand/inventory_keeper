@@ -82,9 +82,10 @@ class ProductTransactionController extends BaseController {
   /// Future Items
   Future<void> fetchData(int? lastUpdatedAt) async {
     if (teamId != null) {
+      busy = true;
       final datas = <ProductTransaction>[];
       QuerySnapshot<Object?> snapShot;
-      if (lastUpdatedAt != null) {
+      if (lastUpdatedAt != null && _productTransactions.isNotEmpty) {
         snapShot = await productTransactionsCollectionRef(teamId!)
             .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
             .get();
@@ -96,8 +97,12 @@ class ProductTransactionController extends BaseController {
         json['id'] = doc.id;
         datas.add(ProductTransaction.fromJson(json));
       }
-      _productTransactions = datas;
-      update();
+
+      _productTransactions = _productTransactions..addAll(datas);
+      final seen = <String>{};
+      _productTransactions =
+          _productTransactions.where((i) => seen.add(i.id ?? '')).toList();
+      busy = false;
     }
   }
 
@@ -139,7 +144,8 @@ class ProductTransactionController extends BaseController {
         totalAuditQuantity: cartController.totalAuditedQuantity,
         totalQuantity: cartController.totalQuantity,
         totalAmount: cartController.totalAmount,
-        lastUpdatedAt: dateToMillSeconds(transactionDate ?? DateTime.now()),
+        lastUpdatedAt: transactionDate?.millisecondsSinceEpoch ??
+            DateTime.now().millisecondsSinceEpoch,
         transactionDate: dateToMillSeconds(transactionDate ?? DateTime.now()),
       );
 

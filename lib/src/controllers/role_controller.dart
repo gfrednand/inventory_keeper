@@ -34,6 +34,7 @@ class RoleController extends BaseController {
   /// Future Items
   Future<void> fetchData(int? lastUpdatedAt) async {
     if (teamId != null) {
+      busy = true;
       final datas = <Role>[];
       QuerySnapshot<Object?> snapShot;
       if (lastUpdatedAt != null) {
@@ -48,8 +49,10 @@ class RoleController extends BaseController {
         json['id'] = doc.id;
         datas.add(Role.fromJson(json));
       }
-      _roles = datas;
-      update();
+      _roles = _roles..addAll(datas);
+      final seen = <String>{};
+      _roles = _roles.where((i) => seen.add(i.id ?? '')).toList();
+      busy = false;
     }
   }
 }

@@ -69,7 +69,8 @@ class ProductCategoryController extends BaseController {
     final datas = <ProductCategory>[];
     QuerySnapshot<Object?> snapShot;
     if (teamId != null) {
-      if (lastUpdatedAt != null) {
+      busy = true;
+      if (lastUpdatedAt != null && _productCategories.isNotEmpty) {
         snapShot = await categoryCollectionRef(teamId!)
             .where('lastUpdatedAt', isEqualTo: lastUpdatedAt)
             .get();
@@ -81,8 +82,12 @@ class ProductCategoryController extends BaseController {
         json['id'] = doc.id;
         datas.add(ProductCategory.fromJson(json));
       }
-      _productCategories = datas;
-      update();
+      _productCategories = _productCategories..addAll(datas);
+      final seen = <String>{};
+      _productCategories =
+          _productCategories.where((cat) => seen.add(cat.id ?? '')).toList();
+
+      busy = false;
     }
   }
 
@@ -91,8 +96,9 @@ class ProductCategoryController extends BaseController {
     if (teamId != null) {
       final map = <String, dynamic>{
         'teamId': teamId,
+        'userId': firebaseAuth.currentUser!.uid,
         'name': nameController.text,
-        'lastUpdatedAt': dateToMillSeconds(DateTime.now())
+        'lastUpdatedAt': DateTime.now().millisecondsSinceEpoch
       };
 
       final success = await categoryCollectionRef(teamId!)

@@ -12,7 +12,6 @@ abstract class ProductSummary with _$ProductSummary {
   const factory ProductSummary({
     String? id,
     required String productId,
-    required String teamId,
     @Default(0) int quantity,
     @Default(0) int auditedQuantity,
     @Default(0) int currentStock,
