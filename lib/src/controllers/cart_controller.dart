@@ -23,10 +23,10 @@ class CartController extends BaseController {
   int get totalQuantity => _totalQuantity;
 
   ///
-  int _totalAuditedQuantity = 0;
+  int _totalAuditQuantity = 0;
 
   ///
-  int get totalAuditedQuantity => _totalAuditedQuantity;
+  int get totalAuditQuantity => _totalAuditQuantity;
 
   ///
   double _totalAmount = 0;
@@ -45,7 +45,7 @@ class CartController extends BaseController {
       total += cartItem.amount * (cartItem.quantity);
     });
     _totalQuantity = quantity;
-    _totalAuditedQuantity = auditedQuantity;
+    _totalAuditQuantity = auditedQuantity;
     _totalAmount = total.abs();
     update();
   }

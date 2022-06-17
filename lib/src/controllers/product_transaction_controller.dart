@@ -141,7 +141,7 @@ class ProductTransactionController extends BaseController {
         userId: firebaseAuth.currentUser!.uid,
         transactionType: transactionType,
         productsSummary: [],
-        totalAuditQuantity: cartController.totalAuditedQuantity,
+        totalAuditQuantity: cartController.totalAuditQuantity,
         totalQuantity: cartController.totalQuantity,
         totalAmount: cartController.totalAmount,
         lastUpdatedAt: transactionDate?.millisecondsSinceEpoch ??

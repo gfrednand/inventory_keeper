@@ -117,26 +117,37 @@ class UserController extends BaseController {
   ///
   Future<void> checkByPhoneNumber(String phoneNumber) async {
     busy = true;
-    final snapshot = await usersCollectionRef
-        .where('phoneNumber', isEqualTo: phoneNumber)
-        .get();
-    if (snapshot.docs.isNotEmpty) {
-      userRx.value =
-          User.fromJson(snapshot.docs[0].data()! as Map<String, dynamic>);
-    }
-    if (userRx.value == null) {
+    if (phoneNumber == '') {
       Get.snackbar(
-        'Oops',
-        'Phone number does not exist, please regiser',
+        'Hey',
+        'Phone number is required',
         colorText: Colors.red,
+
         // forwardAnimationCurve: Curves.easeOutBack,
         // snackPosition: SnackPosition.BOTTOM,
       );
     } else {
-      if (userRx.value?.selectedTeamId != null) {
-        Get.find<DataService>().storeTeamId(userRx.value!.selectedTeamId!);
+      final snapshot = await usersCollectionRef
+          .where('phoneNumber', isEqualTo: phoneNumber)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        userRx.value =
+            User.fromJson(snapshot.docs[0].data()! as Map<String, dynamic>);
       }
-      await Get.to<void>(() => LoginScreen(phoneNumber: phoneNumber));
+      if (userRx.value == null) {
+        Get.snackbar(
+          'Oops',
+          'Phone number does not exist, please regiser',
+          colorText: Colors.red,
+          // forwardAnimationCurve: Curves.easeOutBack,
+          // snackPosition: SnackPosition.BOTTOM,
+        );
+      } else {
+        if (userRx.value?.selectedTeamId != null) {
+          Get.find<DataService>().storeTeamId(userRx.value!.selectedTeamId!);
+        }
+        await Get.to<void>(() => LoginScreen(phoneNumber: phoneNumber));
+      }
     }
     busy = false;
   }

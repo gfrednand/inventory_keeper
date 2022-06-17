@@ -39,7 +39,6 @@ class AuthController extends BaseController {
     } else {
       Get.put(UpdatedController());
       Get.find<DataService>().storeUserId(authUser.uid);
-
       Get.offAll<void>(() => const LayoutPage());
     }
   }
@@ -47,7 +46,7 @@ class AuthController extends BaseController {
   ///
   Future<void> pickImage() async {
     final pickedImage = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 80);
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
     if (pickedImage != null) {
       Get.snackbar(
         'Profile Picture',

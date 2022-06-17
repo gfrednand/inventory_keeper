@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventory_keeper/src/controllers/base_controller.dart';
+import 'package:inventory_keeper/src/controllers/stock_summary_controller.dart';
 import 'package:inventory_keeper/src/models/product/product.dart';
 import 'package:inventory_keeper/src/models/product_category/product_category.dart';
+import 'package:inventory_keeper/src/models/product_summary/product_summary.dart';
 import 'package:inventory_keeper/src/utility/firestore_constant.dart';
 import 'package:inventory_keeper/src/utility/helpers.dart';
 
@@ -150,10 +152,13 @@ class ProductController extends BaseController {
       _products = _products..addAll(datas);
       final seen = <String>{};
       _products = _products.where((cat) => seen.add(cat.id ?? '')).toList();
+      _filteredProducts = _products;
 
       busy = false;
     }
   }
+
+  ///
 
   /// Add a product to a current products state
   Future<void> addProduct(Product product) async {

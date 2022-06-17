@@ -63,9 +63,10 @@ String dateFormat(DateTime? date, {String format = 'dd/MM/yyy'}) {
 Product productWithLatestInfo(Product product) {
   ProductSummary? prod;
   final stock = StockSummaryController.instance.stockSummary;
+  print(stock?.toJson());
   final usedStock = stock ?? initiaStock;
   prod = usedStock.productsSummary.firstWhereOrNull(
-    (item) => item.id == product.id,
+    (item) => item.productId == product.id,
   );
   return product.copyWith(
     currentStock: prod?.currentStock ?? 0,

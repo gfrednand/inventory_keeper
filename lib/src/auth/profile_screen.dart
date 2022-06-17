@@ -12,6 +12,7 @@ import 'package:inventory_keeper/src/partner/partner_list_view.dart';
 import 'package:inventory_keeper/src/team/team_members_page.dart';
 import 'package:inventory_keeper/src/utility/colors.dart';
 import 'package:inventory_keeper/src/widgets/app_logout_menu.dart';
+import 'package:inventory_keeper/src/widgets/custom_form_field.dart';
 
 ///Profile Screen
 class ProfileScreen extends StatelessWidget {
@@ -29,12 +30,15 @@ class ProfileScreen extends StatelessWidget {
   ///
   final PartnerController partnerController = Get.find<PartnerController>();
 
+  final TextEditingController _teamNameController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(
       init: UserController(),
       builder: (controller) {
         final photoUrl = controller.user?.photoUrl;
+        _fullNameController.text = controller.user?.fullname ?? '';
         return Scaffold(
           appBar: AppBar(
             elevation: 0,
@@ -113,6 +117,22 @@ class ProfileScreen extends StatelessWidget {
                                 height: 30,
                               ),
                               ListTile(
+                                onTap: () {
+                                  showDialog(
+                                    _fullNameController,
+                                    'Full Name',
+                                    () {
+                                      if (_fullNameController.text.isNotEmpty) {
+                                        Get.back<void>();
+                                      } else {
+                                        Get.snackbar(
+                                          '',
+                                          'Enter category name',
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
                                 title: const Text('Name'),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -149,9 +169,25 @@ class ProfileScreen extends StatelessWidget {
                                       controller.teams.firstWhereOrNull(
                                     (team) => team.id == controller.teamId,
                                   );
+                                  _teamNameController.text =
+                                      selectedTeam?.name ?? '';
                                   return ListTile(
                                     onTap: () {
-                                      // Get.find<AuthController>().signOut();
+                                      showDialog(
+                                        _teamNameController,
+                                        'Team Name',
+                                        () {
+                                          if (_teamNameController
+                                              .text.isNotEmpty) {
+                                            Get.back<void>();
+                                          } else {
+                                            Get.snackbar(
+                                              '',
+                                              'Enter team name',
+                                            );
+                                          }
+                                        },
+                                      );
                                     },
                                     title: const Text('Team Name'),
                                     trailing: Row(
@@ -388,6 +424,40 @@ class ProfileScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  ///
+  Future<void> showDialog(TextEditingController controller, String label,
+      void Function()? onPressed) {
+    return Get.defaultDialog<void>(
+      title: '',
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomFormField(
+            controller: controller,
+            focusNode: FocusNode(),
+            inputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            label: label,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          ElevatedButton(
+            onPressed: onPressed,
+            child: const Text(
+              'Save',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          )
+        ],
+      ),
+      radius: 10,
     );
   }
 }
